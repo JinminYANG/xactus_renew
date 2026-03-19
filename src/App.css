@@ -1,0 +1,106 @@
+#root {
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  width: 100%;
+}
+
+main {
+  flex: 1;
+  width: 100%;
+  background: var(--bg);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  width: 100%;
+}
+
+.container-fluid {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+/* Section wrapper for full-width backgrounds */
+.section-wrapper {
+  width: 100%;
+  background: var(--bg);
+}
+
+/* Remove default Bootstrap padding */
+.container.py-5 {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Smooth transitions */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Link styling */
+a {
+  color: var(--xactus-green);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--accent-orange);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 24px;
+  }
+
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 1.875rem; }
+  h3 { font-size: 1.375rem; }
+
+  .section-wrapper {
+    padding: 60px 24px;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+
+  .section-wrapper {
+    padding: 40px 16px;
+  }
+
+  .app-header {
+    padding: 16px 24px;
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+/* Logo image light mode filter */
+.logo-image {
+  filter: brightness(0);
+}
+
+:root.dark .logo-image,
+html.dark .logo-image {
+  filter: brightness(1);
+}

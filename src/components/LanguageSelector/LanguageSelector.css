@@ -1,0 +1,27 @@
+.language-select {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.language-select:hover {
+  background: var(--border-color);
+  border-color: var(--xactus-green);
+}
+
+.language-select:focus {
+  outline: none;
+  border-color: var(--xactus-green);
+  background: rgba(39, 169, 75, 0.1);
+}
+
+.language-select option {
+  background: var(--card-dark);
+  color: var(--text);
+}

@@ -1,0 +1,376 @@
+/* Global styles scaffold */
+:root {
+  --bg: #ffffff;
+  --text: #1a1a1a;
+  --primary: #646cff;
+  /* Brand colors (XACTUS) - Light Mode */
+  --xactus-green: #27A94B; /* Main Identity Color */
+  --deep-forest: #f8f9fa; /* Footer background - light */
+  --accent-orange: #EB5E28; /* Logo X accent / highlights */
+  --medium-grey: #666666; /* Sub / muted text */
+  --off-white: #f5f5f5; /* Card / light backgrounds */
+  --dark-charcoal: #1a1a1a; /* Main text on light backgrounds */
+  --card-dark: #ffffff;
+  --heading-color: #000000;
+  --border-color: rgba(0,0,0,0.1);
+  --nav-bg: #f8f8f8;
+  --gradient-hero-light: linear-gradient(135deg, #2E3D39 0%, #1a1a1a 100%);
+  --gradient-card: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%);
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode variables applied when `html` has class `dark` */
+:root.dark, html.dark {
+  --bg: #0a0e27;
+  --text: #e3e8f0;
+  --primary: #7c93ff;
+  /* Brand colors (XACTUS) - Dark Mode */
+  --xactus-green: #4ade80;
+  --deep-forest: #1e293b;
+  --accent-orange: #fb923c;
+  --medium-grey: #cbd5e1;
+  --off-white: #f1f5f9;
+  --dark-charcoal: #0f172a;
+  --card-dark: #1e293b;
+  --heading-color: #ffffff;
+  --border-color: rgba(255,255,255,0.1);
+  --nav-bg: #152a3a;
+  --gradient-hero-light: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  --gradient-card: linear-gradient(135deg, #1e293b 0%, rgba(15, 23, 42, 0.7) 100%);
+}
+
+/* Typography - Responsive with clamp */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--heading-color);
+  margin: 0;
+}
+
+h1 { 
+  font-size: clamp(1.75rem, 8vw, 3.5rem); 
+  margin-bottom: clamp(1rem, 2vw, 1.5rem);
+  line-height: 1.2;
+}
+
+h2 { 
+  font-size: clamp(1.5rem, 5vw, 2.5rem); 
+  margin-bottom: clamp(0.75rem, 1.5vw, 1.25rem);
+  line-height: 1.2;
+}
+
+h3 { 
+  font-size: clamp(1.25rem, 4vw, 1.75rem); 
+  margin-bottom: clamp(0.5rem, 1vw, 1rem);
+  line-height: 1.3;
+}
+
+h4 {
+  font-size: clamp(1.1rem, 3vw, 1.3rem);
+  margin-bottom: clamp(0.5rem, 1vw, 0.75rem);
+}
+
+h5 {
+  font-size: clamp(1rem, 2.5vw, 1.1rem);
+  margin-bottom: 0.5rem;
+}
+
+h6 {
+  font-size: clamp(0.95rem, 2vw, 1rem);
+  margin-bottom: 0.5rem;
+}
+
+p {
+  color: var(--medium-grey);
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+/* Main Content Area */
+.app-main {
+  padding: clamp(20px, 4vw, 40px) 0;
+  min-height: calc(100vh - 200px);
+}
+
+/* Bootstrap overrides to align with XACTUS brand */
+.btn-primary {
+  background-color: var(--xactus-green) !important;
+  border-color: var(--xactus-green) !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  padding: clamp(8px, 1.5vw, 12px) clamp(20px, 3vw, 32px);
+  border-radius: 8px;
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #1d9f3d !important;
+  border-color: #1d9f3d !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(39, 169, 75, 0.3);
+}
+
+:root.dark .btn-primary:hover,
+:root.dark .btn-primary:focus,
+html.dark .btn-primary:hover,
+html.dark .btn-primary:focus {
+  background-color: #22c55e !important;
+  border-color: #22c55e !important;
+}
+
+/* Button outline styles */
+.btn-outline-light {
+  color: var(--text) !important;
+  border-color: var(--text) !important;
+  padding: clamp(8px, 1.5vw, 12px) clamp(20px, 3vw, 32px);
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  border-width: 2px;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-light:hover {
+  background: var(--text) !important;
+  color: var(--bg) !important;
+}
+
+/* Card Styling */
+.card {
+  background: var(--card-dark);
+  color: var(--text);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  border-color: var(--xactus-green);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+}
+
+:root.dark .card:hover,
+html.dark .card:hover {
+  border-color: rgba(74, 222, 128, 0.5);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.card-title {
+  color: var(--heading-color);
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.card-text {
+  color: var(--medium-grey);
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+}
+
+/* Hero and backgrounds */
+.bg-hero {
+  background: linear-gradient(135deg, var(--deep-forest) 0%, #151e2f 100%) !important;
+  color: var(--off-white) !important;
+  border-radius: 12px;
+}
+
+:root.dark .bg-hero,
+html.dark .bg-hero {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+  color: #f1f5f9 !important;
+}
+
+/* Section styling - Responsive padding */
+.section-wrapper {
+  padding: clamp(40px, 8vw, 80px) clamp(16px, 4vw, 40px);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: clamp(30px, 5vw, 60px);
+}
+
+.section-title h2 {
+  margin-bottom: clamp(8px, 1.5vw, 12px);
+  color: var(--heading-color);
+}
+
+.section-title p {
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  max-width: 600px;
+  margin: 0 auto;
+  color: var(--medium-grey);
+}
+
+/* Utility classes */
+.text-accent { 
+  color: var(--accent-orange) !important; 
+}
+
+.text-muted { 
+  color: var(--medium-grey) !important; 
+}
+
+.logo-text {
+  color: var(--xactus-green) !important;
+}
+
+.hover-accent:hover { 
+  color: var(--accent-orange);
+  transition: color 0.3s ease;
+}
+
+/* Image Responsive */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.img-fluid {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+/* Responsive Images in containers */
+.img-container {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.img-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Container spacing adjustments */
+.container {
+  padding-left: clamp(12px, 3vw, 40px);
+  padding-right: clamp(12px, 3vw, 40px);
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .section-wrapper {
+    padding: clamp(32px, 6vw, 48px) clamp(16px, 3vw, 24px);
+  }
+
+  h1 {
+    line-height: 1.25;
+  }
+
+  h2, h3 {
+    line-height: 1.3;
+  }
+
+  .btn-primary,
+  .btn-outline-light {
+    width: auto;
+    min-width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-wrapper {
+    padding: clamp(24px, 5vw, 32px) clamp(12px, 2vw, 16px);
+  }
+
+  h1 {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+    margin-bottom: 0.75rem;
+  }
+
+  h2 {
+    font-size: clamp(1.25rem, 4vw, 1.75rem);
+  }
+
+  h3 {
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+  }
+
+  p {
+    font-size: clamp(0.9rem, 1.8vw, 1rem);
+  }
+
+  .container {
+    padding-left: clamp(8px, 2vw, 12px);
+    padding-right: clamp(8px, 2vw, 12px);
+  }
+
+  .btn-primary,
+  .btn-outline-light {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+
+  .section-title {
+    margin-bottom: clamp(20px, 4vw, 30px);
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+  h1 {
+    font-size: clamp(2rem, 6vw, 3rem);
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 4.5vw, 2.25rem);
+  }
+
+  .section-wrapper {
+    padding: clamp(48px, 6vw, 64px) clamp(20px, 4vw, 32px);
+  }
+}
+
+/* Hero Section Styling */
+.hero-section {
+  padding-top: clamp(60px, 10vw, 120px);
+  padding-bottom: clamp(60px, 10vw, 120px);
+}
+
+.page-title-section {
+  padding-top: clamp(60px, 8vw, 100px);
+  padding-bottom: clamp(40px, 6vw, 60px);
+}
+
+/* Grid Layout Utilities */
+.grid-2-col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(24px, 4vw, 48px);
+}
+
+.grid-3-col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(20px, 3vw, 40px);
+}
+
+/* Responsive spacing utilities */
+.mb-responsive {
+  margin-bottom: clamp(16px, 3vw, 24px);
+}
+
+.mt-responsive {
+  margin-top: clamp(16px, 3vw, 24px);
+}
+
+.p-responsive {
+  padding: clamp(16px, 3vw, 32px);
+}
+
