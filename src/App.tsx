@@ -12,8 +12,11 @@ export default function App(){
   // keep small local state example
   const [count, setCount] = useState(0)
 
+  // GitHub Pages용 basename 설정 (프로덕션에서만)
+  const basename = import.meta.env.PROD ? '/xactus_renew/' : '/'
+
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <div>
         <Header />
 
