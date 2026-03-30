@@ -11,6 +11,10 @@ interface AppState {
   language: 'ko' | 'en'
   setLanguage: (lang: 'ko' | 'en') => void
 
+  // Motion / accessibility
+  reducedMotion: boolean
+  toggleReducedMotion: () => void
+
   logout: () => void
 }
 
@@ -20,16 +24,19 @@ export const useAppStore = create<AppState>()(
       token: null,
       setToken: (token) => set({ token }),
 
-      isDarkMode: false,
+      isDarkMode: true,
       toggleDarkMode: () => set((state) => ({ isDarkMode: !state.isDarkMode })),
 
-      language: 'ko',
+      language: 'en' as const,
       setLanguage: (language) => set({ language }),
+
+      reducedMotion: false,
+      toggleReducedMotion: () => set((state) => ({ reducedMotion: !state.reducedMotion })),
 
       logout: () => set({ token: null }),
     }),
     {
-      name: 'app-storage',
+      name: 'app-storage-v2',
     },
   ),
 )

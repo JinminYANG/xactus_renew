@@ -1,13 +1,35 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useAppStore } from '../../store/useAppStore'
 import { t } from '../../lib/i18n'
 import './Footer.css'
 
 export default function Footer() {
   const language = useAppStore((s) => s.language)
+  const [isVisible, setIsVisible] = useState(false)
+  const footerRef = useRef(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Footer가 화면에 보일 때와 나갈 때 모두 상태 업데이트
+        setIsVisible(entry.isIntersecting)
+      },
+      { threshold: 0.3 }
+    )
+
+    if (footerRef.current) {
+      observer.observe(footerRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [])
 
   return (
-    <footer className="site-footer">
+    <footer
+      id="footer-section"
+      ref={footerRef}
+      className={`site-footer ${isVisible ? 'fade-in' : ''}`}
+    >
       <div className="footer-container">
         {/* Tagline */}
         <div className="footer-tagline">

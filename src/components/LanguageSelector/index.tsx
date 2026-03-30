@@ -7,14 +7,23 @@ export default function LanguageSelector() {
   const setLang = useAppStore((s) => s.setLanguage)
 
   return (
-    <select 
-      className="language-select"
-      value={lang} 
-      onChange={(e) => setLang(e.target.value as 'ko' | 'en')}
-      aria-label="Select language"
-    >
-      <option value="ko">한국어</option>
-      <option value="en">English</option>
-    </select>
+    <div className="lang-pill" role="group" aria-label="Select language">
+      <button
+        className={`lang-pill-btn${lang === 'ko' ? ' active' : ''}`}
+        onClick={() => setLang('ko')}
+        aria-pressed={lang === 'ko'}
+        type="button"
+      >
+        KO
+      </button>
+      <button
+        className={`lang-pill-btn${lang === 'en' ? ' active' : ''}`}
+        onClick={() => setLang('en')}
+        aria-pressed={lang === 'en'}
+        type="button"
+      >
+        EN
+      </button>
+    </div>
   )
 }

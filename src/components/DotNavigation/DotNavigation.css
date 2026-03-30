@@ -1,0 +1,162 @@
+/* Dot Navigation Container */
+.dot-navigation {
+  position: fixed;
+  right: clamp(20px, 4vw, 40px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  /* flex-end: dots always anchored to right edge ? label grows left, dots never shift */
+  align-items: flex-end;
+  gap: 20px;
+  z-index: 1500;
+  pointer-events: all;
+}
+
+/* Section label - horizontal strip above dots */
+.dot-nav-label {
+  writing-mode: horizontal-tb;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #ffffff;
+  white-space: nowrap;
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  text-align: right;
+  padding: 4px 8px 6px;
+  border-bottom: 1px solid rgba(0, 217, 255, 0.5);
+  /* background: rgba(0, 0, 0, 0.45); */
+  backdrop-filter: blur(8px);
+  border-radius: 4px 4px 0 0;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+}
+
+.dot-nav-num {
+  font-weight: 900;
+  color: var(--accent-cyan, #00D9FF);
+}
+
+.dot-nav-sep {
+  opacity: 0.5;
+}
+
+/* Light mode */
+:root:not(.dark) .dot-nav-label,
+html:not(.dark) .dot-nav-label {
+  color: #ffffff;
+  border-bottom-color: rgba(39, 169, 75, 0.6);
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Individual Dot */
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  padding: 0;
+  position: relative;
+  backdrop-filter: blur(2px);
+  flex-shrink: 0;
+}
+
+/* Hover tooltip (left of dot) */
+.dot::before {
+  content: attr(title);
+  position: absolute;
+  right: calc(100% + 16px);
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+  background: rgba(10, 14, 39, 0.7);
+  backdrop-filter: blur(8px);
+  padding: 4px 10px;
+  border-radius: 4px;
+  border-left: 2px solid var(--accent-cyan, #00D9FF);
+}
+
+.dot:hover::before {
+  opacity: 1;
+}
+
+.dot:hover {
+  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(255, 255, 255, 0.9);
+  transform: scale(1.3);
+}
+
+/* Active Dot ? white outer ring + green center fill */
+.dot.active {
+  background: var(--xactus-green);
+  border: 2.5px solid rgba(255, 255, 255, 0.75);
+  width: 14px;
+  height: 14px;
+  box-shadow: 0 0 14px rgba(39, 169, 75, 0.9), 0 0 28px rgba(39, 169, 75, 0.4);
+}
+
+/* Active dot pulse ring */
+.dot.active::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border: 1.5px solid var(--xactus-green);
+  border-radius: 50%;
+  animation: pulse-ring 2s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse-ring {
+  0%   { transform: scale(1); opacity: 0.9; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* Dark mode */
+:root.dark .dot,
+html.dark .dot {
+  border-color: rgba(227, 232, 240, 0.3);
+  /* background: rgba(227, 232, 240, 0.08); */
+}
+
+:root.dark .dot:hover,
+html.dark .dot:hover {
+  background: rgba(227, 232, 240, 0.55);
+  border-color: rgba(227, 232, 240, 0.9);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .dot-navigation {
+    right: clamp(8px, 2vw, 16px);
+    gap: 16px;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-width: 1.5px;
+  }
+
+  .dot.active {
+    width: 13px;
+    height: 13px;
+  }
+
+  .dot::before,
+  .dot-nav-label {
+    display: none;
+  }
+}

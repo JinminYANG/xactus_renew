@@ -1,5 +1,9 @@
 #root {
   background: var(--bg);
+  background-image: url('./assets/images/bg.png');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
   color: var(--text);
   min-height: 100vh;
   display: flex;
@@ -11,13 +15,16 @@ body {
   margin: 0;
   padding: 0;
   background: var(--bg);
+  background-image: url('./assets/images/bg.png');
+  background-size: cover;
+  background-attachment: fixed;
   width: 100%;
 }
 
 main {
   flex: 1;
   width: 100%;
-  background: var(--bg);
+  background: transparent;
 }
 
 .container {
@@ -25,6 +32,8 @@ main {
   margin: 0 auto;
   padding: 0 40px;
   width: 100%;
+  position: relative;
+  z-index: 2;
 }
 
 .container-fluid {
@@ -33,10 +42,152 @@ main {
   margin: 0;
 }
 
+/* Scroll Snap Container */
+.app-scroll-container {
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  width: 100%;
+}
+
+.app-main {
+  width: 100%;
+}
+
 /* Section wrapper for full-width backgrounds */
 .section-wrapper {
   width: 100%;
-  background: var(--bg);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  padding: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hero section background */
+.hero-section {
+  background: transparent;
+  align-items: center;
+  justify-content: flex-start;
+  padding-bottom: 0;
+}
+
+:root.dark .hero-section,
+html.dark .hero-section {
+  background: transparent;
+}
+
+/* Hero content layout */
+/* .hero-content {
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+  padding-bottom: 0;
+} */
+
+/* Eyebrow label above the title */
+.hero-eyebrow {
+  font-size: clamp(0.8rem, 1.2vw, 0.75rem);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-cyan, #00D9FF);
+  margin: 0 0 clamp(10px, 2vw, 18px) 0;
+  opacity: 0.9;
+  text-shadow: 5px 5px 5px rgba(0, 0, 0, 1);
+}
+
+/* Hero h1 — Cinzel, large, white */
+.hero-title {
+  color: #ffffff !important;
+  margin-bottom: clamp(16px, 2.5vw, 28px) !important;
+  text-shadow: 5px 5px 5px rgba(0, 0, 0, 1);
+}
+
+/* Hero subtitle paragraph */
+.hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  font-weight: 500;
+  line-height: 2;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 600px;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 1);
+}
+
+/* Mission section background */
+.mission-section {
+  /* 라이트모드: 반투명 흰 패널 → 배경 이미지 위에 깔끔하게 분리 */
+  background: rgba(235, 242, 255, 0.5);
+}
+
+:root.dark .mission-section,
+html.dark .mission-section {
+  background: linear-gradient(135deg, rgba(30,41,59,0.4) 0%, rgba(15,23,42,0.7) 100%);
+}
+
+/* Core technology section background */
+.core-tech-section {
+  background: rgba(240, 246, 255, 0.5);
+}
+
+:root.dark .core-tech-section,
+html.dark .core-tech-section {
+  background: linear-gradient(135deg, rgba(15,23,42,0.5) 0%, rgba(10,14,39,0.8) 100%);
+}
+
+/* Light mode: section TITLE text only — not cards */
+:root:not(.dark) .mission-section h2,
+html:not(.dark) .mission-section h2,
+:root:not(.dark) .core-tech-section h2,
+html:not(.dark) .core-tech-section h2 {
+  color: #0f172a;
+}
+
+/* Section subtitle paragraph (outside cards) */
+:root:not(.dark) .mission-section .section-title p,
+html:not(.dark) .mission-section .section-title p,
+:root:not(.dark) .core-tech-section .section-title p,
+html:not(.dark) .core-tech-section .section-title p {
+  color: #475569;
+}
+
+/* Light mode: card BODY text — card bg is always dark, so needs light text */
+:root:not(.dark) .card .card-text,
+html:not(.dark) .card .card-text {
+  color: rgba(210, 228, 248, 0.9);
+}
+
+.snap-section {
+  height: 100vh;
+  width: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Mobile adjust for snap height */
+@media (max-width: 768px) {
+  .snap-section {
+    height: 100dvh; /* Dynamic viewport height for mobile browsers */
+  }
+}
+
+/* Page title section with subtle overlay */
+.page-title-section {
+  background: rgba(15, 23, 42, 0.6) !important;
+  backdrop-filter: blur(2px);
+  padding: 120px 0 100px 0;
 }
 
 /* Remove default Bootstrap padding */
@@ -103,4 +254,70 @@ a:hover {
 :root.dark .logo-image,
 html.dark .logo-image {
   filter: brightness(1);
+}
+
+/* ====================================
+   SECTION DECORATION - 4-POINTED SPARKLE STAR
+   Bottom-right decorative element
+   ==================================== */
+.section-decoration {
+  position: absolute;
+  bottom: clamp(30px, 5vw, 70px);
+  right: clamp(70px, 7vw, 110px); /* offset from dot nav */
+  width: clamp(22px, 2.8vw, 34px);
+  height: clamp(22px, 2.8vw, 34px);
+  z-index: 5;
+  pointer-events: none;
+  animation: float-decoration 5s ease-in-out infinite;
+}
+
+/* 4-pointed sparkle star via clip-path */
+.section-decoration::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent-cyan, #00D9FF);
+  clip-path: polygon(
+    50% 0%,   57% 43%,
+    100% 50%, 57% 57%,
+    50% 100%, 43% 57%,
+    0% 50%,   43% 43%
+  );
+  opacity: 0.65;
+  filter: drop-shadow(0 0 6px var(--accent-cyan, #00D9FF));
+  transition: opacity 0.3s ease;
+}
+
+/* Center glow dot */
+.section-decoration::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30%;
+  height: 30%;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.9;
+  filter: blur(1px);
+}
+
+:root.dark .section-decoration::before,
+html.dark .section-decoration::before {
+  opacity: 0.8;
+  filter: drop-shadow(0 0 10px var(--accent-cyan, #00D9FF));
+}
+
+:root:not(.dark) .section-decoration::before,
+html:not(.dark) .section-decoration::before {
+  background: var(--xactus-green);
+  filter: drop-shadow(0 0 6px var(--xactus-green));
+  opacity: 0.5;
+}
+
+@keyframes float-decoration {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25%       { transform: translateY(-8px) rotate(22deg); }
+  75%       { transform: translateY(4px) rotate(-12deg); }
 }

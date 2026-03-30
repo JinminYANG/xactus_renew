@@ -1,12 +1,40 @@
 /* Header Container */
 .app-header {
   display: flex;
-  padding: clamp(10px, 3vw, 14px) 0;
-  background: var(--nav-bg);
-  border-bottom: 1px solid var(--border-color);
-  position: sticky;
+  padding: clamp(10px, 2vw, 16px) 0;
+  background: transparent;
+  border-bottom: none;
+  position: fixed;
   top: 0;
-  z-index: 1000;
+  left: 0;
+  right: 0;
+  z-index: 2000;
+  transition: background 0.4s ease, box-shadow 0.4s ease;
+  background-color: rgba(255,255,255,0.02);
+}
+
+/* Scrolled state - JS에서 .scrolled 클래스 추가 시 subtle bg 적용 */
+.app-header.scrolled {
+  background: rgba(8, 12, 36, 0.75);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  box-shadow: 0 1px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* Light mode scrolled */
+:root:not(.dark) .app-header.scrolled,
+html:not(.dark) .app-header.scrolled {
+  background: rgba(15, 22, 58, 0.72);
+}
+
+:root.dark .app-header,
+html.dark .app-header {
+  background: transparent;
+}
+
+:root.dark .app-header.scrolled,
+html.dark .app-header.scrolled {
+  background: rgba(8, 12, 36, 0.82);
 }
 
 .app-header .container {
@@ -33,11 +61,24 @@
   height: clamp(32px, 6vw, 48px);
 }
 
+/* Logo white by default (dark mode / dark bg) */
 .logo img {
   height: 100%;
   width: auto;
   display: block;
+  filter: brightness(1);
+}
+
+/* Light mode + not scrolled: invert logo to black */
+:root:not(.dark) .app-header:not(.scrolled) .logo img,
+html:not(.dark) .app-header:not(.scrolled) .logo img {
   filter: brightness(0);
+}
+
+/* Light mode + scrolled: dark glass header → white logo */
+:root:not(.dark) .app-header.scrolled .logo img,
+html:not(.dark) .app-header.scrolled .logo img {
+  filter: brightness(1);
 }
 
 :root.dark .logo img,
@@ -45,32 +86,96 @@ html.dark .logo img {
   filter: brightness(1);
 }
 
-/* Desktop Navigation */
+/* Desktop Navigation - pushed to right like BIOGENIX */
 .nav-desktop {
   display: flex;
-  gap: clamp(16px, 2vw, 24px);
-  flex: 1;
+  gap: clamp(4px, 1vw, 8px);
+  margin-left: auto; /* pushes nav to right side */
   align-items: center;
 }
 
 .nav-desktop .nav-link {
   display: inline-block;
   white-space: nowrap;
-  color: var(--medium-grey);
+  color: rgba(255, 255, 255, 0.55);
   text-decoration: none;
   font-weight: 500;
   font-size: clamp(0.875rem, 1.5vw, 1rem);
-  transition: color 0.3s ease;
-  padding: 8px 12px;
+  transition: color 0.25s ease;
+  padding: 8px 14px;
+  position: relative;
+}
+
+/* Animated underline on hover/active */
+.nav-desktop .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 14px;
+  right: 14px;
+  height: 1.5px;
+  background: var(--xactus-green);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .nav-desktop .nav-link:hover {
-  color: var(--text);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.nav-desktop .nav-link:hover::after {
+  transform: scaleX(1);
 }
 
 .nav-desktop .nav-link.active {
-  font-weight: 700;
-  color: var(--xactus-green);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.nav-desktop .nav-link.active::after {
+  transform: scaleX(1);
+  background: var(--xactus-green);
+}
+
+/* Light mode nav links — header transparent on light bg → dark text */
+:root:not(.dark) .app-header:not(.scrolled) .nav-desktop .nav-link,
+html:not(.dark) .app-header:not(.scrolled) .nav-desktop .nav-link {
+  color: rgba(15, 23, 42, 0.75);
+}
+
+:root:not(.dark) .app-header:not(.scrolled) .nav-desktop .nav-link:hover,
+html:not(.dark) .app-header:not(.scrolled) .nav-desktop .nav-link:hover,
+:root:not(.dark) .app-header:not(.scrolled) .nav-desktop .nav-link.active,
+html:not(.dark) .app-header:not(.scrolled) .nav-desktop .nav-link.active {
+  color: rgba(15, 23, 42, 1);
+}
+
+/* Light mode scrolled header — dark bg applied, white links OK */
+:root:not(.dark) .app-header.scrolled .nav-desktop .nav-link,
+html:not(.dark) .app-header.scrolled .nav-desktop .nav-link {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+:root:not(.dark) .app-header.scrolled .nav-desktop .nav-link:hover,
+html:not(.dark) .app-header.scrolled .nav-desktop .nav-link:hover,
+:root:not(.dark) .app-header.scrolled .nav-desktop .nav-link.active,
+html:not(.dark) .app-header.scrolled .nav-desktop .nav-link.active {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Dark mode nav links */
+:root.dark .nav-desktop .nav-link,
+html.dark .nav-desktop .nav-link {
+  color: rgba(227, 232, 240, 0.5);
+}
+
+:root.dark .nav-desktop .nav-link:hover,
+html.dark .nav-desktop .nav-link:hover,
+:root.dark .nav-desktop .nav-link.active,
+html.dark .nav-desktop .nav-link.active {
+  color: rgba(255, 255, 255, 0.95);
 }
 
 /* Mobile Menu Toggle */
@@ -147,6 +252,14 @@ html.dark .logo img {
   align-items: center;
   gap: clamp(8px, 2vw, 16px);
   flex-shrink: 0;
+  padding-left: clamp(12px, 2.5vw, 24px);
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Light mode: border separator visible on light bg */
+:root:not(.dark) .app-header:not(.scrolled) .header-controls,
+html:not(.dark) .app-header:not(.scrolled) .header-controls {
+  border-left-color: rgba(15, 23, 42, 0.2);
 }
 
 /* Responsive Design */

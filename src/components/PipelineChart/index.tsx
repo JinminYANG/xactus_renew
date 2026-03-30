@@ -1,4 +1,5 @@
 import React, { JSX, useEffect, useRef, useState } from "react";
+import { motion } from 'framer-motion'
 import { useAppStore } from "../../store/useAppStore";
 import { t } from "../../lib/i18n";
 import "./PipelineChart.css";
@@ -19,14 +20,14 @@ const DATA: RowItem[] = [
     id: "XO-001",
     name: "XO-001",
     sub: "Wnt 저해제",
-    target: "TNIK",
+    target: "TNIKi",
     stages: [
-      { label: "후보물질", value: 100 },
-      { label: "타겟 발굴", value: 100 },
-      { label: "리드 탐색", value: 70 },
-      { label: "리드 최적화", value: 50 },
-      { label: "전임상", value: 30 },
-      { label: "임상신청", value: 0 },
+      { label: "candidateCompound", value: 100 },
+      { label: "targetDiscovery", value: 100 },
+      { label: "leadIdentification", value: 70 },
+      { label: "leadOptimization", value: 50 },
+      { label: "preclinical", value: 30 },
+      { label: "clinicalApplication", value: 0 },
     ],
   },
   {
@@ -35,12 +36,12 @@ const DATA: RowItem[] = [
     sub: "ADC payload",
     target: "STAT3i",
     stages: [
-      { label: "후보물질", value: 100 },
-      { label: "타겟 발굴", value: 100 },
-      { label: "리드 탐색", value: 80 },
-      { label: "리드 최적화", value: 70 },
-      { label: "전임상", value: 50 },
-      { label: "임상신청", value: 10 },
+      { label: "candidateCompound", value: 100 },
+      { label: "targetDiscovery", value: 100 },
+      { label: "leadIdentification", value: 80 },
+      { label: "leadOptimization", value: 70 },
+      { label: "preclinical", value: 50 },
+      { label: "clinicalApplication", value: 10 },
     ],
   },
   {
@@ -49,12 +50,12 @@ const DATA: RowItem[] = [
     sub: "전사인자 저해제",
     target: "FOXM1i",
     stages: [
-      { label: "후보물질", value: 100 },
-      { label: "타겟 발굴", value: 100 },
-      { label: "리드 탐색", value: 50 },
-      { label: "리드 최적화", value: 40 },
-      { label: "전임상", value: 0 },
-      { label: "임상신청", value: 0 },
+      { label: "candidateCompound", value: 100 },
+      { label: "targetDiscovery", value: 100 },
+      { label: "leadIdentification", value: 50 },
+      { label: "leadOptimization", value: 40 },
+      { label: "preclinical", value: 0 },
+      { label: "clinicalApplication", value: 0 },
     ],
   },
   {
@@ -63,12 +64,12 @@ const DATA: RowItem[] = [
     sub: "번역인자 저해제",
     target: "IRP2i",
     stages: [
-      { label: "후보물질", value: 100 },
-      { label: "타겟 발굴", value: 100 },
-      { label: "리드 탐색", value: 50 },
-      { label: "리드 최적화", value: 40 },
-      { label: "전임상", value: 0 },
-      { label: "임상신청", value: 0 },
+      { label: "candidateCompound", value: 100 },
+      { label: "targetDiscovery", value: 100 },
+      { label: "leadIdentification", value: 50 },
+      { label: "leadOptimization", value: 40 },
+      { label: "preclinical", value: 0 },
+      { label: "clinicalApplication", value: 0 },
     ],
   },
 ];
@@ -87,7 +88,8 @@ export default function PipelineChart(): JSX.Element {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setVisible(true);
-            obs.disconnect();
+          } else {
+            setVisible(false);
           }
         });
       },
@@ -98,42 +100,77 @@ export default function PipelineChart(): JSX.Element {
     return () => obs.disconnect();
   }, []);
 
+  // 진행 단계 계산 함수
+  const getProgressStage = (stages: any[]) => {
+    let currentIndex = -1;
+    for (let i = 0; i < stages.length; i++) {
+      if (stages[i].value > 0) currentIndex = i;
+    }
+    return currentIndex;
+  };
+
   return (
     <div className="pipeline-chart" ref={ref}>
-      {/* Header Row */}
-      <div className="pipeline-table">
-        <div className="pipeline-header-row">
-          <div className="header-cell header-label">{t('pipeline.tableHeaders.drugName', language)}</div>
-          <div className="header-cell">{t('pipeline.tableHeaders.targetDiscovery', language)}</div>
-          <div className="header-cell">{t('pipeline.tableHeaders.leadIdentification', language)}</div>
-          <div className="header-cell">{t('pipeline.tableHeaders.leadOptimization', language)}</div>
-          <div className="header-cell">{t('pipeline.tableHeaders.preclinical', language)}</div>
-          <div className="header-cell">{t('pipeline.tableHeaders.clinicalApplication', language)}</div>
+      {/* Table Header */}
+      <div className="pipeline-header">
+        <div className="header-progress">
+          {DATA[0]?.stages.map((stage, idx) => (
+            <span key={`header-${idx}`} className="header-stage-label">
+              {t(`pipeline.stages.${stage.label}`, language)}
+            </span>
+          ))}
         </div>
+        <div className="header-info">{t('pipeline.chartHeaders.progress', language)}</div>
+      </div>
 
-        {/* Data Rows */}
+      <div className="pipeline-table-wrapper">
         {DATA.map((drug, drugIdx) => {
-          // 각 stage의 진행도를 합산해서 전체 진행률 계산
           const totalProgress = drug.stages.reduce((sum, stage) => sum + stage.value, 0) / (drug.stages.length * 100) * 100;
+          const currentStage = getProgressStage(drug.stages);
           
           return (
-            <div key={drug.id} className="pipeline-row">
-              <div className="row-label-cell">
-                <div className="drug-name">{drug.name}</div>
-                <div className="drug-sub">{drug.sub}</div>
+            <motion.div
+              key={drug.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+              transition={{ duration: 0.5, delay: drugIdx * 0.08 }}
+              className="pipeline-row-card"
+            >
+              {/* Left Section - Drug Info */}
+              <div className="row-drug-info text-center">
+                <div className="row-header">
+                  <h4 className="row-drug-name">{drug.name}</h4>
+                </div>
+                <p className="row-drug-sub">{drug.sub}</p>
               </div>
-              <div className="row-progress-cell" style={{ gridColumn: '2 / 7' }}>
+
+              {/* Left Section - Target Info */}
+              <div className="row-drug-info text-center">
+                <div className="row-header">
+                  <h4 className="row-drug-name">{drug.target}</h4>
+                </div>
+              </div>
+
+              {/* Center Section - Progress Bar */}
+              <div className="row-progress-main">
                 <div className="progress-bar-wrapper">
-                  <div
+                  <motion.div
                     className="progress-bar"
-                    style={{
-                      width: visible ? `${totalProgress}%` : "0%",
-                      transitionDelay: `${drugIdx * 100}ms`,
-                    }}
+                    initial={{ width: 0, opacity: 0.6 }}
+                    animate={visible ? { width: `${totalProgress}%`, opacity: 1 } : { width: 0 }}
+                    transition={{ duration: 0.8, delay: drugIdx * 0.12, ease: [0.22, 1, 0.36, 1] }}
                   />
                 </div>
               </div>
-            </div>
+
+              {/* Right Section - Percentage & Stage Badge */}
+              <div className="row-right-section">
+                <div className="progress-info">
+                  <span className="progress-percent">{Math.round(totalProgress)}%</span>
+                  <span className="stage-badge">{currentStage + 1}/{drug.stages.length}</span>
+                </div>
+              </div>
+            </motion.div>
           );
         })}
       </div>
