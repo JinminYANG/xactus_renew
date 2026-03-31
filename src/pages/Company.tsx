@@ -55,11 +55,31 @@ export default function Company() {
   }, []);
 
   const cardVariants = {
-    initial: { opacity: 0, y: 20, scale: 0.95 },
-    animate: { opacity: 1, y: 0, scale: 1 },
+    initial: { opacity: 0, y: 20, scale: 0.95, borderColor: "rgba(0,180,216,0.2)" },
+    animate: { opacity: 1, y: 0, scale: 1, borderColor: "rgba(0,180,216,0.2)" },
+    hover: {
+      y: -6,
+      scale: 1.02,
+      boxShadow: "0 20px 50px rgba(0,180,216,0.2), 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.2)",
+      borderColor: "rgba(0,180,216,0.6)",
+      transition: { duration: 0.06, borderColor: { duration: 0.03 } }
+    },
+    tap: { scale: 0.98 }
   }
 
-  const cardTransition = { duration: 0.5 }
+  const cardTransition = { duration: 0.32 }
+
+  const overlayVariants = {
+    initial: { opacity: 0 },
+    hover: { opacity: 1 }
+  }
+
+  const imgVariants = {
+    initial: { scale: 1 },
+    hover: { scale: 1.05, transition: { duration: 0.06 } }
+  }
+
+  const MotionCard = (motion as any).create ? (motion as any).create(Card) : motion<any>(Card);
 
   return (
     <>
@@ -81,12 +101,21 @@ export default function Company() {
           <h2 style={{ marginBottom: "clamp(20px, 3vw, 32px)", textAlign: "center" }}>Leadership Profile</h2>
           <Row>
             <Col lg={10} md={11} sm={12} className="mx-auto">
-              <motion.div initial="initial" animate={leadershipVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.1 }}>
-                <Card>
+              <MotionCard
+                initial="initial"
+                animate={leadershipVisible ? "animate" : "initial"}
+                variants={cardVariants}
+                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+                whileHover="hover"
+                whileTap="tap"
+                layout
+                style={{ position: 'relative' }}
+              >
+                <motion.div className="card-overlay" variants={overlayVariants} style={{ position: 'absolute', inset: 0, borderRadius: 16, pointerEvents: 'none' }} />
                 <Card.Body style={{ padding: "clamp(12px, 2vw, 24px)" }}>
                   <Row className="align-items-flex-start g-2">
                     <Col sm={12} md={4} className="text-center my-auto">
-                      <img src={BossImg} alt="Shin" className="m-auto rounded" style={{ maxWidth: "clamp(10px, 60vw, 180px)", height: "auto" }} />
+                      <motion.img src={BossImg} alt="Shin" className="m-auto rounded" variants={imgVariants} style={{ maxWidth: "clamp(10px, 60vw, 180px)", height: "auto" }} />
                     </Col>
                     <Col sm={12} md={8} style={{ color: "rgba(210, 228, 248, 0.9)" }}>
                       <h4 style={{ marginBottom: "2px", fontSize: "clamp(1rem, 1.6vw, 1.3rem)", color: "rgba(210, 228, 248, 0.9)", lineHeight: "1.2" }}>
@@ -129,9 +158,8 @@ export default function Company() {
                       </Row>
                     </Col>
                   </Row>
-                </Card.Body>
-              </Card>
-              </motion.div>
+                  </Card.Body>
+              </MotionCard>
             </Col>
           </Row>
         </div>
@@ -143,9 +171,18 @@ export default function Company() {
           <h2 style={{ marginBottom: "clamp(24px, 4vw, 40px)", textAlign: "center" }}>Our Team</h2>
           <Row className="g-2" style={{ rowGap: "clamp(16px, 3vh, 24px)" }}>
             <Col lg={3} md={6} sm={12}>
-              <motion.div initial="initial" animate={teamVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.1 }}>
-                <Card style={{ height: "100%", overflow: "hidden" }}>
-                  <Card.Body style={{ padding: "clamp(12px, 1.5vw, 16px)" }}>
+              <MotionCard
+                initial="initial"
+                animate={teamVisible ? "animate" : "initial"}
+                variants={cardVariants}
+                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+                whileHover="hover"
+                whileTap="tap"
+                layout
+                style={{ height: "100%", overflow: "hidden", position: 'relative' }}
+              >
+                <motion.div className="card-overlay" variants={overlayVariants} style={{ position: 'absolute', inset: 0, borderRadius: 16, pointerEvents: 'none' }} />
+                <Card.Body style={{ padding: "clamp(12px, 1.5vw, 16px)" }}>
                     <h5 style={{ color: "var(--xactus-green)", marginBottom: "2px", fontSize: "clamp(0.9rem, 1.6vw, 1.05rem)", lineHeight: "1.2" }}>
                       {language === "ko" ? "신 상 준" : "S.J. Shin"}
                     </h5>
@@ -159,13 +196,21 @@ export default function Company() {
                       <li style={{ marginBottom: "0" }}>{t("company.shinExperience3", language)}</li>
                     </ul>
                   </Card.Body>
-                </Card>
-              </motion.div>
+              </MotionCard>
             </Col>
             <Col lg={3} md={6} sm={12}>
-              <motion.div initial="initial" animate={teamVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.2 }}>
-                <Card style={{ height: "100%", overflow: "hidden" }}>
-                  <Card.Body style={{ padding: "clamp(12px, 1.5vw, 16px)" }}>
+              <MotionCard
+                initial="initial"
+                animate={teamVisible ? "animate" : "initial"}
+                variants={cardVariants}
+                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+                whileHover="hover"
+                whileTap="tap"
+                layout
+                style={{ height: "100%", overflow: "hidden", position: 'relative' }}
+              >
+                <motion.div className="card-overlay" variants={overlayVariants} style={{ position: 'absolute', inset: 0, borderRadius: 16, pointerEvents: 'none' }} />
+                <Card.Body style={{ padding: "clamp(12px, 1.5vw, 16px)" }}>
                     <h5 style={{ color: "var(--xactus-green)", marginBottom: "2px", fontSize: "clamp(0.9rem, 1.6vw, 1.05rem)", lineHeight: "1.2" }}>
                       {language === "ko" ? "이 혁" : "Lee"}
                     </h5>
@@ -179,13 +224,21 @@ export default function Company() {
                       <li style={{ marginBottom: "0" }}>{t("company.leeMedChem", language)}</li>
                     </ul>
                   </Card.Body>
-                </Card>
-              </motion.div>
+              </MotionCard>
             </Col>
             <Col lg={3} md={6} sm={12}>
-              <motion.div initial="initial" animate={teamVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.3 }}>
-                <Card style={{ height: "100%" }}>
-                  <Card.Body style={{ padding: "clamp(12px, 1.5vw, 16px)" }}>
+              <MotionCard
+                initial="initial"
+                animate={teamVisible ? "animate" : "initial"}
+                variants={cardVariants}
+                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+                whileHover="hover"
+                whileTap="tap"
+                layout
+                style={{ height: "100%", position: 'relative' }}
+              >
+                <motion.div className="card-overlay" variants={overlayVariants} style={{ position: 'absolute', inset: 0, borderRadius: 16, pointerEvents: 'none' }} />
+                <Card.Body style={{ padding: "clamp(12px, 1.5vw, 16px)" }}>
                     <h5 style={{ color: "var(--xactus-green)", marginBottom: "2px", fontSize: "clamp(0.9rem, 1.6vw, 1.05rem)", lineHeight: "1.2" }}>
                       {language === "ko" ? "고 종 성" : "Ko"}
                     </h5>
@@ -198,13 +251,21 @@ export default function Company() {
                       <li style={{ marginBottom: "0" }}>{t("company.genoCeo", language)}</li>
                     </ul>
                   </Card.Body>
-                </Card>
-              </motion.div>
+              </MotionCard>
             </Col>
             <Col lg={3} md={6} sm={12}>
-              <motion.div initial="initial" animate={teamVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.4 }}>
-                <Card style={{ height: "100%" }}>
-                  <Card.Body style={{ padding: "clamp(12px, 1.5vw, 16px)" }}>
+              <MotionCard
+                initial="initial"
+                animate={teamVisible ? "animate" : "initial"}
+                variants={cardVariants}
+                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
+                whileHover="hover"
+                whileTap="tap"
+                layout
+                style={{ height: "100%", position: 'relative' }}
+              >
+                <motion.div className="card-overlay" variants={overlayVariants} style={{ position: 'absolute', inset: 0, borderRadius: 16, pointerEvents: 'none' }} />
+                <Card.Body style={{ padding: "clamp(12px, 1.5vw, 16px)" }}>
                     <h5 style={{ color: "var(--xactus-green)", marginBottom: "2px", fontSize: "clamp(0.9rem, 1.6vw, 1.05rem)", lineHeight: "1.2" }}>
                       {language === "ko" ? "문 영 춘" : "Moon"}
                     </h5>
@@ -217,8 +278,7 @@ export default function Company() {
                       <li style={{ marginBottom: "0" }}>{t("company.daimeBio", language)}</li>
                     </ul>
                   </Card.Body>
-                </Card>
-              </motion.div>
+              </MotionCard>
             </Col>
           </Row>
         </div>
@@ -230,10 +290,18 @@ export default function Company() {
           <h2 style={{ marginBottom: "clamp(20px, 4vw, 40px)", textAlign: "center" }}>Contact & Location</h2>
           <Row className="g-2" style={{ rowGap: "clamp(16px, 3vh, 24px)" }}>
             <Col lg={6} md={12} className="d-flex">
-              <motion.div initial="initial" animate={contactVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.1 }} style={{ width: "100%", display: "flex" }}>
-                <Card style={{ width: "100%" }}>
-                  <Card.Body style={{ padding: "clamp(12px, 2vw, 18px)" }}>
-                    <h5 style={{ marginBottom: "clamp(8px, 1.2vw, 12px)", color: "var(--xactus-green)", fontSize: "clamp(0.9rem, 1.6vw, 1.05rem)" }}>{t("company.headquarters", language)}</h5>
+              <MotionCard
+                initial="initial"
+                animate={contactVisible ? "animate" : "initial"}
+                variants={cardVariants}
+                transition={{ ...cardTransition, delay: 0.1 }}
+                whileHover={{ y: -6, scale: 1.02, boxShadow: "0 8px 28px rgba(0,180,216,0.12)" }}
+                whileTap={{ scale: 0.98 }}
+                layout
+                style={{ width: "100%", display: "flex" }}
+              >
+                <Card.Body style={{ padding: "clamp(12px, 2vw, 18px)" }}>
+                  <h5 style={{ marginBottom: "clamp(8px, 1.2vw, 12px)", color: "var(--xactus-green)", fontSize: "clamp(0.9rem, 1.6vw, 1.05rem)" }}>{t("company.headquarters", language)}</h5>
                   <p style={{ marginBottom: "clamp(10px, 1.5vw, 12px)", fontSize: "clamp(0.85rem, 1.5vw, 0.95rem)", color: "rgba(210, 228, 248, 0.9)" }}>
                     <strong>{t("company.address", language)}:</strong>
                     <br />
@@ -250,14 +318,21 @@ export default function Company() {
                     <a href="tel:+82-10-2611-2634" style={{ color: "rgba(210, 228, 248, 0.9)", wordBreak: "break-all" }}>+82-10-2611-2634</a>
                   </p>
                 </Card.Body>
-              </Card>
-              </motion.div>
+              </MotionCard>
             </Col>
             <Col lg={6} md={12} className="d-flex">
-              <motion.div initial="initial" animate={contactVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.2 }} style={{ width: "100%", display: "flex" }}>
-                <Card style={{ width: "100%" }}>
-                  <Card.Body style={{ padding: "0" }}>
-                    <iframe
+              <MotionCard
+                initial="initial"
+                animate={contactVisible ? "animate" : "initial"}
+                variants={cardVariants}
+                transition={{ ...cardTransition, delay: 0.2 }}
+                whileHover={{ y: -6, scale: 1.02, boxShadow: "0 8px 28px rgba(0,180,216,0.12)" }}
+                whileTap={{ scale: 0.98 }}
+                layout
+                style={{ width: "100%", display: "flex" }}
+              >
+                <Card.Body style={{ padding: "0" }}>
+                  <iframe
                     width="100%"
                     height="100%"
                     style={{ border: "0", minHeight: "clamp(300px, 50vh, 500px)", display: "block" }}
@@ -267,8 +342,7 @@ export default function Company() {
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3163.836123854838!2d126.9403!3d37.5551!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca3cb6b0b0001%3A0x1234567890!2sEwha%20Womans%20University!5e0!3m2!1sen!2skr!4v1626784923456"
                   ></iframe>
                 </Card.Body>
-              </Card>
-              </motion.div>
+              </MotionCard>
             </Col>
           </Row>
         </div>

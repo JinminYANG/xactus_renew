@@ -210,41 +210,6 @@ html:not(.dark) .card {
 }
 
 /* Card gradient overlay on hover */
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(0, 180, 216, 0.1) 0%, rgba(72, 222, 128, 0.05) 100%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-  border-radius: 16px;
-}
-
-.card:hover::before {
-  opacity: 1;
-}
-
-.card:hover {
-  border-color: rgba(0, 180, 216, 0.6);
-  box-shadow: 
-    0 20px 50px rgba(0, 180, 216, 0.2),
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    inset 0 1px 1px rgba(255, 255, 255, 0.2);
-  transform: translateY(-8px) scale(1.02);
-}
-
-:root.dark .card:hover,
-html.dark .card:hover {
-  border-color: rgba(74, 222, 128, 0.7);
-  box-shadow: 
-    0 20px 50px rgba(72, 222, 128, 0.15),
-    0 8px 32px rgba(0, 0, 0, 0.4),
-    inset 0 1px 1px rgba(255, 255, 255, 0.15);
-}
 
 .card-body {
   position: relative;
@@ -277,11 +242,14 @@ html:not(.dark) .card-text {
 
 .card img {
   border-radius: 8px;
-  transition: transform 0.4s ease;
 }
 
-.card:hover img {
-  transform: scale(1.05);
+/* Overlay element to replace previous ::before pseudo-element - controlled by Framer Motion variants */
+.card-overlay {
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.1) 0%, rgba(72, 222, 128, 0.05) 100%);
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* Hero and backgrounds */
@@ -603,31 +571,30 @@ html.dark .core-tech-section::before {
   border: 1px solid rgba(255,255,255,0.04);
 }
 
-/* Core Value Box - Light Mode */
+/* Core Value Box - simplified to avoid nested-card visuals */
 .core-value-box {
-  background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(248,248,252,0.85) 100%);
-  backdrop-filter: blur(10px);
-  border: 1.5px solid rgba(0, 180, 216, 0.15);
-  border-radius: 16px;
-  padding: clamp(16px, 3vw, 24px);
-  transition: all 0.3s ease;
-  color: var(--dark-charcoal);
+  background: transparent;
+  backdrop-filter: none;
+  border: none;
+  border-radius: 8px;
+  padding: 0;
+  transition: none;
+  color: inherit;
 }
 
 .core-value-box p {
-  color: var(--medium-grey) !important;
+  color: inherit !important;
 }
 
-/* Core Value Box - Dark Mode */
+/* Dark mode: keep text readable */
 :root.dark .core-value-box,
 html.dark .core-value-box {
-  background: linear-gradient(135deg, rgba(31,41,55,0.8) 0%, rgba(17,24,39,0.7) 100%);
-  border-color: rgba(0, 180, 216, 0.2);
+  background: transparent;
 }
 
 :root.dark .core-value-box p,
 html.dark .core-value-box p {
-  color: rgba(227, 232, 240, 0.85) !important;
+  color: rgba(227, 232, 240, 0.95) !important;
 }
 
 /* Section alternate backgrounds for professional separation */

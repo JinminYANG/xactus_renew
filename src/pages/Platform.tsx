@@ -51,8 +51,10 @@ export default function Platform() {
   }, []);
 
   const cardVariants = {
-    initial: { opacity: 0, y: 20, scale: 0.95 },
-    animate: { opacity: 1, y: 0, scale: 1 },
+    initial: { opacity: 0, y: 20, scale: 0.95, borderColor: "rgba(0,180,216,0.2)" },
+    animate: { opacity: 1, y: 0, scale: 1, borderColor: "rgba(0,180,216,0.2)" },
+    hover: { y: -6, scale: 1.02, boxShadow: "0 12px 36px rgba(0,180,216,0.12)", borderColor: "rgba(0,180,216,0.45)", transition: { duration: 0.06, borderColor: { duration: 0.03 } } },
+    tap: { scale: 0.98 }
   }
 
   const boxVariants = {
@@ -60,8 +62,10 @@ export default function Platform() {
     animate: { opacity: 1, y: 0 },
   }
 
-  const cardTransition = { duration: 0.5 }
-  const boxTransition = { duration: 0.6 }
+  const cardTransition = { duration: 0.32 }
+  const boxTransition = { duration: 0.36 }
+  
+  const MotionCard = (motion as any).create ? (motion as any).create(Card) : motion<any>(Card);
 
   return (
     <>
@@ -109,52 +113,44 @@ export default function Platform() {
           <h2 style={{ marginBottom: "clamp(20px, 4vw, 32px)", textAlign: "center" }}>Our Impact</h2>
           <Row className="g-2" style={{ rowGap: "clamp(16px, 3vh, 24px)" }}>
             <Col lg={6} md={6} sm={12}>
-              <motion.div initial="initial" animate={impactVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.1 }}>
-                <Card>
-                  <Card.Body>
-                    <h5 style={{ color: "var(--xactus-green)", marginBottom: "clamp(10px, 1.5vw, 12px)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)" }}>
-                      {t("platform.patientAccess", language)}
-                    </h5>
-                    <Card.Text>{t("platform.patientAccessDesc", language)}</Card.Text>
-                  </Card.Body>
-                </Card>
-              </motion.div>
+              <MotionCard initial="initial" animate={impactVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.1 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
+                <Card.Body>
+                  <h5 style={{ color: "var(--xactus-green)", marginBottom: "clamp(10px, 1.5vw, 12px)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)" }}>
+                    {t("platform.patientAccess", language)}
+                  </h5>
+                  <Card.Text>{t("platform.patientAccessDesc", language)}</Card.Text>
+                </Card.Body>
+              </MotionCard>
             </Col>
             <Col lg={6} md={6} sm={12}>
-              <motion.div initial="initial" animate={impactVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.2 }}>
-                <Card>
-                  <Card.Body>
-                    <h5 style={{ color: "var(--accent-orange)", marginBottom: "clamp(10px, 1.5vw, 12px)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)" }}>
-                      {t("platform.socialImpact", language)}
-                    </h5>
-                    <Card.Text>{t("platform.socialImpactDesc", language)}</Card.Text>
-                  </Card.Body>
-                </Card>
-              </motion.div>
+              <MotionCard initial="initial" animate={impactVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.2 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
+                <Card.Body>
+                  <h5 style={{ color: "var(--accent-orange)", marginBottom: "clamp(10px, 1.5vw, 12px)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)" }}>
+                    {t("platform.socialImpact", language)}
+                  </h5>
+                  <Card.Text>{t("platform.socialImpactDesc", language)}</Card.Text>
+                </Card.Body>
+              </MotionCard>
             </Col>
             <Col lg={6} md={6} sm={12}>
-              <motion.div initial="initial" animate={impactVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.3 }}>
-                <Card>
-                  <Card.Body>
-                    <h5 style={{ color: "var(--xactus-green)", marginBottom: "clamp(10px, 1.5vw, 12px)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)" }}>
-                      {t("platform.scientificExcellence", language)}
-                    </h5>
-                    <Card.Text>{t("platform.scientificExcellenceDesc", language)}</Card.Text>
-                  </Card.Body>
-                </Card>
-              </motion.div>
+              <MotionCard initial="initial" animate={impactVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.3 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
+                <Card.Body>
+                  <h5 style={{ color: "var(--xactus-green)", marginBottom: "clamp(10px, 1.5vw, 12px)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)" }}>
+                    {t("platform.scientificExcellence", language)}
+                  </h5>
+                  <Card.Text>{t("platform.scientificExcellenceDesc", language)}</Card.Text>
+                </Card.Body>
+              </MotionCard>
             </Col>
             <Col lg={6} md={6} sm={12}>
-              <motion.div initial="initial" animate={impactVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.4 }}>
-                <Card>
-                  <Card.Body>
-                    <h5 style={{ color: "var(--accent-orange)", marginBottom: "clamp(10px, 1.5vw, 12px)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)" }}>
-                      {t("platform.qualityOfLife", language)}
-                    </h5>
-                    <Card.Text>{t("platform.qualityOfLifeDesc", language)}</Card.Text>
-                  </Card.Body>
-                </Card>
-              </motion.div>
+              <MotionCard initial="initial" animate={impactVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.4 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
+                <Card.Body>
+                  <h5 style={{ color: "var(--accent-orange)", marginBottom: "clamp(10px, 1.5vw, 12px)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)" }}>
+                    {t("platform.qualityOfLife", language)}
+                  </h5>
+                  <Card.Text>{t("platform.qualityOfLifeDesc", language)}</Card.Text>
+                </Card.Body>
+              </MotionCard>
             </Col>
           </Row>
         </div>
@@ -167,38 +163,46 @@ export default function Platform() {
           <Row>
             <Col lg={10} md={12} className="mx-auto">
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(clamp(250px, 60vw, 280px), 1fr))", gap: "clamp(16px, 3vw, 24px)", marginTop: "clamp(20px, 3vw, 32px)" }}>
-                <motion.div initial="initial" animate={valuesVisible ? "animate" : "initial"} variants={boxVariants} transition={{ ...boxTransition, delay: 0 }}>
-                  <div className="core-value-box">
-                    <h4 style={{ color: "var(--xactus-green)", marginBottom: "clamp(8px, 1.2vw, 10px)", fontSize: "clamp(1rem, 1.8vw, 1.2rem)" }}>🔬 {t("platform.scientificRigor", language)}</h4>
-                    <p style={{ fontSize: "clamp(0.9rem, 1.6vw, 1rem)", lineHeight: "1.6", margin: 0 }}>
-                      {t("platform.scientificRigorDesc", language)}
-                    </p>
-                  </div>
-                </motion.div>
-                <motion.div initial="initial" animate={valuesVisible ? "animate" : "initial"} variants={boxVariants} transition={{ ...boxTransition, delay: 0.1 }}>
-                  <div className="core-value-box">
-                    <h4 style={{ color: "var(--accent-orange)", marginBottom: "clamp(8px, 1.2vw, 10px)", fontSize: "clamp(1rem, 1.8vw, 1.2rem)" }}>🎯 {t("platform.patientFocus", language)}</h4>
-                    <p style={{ fontSize: "clamp(0.9rem, 1.6vw, 1rem)", lineHeight: "1.6", margin: 0 }}>
-                      {t("platform.patientFocusDesc", language)}
-                    </p>
-                  </div>
-                </motion.div>
-                <motion.div initial="initial" animate={valuesVisible ? "animate" : "initial"} variants={boxVariants} transition={{ ...boxTransition, delay: 0.2 }}>
-                  <div className="core-value-box">
-                    <h4 style={{ color: "var(--xactus-green)", marginBottom: "clamp(8px, 1.2vw, 10px)", fontSize: "clamp(1rem, 1.8vw, 1.2rem)" }}>💡 {t("platform.innovationValue", language)}</h4>
-                    <p style={{ fontSize: "clamp(0.9rem, 1.6vw, 1rem)", lineHeight: "1.6", margin: 0 }}>
-                      {t("platform.innovationValueDesc", language)}
-                    </p>
-                  </div>
-                </motion.div>
-                <motion.div initial="initial" animate={valuesVisible ? "animate" : "initial"} variants={boxVariants} transition={{ ...boxTransition, delay: 0.3 }}>
-                  <div className="core-value-box">
-                    <h4 style={{ color: "var(--accent-orange)", marginBottom: "clamp(8px, 1.2vw, 10px)", fontSize: "clamp(1rem, 1.8vw, 1.2rem)" }}>🤝 {t("platform.collaboration", language)}</h4>
-                    <p style={{ fontSize: "clamp(0.9rem, 1.6vw, 1rem)", lineHeight: "1.6", margin: 0 }}>
-                      {t("platform.collaborationDesc", language)}
-                    </p>
-                  </div>
-                </motion.div>
+                <MotionCard initial="initial" animate={valuesVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
+                  <Card.Body>
+                    <div className="core-value-box">
+                      <h4 style={{ color: "var(--xactus-green)", marginBottom: "clamp(8px, 1.2vw, 10px)", fontSize: "clamp(1rem, 1.8vw, 1.2rem)" }}>🔬 {t("platform.scientificRigor", language)}</h4>
+                      <p style={{ fontSize: "clamp(0.9rem, 1.6vw, 1rem)", lineHeight: "1.6", margin: 0 }}>
+                        {t("platform.scientificRigorDesc", language)}
+                      </p>
+                    </div>
+                  </Card.Body>
+                </MotionCard>
+                <MotionCard initial="initial" animate={valuesVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.1 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
+                  <Card.Body>
+                    <div className="core-value-box">
+                      <h4 style={{ color: "var(--accent-orange)", marginBottom: "clamp(8px, 1.2vw, 10px)", fontSize: "clamp(1rem, 1.8vw, 1.2rem)" }}>🎯 {t("platform.patientFocus", language)}</h4>
+                      <p style={{ fontSize: "clamp(0.9rem, 1.6vw, 1rem)", lineHeight: "1.6", margin: 0 }}>
+                        {t("platform.patientFocusDesc", language)}
+                      </p>
+                    </div>
+                  </Card.Body>
+                </MotionCard>
+                <MotionCard initial="initial" animate={valuesVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.2 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
+                  <Card.Body>
+                    <div className="core-value-box">
+                      <h4 style={{ color: "var(--xactus-green)", marginBottom: "clamp(8px, 1.2vw, 10px)", fontSize: "clamp(1rem, 1.8vw, 1.2rem)" }}>💡 {t("platform.innovationValue", language)}</h4>
+                      <p style={{ fontSize: "clamp(0.9rem, 1.6vw, 1rem)", lineHeight: "1.6", margin: 0 }}>
+                        {t("platform.innovationValueDesc", language)}
+                      </p>
+                    </div>
+                  </Card.Body>
+                </MotionCard>
+                <MotionCard initial="initial" animate={valuesVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.3 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
+                  <Card.Body>
+                    <div className="core-value-box">
+                      <h4 style={{ color: "var(--accent-orange)", marginBottom: "clamp(8px, 1.2vw, 10px)", fontSize: "clamp(1rem, 1.8vw, 1.2rem)" }}>🤝 {t("platform.collaboration", language)}</h4>
+                      <p style={{ fontSize: "clamp(0.9rem, 1.6vw, 1rem)", lineHeight: "1.6", margin: 0 }}>
+                        {t("platform.collaborationDesc", language)}
+                      </p>
+                    </div>
+                  </Card.Body>
+                </MotionCard>
               </div>
             </Col>
           </Row>

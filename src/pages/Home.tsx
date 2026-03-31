@@ -36,11 +36,20 @@ export default function Home() {
   }, []);
 
   const cardVariants = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
+    initial: { opacity: 0, y: 20, scale: 0.98, borderColor: "rgba(0,180,216,0.2)" },
+    animate: { opacity: 1, y: 0, scale: 1, borderColor: "rgba(0,180,216,0.2)" },
+    hover: { y: -6, scale: 1.02, boxShadow: "0 12px 36px rgba(0,180,216,0.12)", borderColor: "rgba(0,180,216,0.45)", transition: { duration: 0.06, borderColor: { duration: 0.03 } } },
+    tap: { scale: 0.98 }
   };
 
-  const cardTransition = { duration: 0.6 };
+  const cardTransition = { duration: 0.32 };
+
+  const overlayVariants = {
+    initial: { opacity: 0 },
+    hover: { opacity: 1 }
+  }
+
+  const MotionCard = (motion as any).create ? (motion as any).create(Card) : motion<any>(Card);
 
   return (
     <>
@@ -71,40 +80,37 @@ export default function Home() {
           </div>
           <Row className="g-2" style={{ rowGap: "clamp(12px, 2vh, 20px)" }}>
             <Col lg={4} md={6} sm={12}>
-              <motion.div initial="initial" animate={missionVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0 }}>
-                <Card className="h-100">
-                  <Card.Body style={{ padding: "clamp(12px, 1.5vw, 16px)" }}>
-                    <h5 style={{ marginBottom: "clamp(10px, 1.5vw, 12px)", color: "var(--xactus-green)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)" }}>
-                      {t("home.drugDevelopment", language)}
-                    </h5>
-                    <Card.Text>{t("home.drugDevelopmentDesc", language)}</Card.Text>
-                  </Card.Body>
-                </Card>
-              </motion.div>
+              <MotionCard initial="initial" animate={missionVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
+                <motion.div className="card-overlay" variants={overlayVariants} style={{ position: 'absolute', inset: 0, borderRadius: 16, pointerEvents: 'none' }} />
+                <Card.Body style={{ padding: "clamp(12px, 1.5vw, 16px)" }}>
+                  <h5 style={{ marginBottom: "clamp(10px, 1.5vw, 12px)", color: "var(--xactus-green)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)" }}>
+                    {t("home.drugDevelopment", language)}
+                  </h5>
+                  <Card.Text>{t("home.drugDevelopmentDesc", language)}</Card.Text>
+                </Card.Body>
+              </MotionCard>
             </Col>
             <Col lg={4} md={6} sm={12}>
-              <motion.div initial="initial" animate={missionVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.1 }}>
-                <Card className="h-100">
-                  <Card.Body style={{ padding: "clamp(12px, 1.5vw, 16px)" }}>
-                    <h5 style={{ marginBottom: "clamp(10px, 1.5vw, 12px)", color: "var(--accent-orange)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)" }}>
-                      {t("home.innovation", language)}
-                    </h5>
-                    <Card.Text>{t("home.innovationDesc", language)}</Card.Text>
-                  </Card.Body>
-                </Card>
-              </motion.div>
+              <MotionCard initial="initial" animate={missionVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.1 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
+                <motion.div className="card-overlay" variants={overlayVariants} style={{ position: 'absolute', inset: 0, borderRadius: 16, pointerEvents: 'none' }} />
+                <Card.Body style={{ padding: "clamp(12px, 1.5vw, 16px)" }}>
+                  <h5 style={{ marginBottom: "clamp(10px, 1.5vw, 12px)", color: "var(--accent-orange)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)" }}>
+                    {t("home.innovation", language)}
+                  </h5>
+                  <Card.Text>{t("home.innovationDesc", language)}</Card.Text>
+                </Card.Body>
+              </MotionCard>
             </Col>
             <Col lg={4} md={6} sm={12}>
-              <motion.div initial="initial" animate={missionVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.2 }}>
-                <Card className="h-100">
-                  <Card.Body style={{ padding: "clamp(12px, 1.5vw, 16px)" }}>
-                    <h5 style={{ marginBottom: "clamp(10px, 1.5vw, 12px)", color: "var(--xactus-green)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)" }}>
-                      {t("home.patientImpact", language)}
-                    </h5>
-                    <Card.Text>{t("home.patientImpactDesc", language)}</Card.Text>
-                  </Card.Body>
-                </Card>
-              </motion.div>
+              <MotionCard initial="initial" animate={missionVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.2 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
+                <motion.div className="card-overlay" variants={overlayVariants} style={{ position: 'absolute', inset: 0, borderRadius: 16, pointerEvents: 'none' }} />
+                <Card.Body style={{ padding: "clamp(12px, 1.5vw, 16px)" }}>
+                  <h5 style={{ marginBottom: "clamp(10px, 1.5vw, 12px)", color: "var(--xactus-green)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)" }}>
+                    {t("home.patientImpact", language)}
+                  </h5>
+                  <Card.Text>{t("home.patientImpactDesc", language)}</Card.Text>
+                </Card.Body>
+              </MotionCard>
             </Col>
           </Row>
         </div>

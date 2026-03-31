@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { motion } from 'framer-motion'
 import { useAppStore } from '../../store/useAppStore'
 import { t } from '../../lib/i18n'
 import './Footer.css'
@@ -7,6 +8,27 @@ export default function Footer() {
   const language = useAppStore((s) => s.language)
   const [isVisible, setIsVisible] = useState(false)
   const footerRef = useRef(null)
+
+  const footerVariants = {
+    initial: { opacity: 0, y: 40 },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        opacity: { duration: 0.24 },
+        y: { duration: 0.4 }
+      }
+    }
+    ,
+    exit: {
+      opacity: 0,
+      y: 18,
+      transition: {
+        opacity: { duration: 0.18 },
+        y: { duration: 0.22 }
+      }
+    }
+  }
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -25,10 +47,13 @@ export default function Footer() {
   }, [])
 
   return (
-    <footer
+    <motion.footer
       id="footer-section"
       ref={footerRef}
-      className={`site-footer ${isVisible ? 'fade-in' : ''}`}
+      className={`site-footer`}
+      initial="initial"
+      animate={isVisible ? 'animate' : 'exit'}
+      variants={footerVariants}
     >
       <div className="footer-container">
         {/* Tagline */}
@@ -87,6 +112,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-    </footer>
+    </motion.footer>
   )
 }

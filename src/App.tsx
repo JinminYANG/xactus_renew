@@ -47,12 +47,59 @@ function AnimatedRoutes(){
 
   return (
     <AnimatePresence mode="wait">
-      <ScrollToTop />
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<motion.div initial="initial" animate="animate" exit="exit" variants={pageVariants} transition={pageTransition}><Home /></motion.div>} />
-        <Route path="/pipeline" element={<motion.div initial="initial" animate="animate" exit="exit" variants={pageVariants} transition={pageTransition}><Pipeline /></motion.div>} />
-        <Route path="/platform" element={<motion.div initial="initial" animate="animate" exit="exit" variants={pageVariants} transition={pageTransition}><Platform /></motion.div>} />
-        <Route path="/company" element={<motion.div initial="initial" animate="animate" exit="exit" variants={pageVariants} transition={pageTransition}><Company /></motion.div>} />
+        <Route path="/" element={
+          <motion.div
+            key={location.pathname}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={pageVariants}
+            transition={pageTransition}
+          >
+            <ScrollToTop />
+            <Home />
+          </motion.div>
+        } />
+        <Route path="/pipeline" element={
+          <motion.div
+            key={location.pathname}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={pageVariants}
+            transition={pageTransition}
+          >
+            <ScrollToTop />
+            <Pipeline />
+          </motion.div>
+        } />
+        <Route path="/platform" element={
+          <motion.div
+            key={location.pathname}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={pageVariants}
+            transition={pageTransition}
+          >
+            <ScrollToTop />
+            <Platform />
+          </motion.div>
+        } />
+        <Route path="/company" element={
+          <motion.div
+            key={location.pathname}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            variants={pageVariants}
+            transition={pageTransition}
+          >
+            <ScrollToTop />
+            <Company />
+          </motion.div>
+        } />
       </Routes>
     </AnimatePresence>
   )

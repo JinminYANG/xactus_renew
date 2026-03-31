@@ -38,11 +38,15 @@ export default function Pipeline() {
   ]
 
   const cardVariants = {
-    initial: { opacity: 0, y: 20, scale: 0.95 },
-    animate: { opacity: 1, y: 0, scale: 1 },
+    initial: { opacity: 0, y: 20, scale: 0.95, borderColor: "rgba(0,180,216,0.2)" },
+    animate: { opacity: 1, y: 0, scale: 1, borderColor: "rgba(0,180,216,0.2)" },
+    hover: { y: -6, scale: 1.02, boxShadow: "0 12px 36px rgba(0,180,216,0.12)", borderColor: "rgba(0,180,216,0.45)", transition: { duration: 0.06, borderColor: { duration: 0.03 } } },
+    tap: { scale: 0.98 }
   }
 
-  const cardTransition = { duration: 0.5 }
+  const cardTransition = { duration: 0.32 }
+
+  const MotionCard = (motion as any).create ? (motion as any).create(Card) : motion<any>(Card);
 
   return (
     <>
@@ -64,72 +68,64 @@ export default function Pipeline() {
           <h2 style={{ marginBottom: "clamp(20px, 4vw, 32px)", textAlign: "center" }}>Development Programs</h2>
           <Row className="g-2" style={{ rowGap: "clamp(10px, 1vh, 24px)" }} ref={programsRef}>
             <Col lg={6} md={6} sm={12}>
-              <motion.div initial="initial" animate={programsVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.1 }}>
-                <Card style={{ height: "100%" }}>
-                  <Card.Body style={{ display: "flex", flexDirection: "column" }}>
-                    <h5 style={{ marginBottom: "clamp(8px, 1.2vw, 10px)", color: "var(--xactus-green)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)", lineHeight: "1.4" }}>{t("pipeline.tnikTitle", language)}</h5>
-                    <Row>
-                      <Col md={12} xs={6} className="">
-                        <img src={TnikImg} alt="TNIK inhibitor" className="img-fluid mb-2 mx-auto" style={{ maxHeight: "clamp(80px, 20vw, 300px)", objectFit: "contain" }} />
-                      </Col>
-                      <Col md={12} xs={6} className="">
-                        <Card.Text style={{ marginTop: "auto", fontSize: "clamp(0.8rem, 1.2vw, 1rem)" }}>{t("pipeline.tnikDesc", language)}</Card.Text>
-                      </Col>
-                    </Row>
-                  </Card.Body>
-                </Card>
-              </motion.div>
+              <MotionCard initial="initial" animate={programsVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.1 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
+                <Card.Body style={{ display: "flex", flexDirection: "column" }}>
+                  <h5 style={{ marginBottom: "clamp(8px, 1.2vw, 10px)", color: "var(--xactus-green)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)", lineHeight: "1.4" }}>{t("pipeline.tnikTitle", language)}</h5>
+                  <Row>
+                    <Col md={12} xs={6} className="">
+                      <img src={TnikImg} alt="TNIK inhibitor" className="img-fluid mb-2 mx-auto" style={{ maxHeight: "clamp(80px, 20vw, 300px)", objectFit: "contain" }} />
+                    </Col>
+                    <Col md={12} xs={6} className="">
+                      <Card.Text style={{ marginTop: "auto", fontSize: "clamp(0.8rem, 1.2vw, 1rem)" }}>{t("pipeline.tnikDesc", language)}</Card.Text>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </MotionCard>
             </Col>
             <Col lg={6} md={6} sm={12}>
-              <motion.div initial="initial" animate={programsVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.2 }}>
-                <Card style={{ height: "100%" }}>
-                  <Card.Body style={{ display: "flex", flexDirection: "column" }}>
-                    <h5 style={{ marginBottom: "clamp(8px, 1.2vw, 10px)", color: "var(--accent-orange)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)", lineHeight: "1.4" }}>{t("pipeline.adcTitle", language)}</h5>
-                    <Row>
-                      <Col md={12} xs={6} className="">
-                        <img src={AdcImg} alt="ADC (STAT3 inhibitor)" className="img-fluid mb-2 mx-auto" style={{ maxHeight: "clamp(80px, 20vw, 300px)", objectFit: "contain" }} />
-                      </Col>
-                      <Col md={12} xs={6} className="">
-                        <Card.Text style={{ marginTop: "auto", fontSize: "clamp(0.8rem, 1.2vw, 1rem)" }}>{t("pipeline.adcDesc", language)}</Card.Text>
-                      </Col>
-                    </Row>
-                  </Card.Body>
-                </Card>
-              </motion.div>
+              <MotionCard initial="initial" animate={programsVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.2 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
+                <Card.Body style={{ display: "flex", flexDirection: "column" }}>
+                  <h5 style={{ marginBottom: "clamp(8px, 1.2vw, 10px)", color: "var(--accent-orange)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)", lineHeight: "1.4" }}>{t("pipeline.adcTitle", language)}</h5>
+                  <Row>
+                    <Col md={12} xs={6} className="">
+                      <img src={AdcImg} alt="ADC (STAT3 inhibitor)" className="img-fluid mb-2 mx-auto" style={{ maxHeight: "clamp(80px, 20vw, 300px)", objectFit: "contain" }} />
+                    </Col>
+                    <Col md={12} xs={6} className="">
+                      <Card.Text style={{ marginTop: "auto", fontSize: "clamp(0.8rem, 1.2vw, 1rem)" }}>{t("pipeline.adcDesc", language)}</Card.Text>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </MotionCard>
             </Col>
             <Col lg={6} md={6} sm={12}>
-              <motion.div initial="initial" animate={programsVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.3 }}>
-                <Card style={{ height: "100%" }}>
-                  <Card.Body style={{ display: "flex", flexDirection: "column" }}>
-                    <h5 style={{ marginBottom: "clamp(8px, 1.2vw, 10px)", color: "var(--xactus-green)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)", lineHeight: "1.4" }}>{t("pipeline.foxm1Title", language)}</h5>
-                    <Row>
-                      <Col md={12} xs={6} className="">
-                        <img src={Foxm1Img} alt="FOXM1 inhibitor" className="img-fluid mb-2 mx-auto" style={{ maxHeight: "clamp(80px, 20vw, 300px)", objectFit: "contain" }} />
-                      </Col>
-                      <Col md={12} xs={6} className=""> 
-                        <Card.Text style={{ marginTop: "auto", fontSize: "clamp(0.8rem, 1.2vw, 1rem)" }}>{t("pipeline.foxm1Desc", language)}</Card.Text>
-                      </Col>
-                    </Row>
-                  </Card.Body>
-                </Card>
-              </motion.div>
+              <MotionCard initial="initial" animate={programsVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.3 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
+                <Card.Body style={{ display: "flex", flexDirection: "column" }}>
+                  <h5 style={{ marginBottom: "clamp(8px, 1.2vw, 10px)", color: "var(--xactus-green)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)", lineHeight: "1.4" }}>{t("pipeline.foxm1Title", language)}</h5>
+                  <Row>
+                    <Col md={12} xs={6} className="">
+                      <img src={Foxm1Img} alt="FOXM1 inhibitor" className="img-fluid mb-2 mx-auto" style={{ maxHeight: "clamp(80px, 20vw, 300px)", objectFit: "contain" }} />
+                    </Col>
+                    <Col md={12} xs={6} className=""> 
+                      <Card.Text style={{ marginTop: "auto", fontSize: "clamp(0.8rem, 1.2vw, 1rem)" }}>{t("pipeline.foxm1Desc", language)}</Card.Text>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </MotionCard>
             </Col>
             <Col lg={6} md={6} sm={12}>
-              <motion.div initial="initial" animate={programsVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.4 }}>
-                <Card style={{ height: "100%" }}>
-                  <Card.Body style={{ display: "flex", flexDirection: "column" }}>
-                    <h5 style={{ marginBottom: "clamp(8px, 1.2vw, 10px)", color: "var(--accent-orange)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)", lineHeight: "1.4" }}>{t("pipeline.irp2Title", language)}</h5>
-                    <Row>
-                      <Col md={12} xs={6} className="">
-                        <img src={Irp2Img} alt="IRP2 inhibitor" className="img-fluid mb-2 mx-auto" style={{ maxHeight: "clamp(80px, 20vw, 300px)", objectFit: "contain" }} />
-                      </Col>
-                      <Col md={12} xs={6} className="">
-                        <Card.Text style={{ marginTop: "auto", fontSize: "clamp(0.8rem, 1.2vw, 1rem)" }}>{t("pipeline.irp2Desc", language)}</Card.Text>
-                      </Col>
-                    </Row>
-                  </Card.Body>
-                </Card>
-              </motion.div>
+              <MotionCard initial="initial" animate={programsVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.4 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
+                <Card.Body style={{ display: "flex", flexDirection: "column" }}>
+                  <h5 style={{ marginBottom: "clamp(8px, 1.2vw, 10px)", color: "var(--accent-orange)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)", lineHeight: "1.4" }}>{t("pipeline.irp2Title", language)}</h5>
+                  <Row>
+                    <Col md={12} xs={6} className="">
+                      <img src={Irp2Img} alt="IRP2 inhibitor" className="img-fluid mb-2 mx-auto" style={{ maxHeight: "clamp(80px, 20vw, 300px)", objectFit: "contain" }} />
+                    </Col>
+                    <Col md={12} xs={6} className="">
+                      <Card.Text style={{ marginTop: "auto", fontSize: "clamp(0.8rem, 1.2vw, 1rem)" }}>{t("pipeline.irp2Desc", language)}</Card.Text>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </MotionCard>
             </Col>
           </Row>
         </div>

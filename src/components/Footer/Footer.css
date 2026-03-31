@@ -12,17 +12,13 @@
   justify-content: space-between;
   position: relative;
   scroll-margin-top: 0;
-  opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 0.7s ease-in-out, transform 0.7s ease-in-out;
+  /* animation handled by Framer Motion; remove CSS transitions to avoid conflicts */
+  will-change: transform, opacity;
   scroll-snap-align: start;
   scroll-snap-stop: none;
 }
 
-.site-footer.fade-in {
-  opacity: 1;
-  transform: translateY(0);
-}
+/* .site-footer.fade-in is no longer used — animation controlled by Framer Motion */
 
 #footer-section {
   /* Scroll snap removed for continuous scrolling */
