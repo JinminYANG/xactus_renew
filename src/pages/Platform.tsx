@@ -3,7 +3,7 @@ import { Card, Col, Row } from "react-bootstrap";
 import { useAppStore } from "../store/useAppStore";
 import DotNavigation from "../components/DotNavigation";
 import { getSiteContent } from "../lib/i18n.original-en-clean";
-import TechnologyHero from "../../docs/site_image_0616/usable_assets/hero_backgrounds/technology_hero_pipette.png";
+import TechnologyHero from "../../docs/site_image_0616/usable_assets/hero_backgrounds/technology_hero_lab.png";
 import DiagramXO001 from "../../docs/site_image_0616/usable_assets/diagrams/technology_xo001_tnik_inhibitor.png";
 import DiagramXO003 from "../../docs/site_image_0616/usable_assets/diagrams/technology_xo003_foxm1_inhibitor.png";
 import DiagramXO004 from "../../docs/site_image_0616/usable_assets/diagrams/technology_xo004_irp2_inhibitor.png";
@@ -237,7 +237,7 @@ export default function Platform() {
           <section
             key={program.id}
             id={`${program.id}-section`}
-            className={`section-wrapper ${index % 2 === 0 ? "with-bg" : ""}`}
+            className={`section-wrapper with-bg `}
             style={programSectionStyle}
           >
             <div className="container">

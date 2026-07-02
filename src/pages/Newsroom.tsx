@@ -3,7 +3,7 @@ import { Card, Col, Row } from "react-bootstrap";
 import { useAppStore } from "../store/useAppStore";
 import DotNavigation from "../components/DotNavigation";
 import { getSiteContent } from "../lib/i18n.original-en-clean";
-import NewsroomHero from "../../docs/site_image_0616/usable_assets/hero_backgrounds/newsroom_hero_desk.png";
+import NewsroomHero from "../../docs/site_image_0616/usable_assets/hero_backgrounds/newsroom_hero_generated_v3_balanced.png";
 import NewsCard01 from "../../docs/site_image_0616/extracted_backgrounds/news_bg_01_venture_business_certification.png";
 import NewsCard02 from "../../docs/site_image_0616/extracted_backgrounds/news_bg_02_platform_update.png";
 import NewsCard03 from "../../docs/site_image_0616/extracted_backgrounds/news_bg_03_aacr_2026.png";

@@ -1,7 +1,7 @@
 #root {
   background: var(--bg);
   /* background-image: url('./assets/images/bg.png'); */
-  background-image: url('./assets/images/bg_clear_sky.png');
+  background-image: url('./assets/images/bg_bright_v4.png');
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
@@ -18,7 +18,7 @@ body {
   margin: 0;
   padding: 0;
   background: var(--bg);
-  background-image: url('./assets/images/bg_clear_sky.png');
+  background-image: url('./assets/images/bg_bright_v4.png');
   background-size: cover;
   background-attachment: fixed;
   width: 100%;

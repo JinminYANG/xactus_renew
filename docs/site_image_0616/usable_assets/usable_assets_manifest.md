@@ -37,11 +37,11 @@
 ## hero_backgrounds
 
 - `about_hero_sunset.png`: About page hero background
-- `contact_hero_handshake.png`: Contact page hero background
+- `contact_hero_generated_v3_sage.png`: Contact page hero background
 - `home_hero_molecules.png`: Home hero background
-- `newsroom_hero_desk.png`: Newsroom page hero background
+- `newsroom_hero_generated_v3_balanced.png`: Newsroom page hero background
 - `pipeline_hero_microscope.png`: Pipeline page hero background
-- `technology_hero_pipette.png`: Technology page hero background
+- `technology_hero_lab.png`: Technology page hero background
 ## partner_assets
 
 - `partners_collaborators_strip.png`: Partners and collaborators logo strip

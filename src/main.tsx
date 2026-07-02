@@ -7,10 +7,10 @@ import { useAppStore } from './store/useAppStore'
 import AppBackground from './assets/images/bg_clear_sky.png'
 import HomeHero from '../docs/site_image_0616/usable_assets/hero_backgrounds/home_hero_molecules.png'
 import AboutHero from '../docs/site_image_0616/usable_assets/hero_backgrounds/about_hero_sunset.png'
-import TechnologyHero from '../docs/site_image_0616/usable_assets/hero_backgrounds/technology_hero_pipette.png'
+import TechnologyHero from '../docs/site_image_0616/usable_assets/hero_backgrounds/technology_hero_lab.png'
 import PipelineHero from '../docs/site_image_0616/usable_assets/hero_backgrounds/pipeline_hero_microscope.png'
-import NewsroomHero from '../docs/site_image_0616/usable_assets/hero_backgrounds/newsroom_hero_desk.png'
-import ContactHero from '../docs/site_image_0616/usable_assets/hero_backgrounds/contact_hero_handshake.png'
+import NewsroomHero from '../docs/site_image_0616/usable_assets/hero_backgrounds/newsroom_hero_generated_v3_balanced.png'
+import ContactHero from '../docs/site_image_0616/usable_assets/hero_backgrounds/contact_hero_generated_v3_sage.png'
 
 function preloadImage(href: string) {
   const existing = document.head.querySelector(`link[rel="preload"][href="${href}"]`)

@@ -437,7 +437,7 @@ export default function Home() {
               background: "linear-gradient(180deg, rgba(226, 242, 255, 0.14), rgba(201, 229, 250, 0.1))",
               border: "1px solid rgba(214, 240, 255, 0.2)",
               backdropFilter: "blur(8px)",
-              padding: "34px 18px 26px",
+              padding: "34px 0 26px",
               boxShadow: "0 14px 32px rgba(26, 62, 105, 0.12)",
             }}
             initial={{ opacity: 0, y: 24, scale: 0.99 }}

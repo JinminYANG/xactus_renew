@@ -850,8 +850,8 @@ html.dark .section-wrapper.with-bg {
 html.dark .section-wrapper.with-bg::after {
   background:
     radial-gradient(circle at 50% 46%, rgba(8, 24, 46, 0.36) 0%, rgba(8, 24, 46, 0.26) 22%, rgba(8, 24, 46, 0.14) 46%, rgba(8, 24, 46, 0.04) 72%, rgba(8, 24, 46, 0) 100%);
-  backdrop-filter: blur(2px) saturate(0.96);
-  -webkit-backdrop-filter: blur(2px) saturate(0.96);
+  backdrop-filter: blur(1px) ;
+  -webkit-backdrop-filter: blur(1px);
 }
 
 .content-spotlight {
@@ -872,37 +872,17 @@ html.dark .section-wrapper.with-bg::after {
 }
 
 .partner-marquee {
+  --partner-gap: 12px;
   position: relative;
   overflow: hidden;
   width: 100%;
 }
 
-.partner-marquee::before,
-.partner-marquee::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 28px;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.partner-marquee::before {
-  left: 0;
-  background: linear-gradient(90deg, rgba(198, 227, 248, 0.85) 0%, rgba(198, 227, 248, 0) 100%);
-}
-
-.partner-marquee::after {
-  right: 0;
-  background: linear-gradient(270deg, rgba(198, 227, 248, 0.85) 0%, rgba(198, 227, 248, 0) 100%);
-}
-
 .partner-track {
   display: flex;
-  gap: 12px;
+  gap: var(--partner-gap);
   width: max-content;
-  padding: 0 18px;
+  padding: 0;
   animation: partner-marquee-left 34s linear infinite;
   will-change: transform;
 }
@@ -953,11 +933,11 @@ html.dark .section-wrapper.with-bg::after {
 
 @keyframes partner-marquee-left {
   from { transform: translateX(0); }
-  to { transform: translateX(calc(-50% - 9px)); }
+  to { transform: translateX(calc(-50% - (var(--partner-gap) / 2))); }
 }
 
 @keyframes partner-marquee-right {
-  from { transform: translateX(calc(-50% - 9px)); }
+  from { transform: translateX(calc(-50% - (var(--partner-gap) / 2))); }
   to { transform: translateX(0); }
 }
 
@@ -2065,7 +2045,6 @@ img {
 
   #collaborators-section .partner-track {
     gap: 8px;
-    padding: 0 8px;
   }
 
   #collaborators-section .partner-card-slice {
@@ -2076,9 +2055,8 @@ img {
     padding: 5px;
   }
 
-  #collaborators-section .partner-marquee::before,
-  #collaborators-section .partner-marquee::after {
-    width: 16px;
+  #collaborators-section .partner-marquee {
+    --partner-gap: 8px;
   }
 
   #contact-summary-section .row {

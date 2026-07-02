@@ -5,7 +5,8 @@ import { useAppStore } from "../store/useAppStore";
 import DotNavigation from "../components/DotNavigation";
 import GoogleLocationMap from "../components/GoogleLocationMap";
 import { getSiteContent } from "../lib/i18n.original-en-clean";
-import ContactHero from "../../docs/site_image_0616/usable_assets/hero_backgrounds/contact_hero_handshake.png";
+import ContactHero from "../../docs/site_image_0616/usable_assets/hero_backgrounds/contact_hero_generated_v3_sage.png";
+import "./Contact.css";
 
 const heroStyle = {
   backgroundImage: `linear-gradient(rgba(32, 109, 184, 0.08), rgba(12, 40, 72, 0.1)), url(${ContactHero})`,
@@ -232,8 +233,8 @@ export default function Contact() {
                 viewport={{ once: true, amount: 0.34 }}
                 transition={{ duration: 0.56, ease: [0.22, 1, 0.36, 1] }}
               >
-              <Card className="card-hover-contact" style={{ height: "100%" }}>
-                <Card.Body style={{ padding: "30px 28px", height: "100%", display: "flex", flexDirection: "column" }}>
+              <Card className="card-hover-contact contact-info-card" style={{ height: "100%" }}>
+                <Card.Body className="p-4" style={{ height: "100%", display: "flex", flexDirection: "column" }}>
                   {/* <div
                     style={{
                       display: "inline-flex",
@@ -290,7 +291,7 @@ export default function Contact() {
                     ))}
                   </div>
 
-                  <div style={{ display: "grid", gap: "8px", color: "rgba(210,228,248,0.82)", lineHeight: 1.7, marginTop: "auto" }}>
+                  <div style={{ display: "grid", gap: "8px", color: "rgba(210,228,248,0.82)", lineHeight: 1.7 }}>
                     {content.contacts.transportLines.map((line) => (
                       <div key={line}>{line}</div>
                     ))}
@@ -307,16 +308,16 @@ export default function Contact() {
                 viewport={{ once: true, amount: 0.24 }}
                 transition={{ duration: 0.62, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
               >
-              <Card className="card-hover-map" style={{ height: "100%" }}>
-                <Card.Body style={{ padding: "18px", height: "100%", minHeight: "556px" }}>
+              <Card className="card-hover-map contact-map-card" style={{ height: "100%" }}>
+                <Card.Body style={{ padding: "18px", height: "100%" }}>
                   <div
+                    className="contact-map-frame"
                     style={{
                       borderRadius: "24px",
                       overflow: "hidden",
                       border: "1px solid rgba(255,255,255,0.08)",
                       background: "rgba(255,255,255,0.03)",
                       height: "100%",
-                      minHeight: "520px",
                     }}
                   >
                     <GoogleLocationMap language={language} title={mapTitle} addressLines={content.contacts.addressLines} />

@@ -1,0 +1,11 @@
+@media (min-width: 992px) {
+  #contacts-section .contact-info-card,
+  #contacts-section .contact-map-card {
+    min-height: 520px;
+  }
+
+  #contacts-section .contact-map-card .card-body,
+  #contacts-section .contact-map-frame {
+    height: 100%;
+  }
+}
