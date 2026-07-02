@@ -1,0 +1,20 @@
+{
+  "pages": 7,
+  "embedded_images_total": 124,
+  "embedded_images_unique": 48,
+  "unique_images_dir": "D:\\git\\outputs\\pdf\\site_image_0616\\unique_images",
+  "raw_text_path": "D:\\git\\outputs\\pdf\\site_image_0616\\text\\original_en_raw.txt",
+  "pages_json_path": "D:\\git\\outputs\\pdf\\site_image_0616\\meta\\pages.json",
+  "images_manifest_path": "D:\\git\\outputs\\pdf\\site_image_0616\\meta\\embedded_images_manifest.csv",
+  "pdf_path": "C:\\Users\\jmyang95\\Downloads\\사이트_이미지안_0616.pdf",
+  "rendered_pages": [
+    "D:\\git\\outputs\\pdf\\site_image_0616\\pages\\page-01.png",
+    "D:\\git\\outputs\\pdf\\site_image_0616\\pages\\page-02.png",
+    "D:\\git\\outputs\\pdf\\site_image_0616\\pages\\page-03.png",
+    "D:\\git\\outputs\\pdf\\site_image_0616\\pages\\page-04.png",
+    "D:\\git\\outputs\\pdf\\site_image_0616\\pages\\page-05.png",
+    "D:\\git\\outputs\\pdf\\site_image_0616\\pages\\page-06.png",
+    "D:\\git\\outputs\\pdf\\site_image_0616\\pages\\page-07.png"
+  ],
+  "output_root": "D:\\git\\outputs\\pdf\\site_image_0616"
+}

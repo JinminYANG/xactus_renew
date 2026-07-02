@@ -1,19 +1,44 @@
-import { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useEffect, useState } from "react";
+import "./ScrollToTop.css";
 
-export default function ScrollToTop(){
-  const { pathname } = useLocation()
+export default function ScrollToTop() {
+  const [visible, setVisible] = useState(false);
+
   useEffect(() => {
-    // Scroll to top on route change
-    if (typeof window !== 'undefined') {
-      const scrollContainer = document.querySelector('.app-scroll-container')
-      if (scrollContainer) {
-        scrollContainer.scrollTop = 0
-      } else {
-        window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
-      }
-    }
-  }, [pathname])
+    const scrollContainer = document.getElementById("app-scroll-container") as HTMLElement | null;
+    const readScrollTop = () => (scrollContainer ? scrollContainer.scrollTop : window.scrollY);
+    const onScroll = () => setVisible(readScrollTop() > 320);
 
-  return null
+    onScroll();
+
+    if (scrollContainer) {
+      scrollContainer.addEventListener("scroll", onScroll, { passive: true });
+      return () => scrollContainer.removeEventListener("scroll", onScroll);
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const handleClick = () => {
+    const scrollContainer = document.getElementById("app-scroll-container") as HTMLElement | null;
+
+    if (scrollContainer) {
+      scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  };
+
+  return (
+    <button
+      type="button"
+      className={`scroll-to-top-button${visible ? " visible" : ""}`}
+      onClick={handleClick}
+      aria-label="Scroll to top"
+    >
+      {"\u2191"}
+    </button>
+  );
 }

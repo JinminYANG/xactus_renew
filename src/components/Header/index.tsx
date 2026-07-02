@@ -1,95 +1,185 @@
-import React, { useState, useEffect } from 'react'
-import { motion, useAnimation } from 'framer-motion'
-import { NavLink } from 'react-router-dom'
-import { useAppStore } from '../../store/useAppStore'
-import { t } from '../../lib/i18n'
-import ThemeToggle from '../ThemeToggle'
-import LanguageSelector from '../LanguageSelector'
-import LogoImg from '../../assets/images/logo.png'
-import './Header.css'
+import { useEffect, useRef, useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
+import { useAppStore } from "../../store/useAppStore";
+import { getSiteContent } from "../../lib/i18n.original-en-clean";
+import LanguageSelector from "../LanguageSelector";
+import LogoImg from "../../assets/images/logo.png";
+import "./Header.css";
+
+function resetAppScrollToTop() {
+  const scrollContainer = document.getElementById("app-scroll-container") as HTMLElement | null;
+
+  window.scrollTo(0, 0);
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+
+  if (scrollContainer) {
+    scrollContainer.classList.remove("snap-ready");
+    scrollContainer.scrollTop = 0;
+    scrollContainer.scrollLeft = 0;
+  }
+}
 
 export default function Header() {
-  const language = useAppStore((s) => s.language)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const controls = useAnimation()
+  const location = useLocation();
+  const language = useAppStore((s) => s.language);
+  const navItems = getSiteContent(language).nav;
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeDesktopMenu, setActiveDesktopMenu] = useState<string | null>(null);
+  const closeTimerRef = useRef<number | null>(null);
 
-  const closeMobileMenu = () => setMobileMenuOpen(false)
+  const clearCloseTimer = () => {
+    if (closeTimerRef.current !== null) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  const closeMobileMenu = () => setMobileMenuOpen(false);
+  const closeDesktopMenu = () => {
+    clearCloseTimer();
+    setActiveDesktopMenu(null);
+  };
+  const queueDesktopMenuClose = () => {
+    clearCloseTimer();
+    closeTimerRef.current = window.setTimeout(() => {
+      setActiveDesktopMenu(null);
+      closeTimerRef.current = null;
+    }, 120);
+  };
+  const openDesktopMenu = (href: string) => {
+    clearCloseTimer();
+    setActiveDesktopMenu(href);
+  };
+
+  const handleNavigationCommit = () => {
+    closeMobileMenu();
+    closeDesktopMenu();
+  };
+
+  const handlePrimaryNavigation = () => {
+    resetAppScrollToTop();
+    handleNavigationCommit();
+  };
 
   useEffect(() => {
-    let lastY = window.scrollY
-    let ticking = false
+    const readScrollTop = () => {
+      const scrollContainer = document.querySelector(".app-scroll-container") as HTMLElement | null;
+      return scrollContainer ? scrollContainer.scrollTop : window.scrollY;
+    };
 
     const onScroll = () => {
-      const y = window.scrollY
-      setScrolled(y > 40)
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          if (y > lastY && y > 80) {
-            controls.start({ y: -80, transition: { duration: 0.28, ease: [0.22,1,0.36,1] } })
-          } else {
-            controls.start({ y: 0, transition: { duration: 0.28, ease: [0.22,1,0.36,1] } })
-          }
-          lastY = y
-          ticking = false
-        })
-        ticking = true
-      }
+      setScrolled(readScrollTop() > 24);
+      closeDesktopMenu();
+    };
+
+    const scrollContainer = document.querySelector(".app-scroll-container");
+    onScroll();
+
+    if (scrollContainer) {
+      scrollContainer.addEventListener("scroll", onScroll, { passive: true });
+      return () => scrollContainer.removeEventListener("scroll", onScroll);
     }
 
-    // scroll container 기반 스크롤도 감지
-    const scrollContainer = document.querySelector('.app-scroll-container')
-    if (scrollContainer) {
-      scrollContainer.addEventListener('scroll', onScroll, { passive: true })
-      return () => scrollContainer.removeEventListener('scroll', onScroll)
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [controls])
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    closeMobileMenu();
+    closeDesktopMenu();
+  }, [location.pathname, location.hash]);
+
+  useEffect(() => {
+    return () => clearCloseTimer();
+  }, []);
 
   return (
-    <motion.header className={`app-header container-fluid${scrolled ? ' scrolled' : ''}`} animate={controls} initial={{ y: 0 }}>
+    <motion.header className={`app-header container-fluid${scrolled ? " scrolled" : ""}`} initial={false} animate={{ y: 0 }}>
       <div className="container header-content">
-        <div className="logo-section">
-          <h1 className="logo">
-            <img src={LogoImg} alt="Xactus Logo" />
-          </h1>
-        </div>
+        <Link to="/" className="logo-section" aria-label="XACTUS Onco Home" onClick={handlePrimaryNavigation}>
+          <div className="logo">
+            <img src={LogoImg} alt="XACTUS Onco" />
+          </div>
+        </Link>
 
-        {/* Hamburger Icon - Visible only on mobile */}
-        <button 
+        <button
           className="mobile-menu-toggle"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle menu"
+          onClick={() => setMobileMenuOpen((open) => !open)}
+          aria-label="Toggle navigation menu"
+          type="button"
         >
-          <span></span>
-          <span></span>
-          <span></span>
+          <span />
+          <span />
+          <span />
         </button>
 
-        {/* Desktop Navigation */}
-        <nav className="nav-desktop">
-          <NavLink to="/" end className={({isActive})=> isActive? 'nav-link active':'nav-link'}>{t('nav.home', language)}</NavLink>
-          <NavLink to="/pipeline" className={({isActive})=> isActive? 'nav-link active':'nav-link'}>{t('nav.pipeline', language)}</NavLink>
-          <NavLink to="/platform" className={({isActive})=> isActive? 'nav-link active':'nav-link'}>{t('nav.platform', language)}</NavLink>
-          <NavLink to="/company" className={({isActive})=> isActive? 'nav-link active':'nav-link'}>{t('nav.company', language)}</NavLink>
+        <nav className="nav-desktop" aria-label="Main navigation">
+          {navItems.map((item) => (
+            <div
+              key={item.href}
+              className={`nav-item-group${activeDesktopMenu === item.href ? " open" : ""}`}
+              onMouseEnter={() => (item.children?.length ? openDesktopMenu(item.href) : closeDesktopMenu())}
+              onMouseLeave={queueDesktopMenuClose}
+            >
+              <NavLink
+                to={item.href}
+                className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
+                onFocus={() => (item.children?.length ? openDesktopMenu(item.href) : closeDesktopMenu())}
+                onClick={handlePrimaryNavigation}
+              >
+                {item.label}
+              </NavLink>
+              {item.children && item.children.length > 0 ? (
+                <div className={`nav-submenu${activeDesktopMenu === item.href ? " open" : ""}`}>
+                  {item.children.map((child) => (
+                    <NavLink
+                      key={item.href + child.hash}
+                      to={{ pathname: item.href, hash: child.hash }}
+                      className="nav-submenu-link"
+                      onClick={handleNavigationCommit}
+                    >
+                      {child.label}
+                    </NavLink>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          ))}
         </nav>
 
-        {/* Mobile Navigation - Visible only on mobile */}
-        {mobileMenuOpen && (
-          <nav className="nav-mobile">
-            <NavLink to="/" end className={({isActive})=> isActive? 'nav-link active':'nav-link'} onClick={closeMobileMenu}>{t('nav.home', language)}</NavLink>
-            <NavLink to="/pipeline" className={({isActive})=> isActive? 'nav-link active':'nav-link'} onClick={closeMobileMenu}>{t('nav.pipeline', language)}</NavLink>
-            <NavLink to="/platform" className={({isActive})=> isActive? 'nav-link active':'nav-link'} onClick={closeMobileMenu}>{t('nav.platform', language)}</NavLink>
-            <NavLink to="/company" className={({isActive})=> isActive? 'nav-link active':'nav-link'} onClick={closeMobileMenu}>{t('nav.company', language)}</NavLink>
+        {mobileMenuOpen ? (
+          <nav className="nav-mobile" aria-label="Mobile navigation">
+            {navItems.map((item) => (
+              <div key={item.href} className="nav-mobile-group">
+                <NavLink
+                  to={item.href}
+                  className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
+                  onClick={handlePrimaryNavigation}
+                >
+                  {item.label}
+                </NavLink>
+                {item.children?.map((child) => (
+                  <NavLink
+                    key={item.href + child.hash}
+                    to={{ pathname: item.href, hash: child.hash }}
+                    className="nav-submenu-link"
+                    onClick={handleNavigationCommit}
+                  >
+                    {child.label}
+                  </NavLink>
+                ))}
+              </div>
+            ))}
           </nav>
-        )}
+        ) : null}
 
         <div className="header-controls">
-          <ThemeToggle />
           <LanguageSelector />
         </div>
       </div>
     </motion.header>
-  )
+  );
 }

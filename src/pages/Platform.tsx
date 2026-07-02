@@ -1,213 +1,365 @@
-import React, { useRef, useState, useEffect } from "react";
-import { Card, Col, Row } from "react-bootstrap";
 import { motion } from "framer-motion";
+import { Card, Col, Row } from "react-bootstrap";
 import { useAppStore } from "../store/useAppStore";
-import { t } from "../lib/i18n";
 import DotNavigation from "../components/DotNavigation";
-import PlatformImg from "../assets/images/platform.png";
+import { getSiteContent } from "../lib/i18n.original-en-clean";
+import TechnologyHero from "../../docs/site_image_0616/usable_assets/hero_backgrounds/technology_hero_pipette.png";
+import DiagramXO001 from "../../docs/site_image_0616/usable_assets/diagrams/technology_xo001_tnik_inhibitor.png";
+import DiagramXO003 from "../../docs/site_image_0616/usable_assets/diagrams/technology_xo003_foxm1_inhibitor.png";
+import DiagramXO004 from "../../docs/site_image_0616/usable_assets/diagrams/technology_xo004_irp2_inhibitor.png";
+import DiagramXOA001 from "../../docs/site_image_0616/usable_assets/diagrams/technology_xoa001_adc_platform.png";
+import WhyXO001Card01 from "../../output/pdf_extracted_icons_transparent/technology_xo001_terminal_wnt_control.png";
+import WhyXO001Card02 from "../../output/pdf_extracted_icons_transparent/technology_xo001_enhanced_selectivity.png";
+import WhyXO001Card03 from "../../output/pdf_extracted_icons_transparent/technology_xo001_durable_disease_control.png";
+import WhyXO003Card01 from "../../output/pdf_extracted_icons_transparent/technology_xo003_master_regulator_targeting.png";
+import WhyXO003Card02 from "../../output/pdf_extracted_icons_transparent/technology_xo003_multi_pathway_suppression.png";
+import WhyXO003Card03 from "../../output/pdf_extracted_icons_transparent/technology_xo003_combination_therapy_potential.png";
+import WhyXO004Card01 from "../../output/pdf_extracted_icons_transparent/technology_xo004_iron_dependency.png";
+import WhyXO004Card02 from "../../output/pdf_extracted_icons_transparent/technology_xo004_cancer_selectivity.png";
+import WhyXO004Card03 from "../../output/pdf_extracted_icons_transparent/technology_xo004_drug_resistant_tumors.png";
+import WhyXOA001Card01 from "../../output/pdf_extracted_icons_transparent/technology_xoa001_enhanced_internalization.png";
+import WhyXOA001Card02 from "../../output/pdf_extracted_icons_transparent/technology_xoa001_stable_linker_design.png";
+import WhyXOA001Card03 from "../../output/pdf_extracted_icons_transparent/technology_xoa001_potent_payload.png";
+import WhyXOA001Card04 from "../../output/pdf_extracted_icons_transparent/technology_xoa001_bystander_effect.png";
+
+const heroStyle = {
+  backgroundImage: `linear-gradient(rgba(32, 109, 184, 0.06), rgba(12, 40, 72, 0.08)), url(${TechnologyHero})`,
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+};
+
+const centeredSectionStyle = {
+  width: "100%",
+  minHeight: "100vh",
+  display: "flex",
+  alignItems: "center",
+  padding: "120px 0 72px",
+};
+
+const programSectionStyle = {
+  width: "100%",
+  minHeight: "100vh",
+  display: "flex",
+  alignItems: "center",
+  padding: "112px 0 56px",
+};
+
+const diagramByProgramId: Record<string, string> = {
+  "xo-001": DiagramXO001,
+  "xo-003": DiagramXO003,
+  "xo-004": DiagramXO004,
+  "xoa-001": DiagramXOA001,
+};
+
+const whyCardImagesByProgramId: Record<string, string[]> = {
+  "xo-001": [WhyXO001Card01, WhyXO001Card02, WhyXO001Card03],
+  "xo-003": [WhyXO003Card01, WhyXO003Card02, WhyXO003Card03],
+  "xo-004": [WhyXO004Card01, WhyXO004Card02, WhyXO004Card03],
+  "xoa-001": [WhyXOA001Card01, WhyXOA001Card02, WhyXOA001Card03, WhyXOA001Card04],
+};
+
+const whyCardImageFrameByProgramId: Record<string, { width: string; height: string }[]> = {
+  "xo-001": [
+    { width: "56%", height: "108px" },
+    { width: "52%", height: "108px" },
+    { width: "48%", height: "108px" },
+  ],
+  "xo-003": [
+    { width: "56%", height: "108px" },
+    { width: "56%", height: "108px" },
+    { width: "56%", height: "108px" },
+  ],
+  "xo-004": [
+    { width: "50%", height: "108px" },
+    { width: "50%", height: "108px" },
+    { width: "50%", height: "108px" },
+  ],
+  "xoa-001": [
+    { width: "46%", height: "96px" },
+    { width: "46%", height: "96px" },
+    { width: "46%", height: "96px" },
+    { width: "46%", height: "96px" },
+  ],
+};
+
+const titleMotion = {
+  initial: { opacity: 0, y: 36, filter: "blur(8px)" },
+  whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
+  viewport: { once: true, amount: 0.55 },
+  transition: { duration: 0.66, ease: [0.22, 1, 0.36, 1] },
+} as const;
+
+const containerMotion = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.08,
+    },
+  },
+} as const;
+
+const itemMotion = {
+  hidden: { opacity: 0, y: 26, scale: 0.97 },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.54, ease: [0.22, 1, 0.36, 1] },
+  },
+} as const;
 
 export default function Platform() {
   const language = useAppStore((s) => s.language);
-  const overviewRef = useRef<HTMLDivElement | null>(null);
-  const [overviewVisible, setOverviewVisible] = useState(false);
-  const impactRef = useRef<HTMLDivElement | null>(null);
-  const [impactVisible, setImpactVisible] = useState(false);
-  const valuesRef = useRef<HTMLDivElement | null>(null);
-  const [valuesVisible, setValuesVisible] = useState(false);
-
+  const content = getSiteContent(language).technology;
   const sections = [
-    { id: 'hero-section', label: 'Our Platform', shortLabel: 'PLATFORM' },
-    { id: 'overview-section', label: 'Who We Are', shortLabel: 'OVER' },
-    { id: 'impact-section', label: 'Our Impact', shortLabel: 'IMPACT' },
-    { id: 'values-section', label: 'Core Values', shortLabel: 'VALUE' },
-    { id: 'footer-section', label: 'Footer', shortLabel: 'FIN' },
-  ]
-
-  useEffect(() => {
-    const overviewEl = overviewRef.current;
-    const impactEl = impactRef.current;
-    const valuesEl = valuesRef.current;
-
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.target === overviewEl) {
-            setOverviewVisible(entry.isIntersecting);
-          } else if (entry.target === impactEl) {
-            setImpactVisible(entry.isIntersecting);
-          } else if (entry.target === valuesEl) {
-            setValuesVisible(entry.isIntersecting);
-          }
-        });
-      },
-      { threshold: 0.12 }
-    );
-
-    if (overviewEl) obs.observe(overviewEl);
-    if (impactEl) obs.observe(impactEl);
-    if (valuesEl) obs.observe(valuesEl);
-
-    return () => obs.disconnect();
-  }, []);
-
-  const cardVariants = {
-    initial: { opacity: 0, y: 20, scale: 0.95, borderColor: "rgba(0,180,216,0.2)" },
-    animate: { opacity: 1, y: 0, scale: 1, borderColor: "rgba(0,180,216,0.2)" },
-    hover: { y: -6, scale: 1.02, boxShadow: "0 12px 36px rgba(0,180,216,0.12)", borderColor: "rgba(0,180,216,0.45)", transition: { duration: 0.06, borderColor: { duration: 0.03 } } },
-    tap: { scale: 0.98 }
-  }
-
-  const boxVariants = {
-    initial: { opacity: 0, y: 16 },
-    animate: { opacity: 1, y: 0 },
-  }
-
-  const cardTransition = { duration: 0.32 }
-  const boxTransition = { duration: 0.36 }
-  
-  const MotionCard = (motion as any).create ? (motion as any).create(Card) : motion<any>(Card);
+    { id: "technology-hero-section", label: "Technology Hero", shortLabel: "TECH" },
+    { id: "overview-section", label: "Overview", shortLabel: "OVERVIEW" },
+    ...content.programs.map((program) => ({
+      id: `${program.id}-section`,
+      label: program.title,
+      shortLabel: program.id.toUpperCase(),
+    })),
+  ];
 
   return (
     <>
       <DotNavigation sections={sections} />
-      {/* Hero Section */}
-      <section id="hero-section" className="section-wrapper hero-section bg-sheen">
+      <section id="technology-hero-section" className="section-wrapper hero-section bg-sheen" style={heroStyle}>
         <div className="section-decoration" aria-hidden="true" />
-        <div className="container">
-          <div className="section-title hero-title">
-            <h1 className="text-white">{t("platform.title", "en")}</h1>
-            <p>{t("platform.subtitle", language)}</p>
-          </div>
+        <div className="container hero-content">
+          <motion.div
+            className="hero-text"
+            style={{ textAlign: "center", maxWidth: "760px", margin: "0 auto" }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.68, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <h1 className="hero-title">{content.hero.title}</h1>
+            <p className="hero-subtitle" style={{ marginLeft: "auto", marginRight: "auto" }}>
+              {content.hero.body}
+            </p>
+          </motion.div>
         </div>
       </section>
 
-      {/* Vision/Overview Section */}
-      <section id="overview-section" className="section-wrapper with-bg" ref={overviewRef}>
+      <section id="overview-section" className="section-wrapper with-bg" style={centeredSectionStyle}>
         <div className="container">
-          <Row className="align-items-center g-2" style={{ rowGap: "clamp(16px, 3vh, 24px)" }}>
-            <Col lg={6} md={12}>
-              <motion.div initial="initial" animate={overviewVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.1 }}>
-                <div>
-                  <h2 style={{ marginBottom: "clamp(16px, 3vw, 24px)" }}>Who We Are</h2>
-                  <p style={{ fontSize: "clamp(1rem, 2vw, 1.2rem)", marginBottom: "clamp(12px, 2vw, 16px)" }}>
-                    {t("platform.whoWeAreDesc1", language)}
-                  </p>
-                  <p style={{ fontSize: "clamp(1rem, 2vw, 1.2rem)", marginBottom: "clamp(16px, 3vw, 24px)" }}>
-                    {t("platform.whoWeAreDesc2", language)}
-                  </p>
-                </div>
-              </motion.div>
-            </Col>
-            <Col lg={6} md={12}>
-              <motion.div initial="initial" animate={overviewVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.2 }}>
-                <img src={PlatformImg} alt="Platform" className="img-fluid rounded" style={{ maxHeight: "400px", objectFit: "cover" }} />
-              </motion.div>
-            </Col>
-          </Row>
-        </div>
-      </section>
+          <motion.div className="section-title" style={{ maxWidth: "860px", marginLeft: "auto", marginRight: "auto" }} {...titleMotion}>
+            <h2 className="text-readable-strong">{content.overview.title}</h2>
+            <p className="text-readable" style={{ maxWidth: "760px" }}>{content.overview.body}</p>
+          </motion.div>
 
-      {/* Impact Section */}
-      <section id="impact-section" className="section-wrapper with-bg" ref={impactRef}>
-        <div className="container">
-          <h2 style={{ marginBottom: "clamp(20px, 4vw, 32px)", textAlign: "center" }}>Our Impact</h2>
-          <Row className="g-2" style={{ rowGap: "clamp(16px, 3vh, 24px)" }}>
-            <Col lg={6} md={6} sm={12}>
-              <MotionCard initial="initial" animate={impactVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.1 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
-                <Card.Body>
-                  <h5 style={{ color: "var(--xactus-green)", marginBottom: "clamp(10px, 1.5vw, 12px)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)" }}>
-                    {t("platform.patientAccess", language)}
-                  </h5>
-                  <Card.Text>{t("platform.patientAccessDesc", language)}</Card.Text>
-                </Card.Body>
-              </MotionCard>
-            </Col>
-            <Col lg={6} md={6} sm={12}>
-              <MotionCard initial="initial" animate={impactVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.2 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
-                <Card.Body>
-                  <h5 style={{ color: "var(--accent-orange)", marginBottom: "clamp(10px, 1.5vw, 12px)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)" }}>
-                    {t("platform.socialImpact", language)}
-                  </h5>
-                  <Card.Text>{t("platform.socialImpactDesc", language)}</Card.Text>
-                </Card.Body>
-              </MotionCard>
-            </Col>
-            <Col lg={6} md={6} sm={12}>
-              <MotionCard initial="initial" animate={impactVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.3 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
-                <Card.Body>
-                  <h5 style={{ color: "var(--xactus-green)", marginBottom: "clamp(10px, 1.5vw, 12px)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)" }}>
-                    {t("platform.scientificExcellence", language)}
-                  </h5>
-                  <Card.Text>{t("platform.scientificExcellenceDesc", language)}</Card.Text>
-                </Card.Body>
-              </MotionCard>
-            </Col>
-            <Col lg={6} md={6} sm={12}>
-              <MotionCard initial="initial" animate={impactVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.4 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
-                <Card.Body>
-                  <h5 style={{ color: "var(--accent-orange)", marginBottom: "clamp(10px, 1.5vw, 12px)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)" }}>
-                    {t("platform.qualityOfLife", language)}
-                  </h5>
-                  <Card.Text>{t("platform.qualityOfLifeDesc", language)}</Card.Text>
-                </Card.Body>
-              </MotionCard>
-            </Col>
-          </Row>
-        </div>
-      </section>
-
-      {/* Value Propositions */}
-      <section id="values-section" className="section-wrapper with-bg" ref={valuesRef}>
-        <div className="container">
-          <h2 style={{ marginBottom: "clamp(20px, 4vw, 32px)", textAlign: "center" }}>Core Values</h2>
-          <Row>
-            <Col lg={10} md={12} className="mx-auto">
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(clamp(250px, 60vw, 280px), 1fr))", gap: "clamp(16px, 3vw, 24px)", marginTop: "clamp(20px, 3vw, 32px)" }}>
-                <MotionCard initial="initial" animate={valuesVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
-                  <Card.Body>
-                    <div className="core-value-box">
-                      <h4 style={{ color: "var(--xactus-green)", marginBottom: "clamp(8px, 1.2vw, 10px)", fontSize: "clamp(1rem, 1.8vw, 1.2rem)" }}>🔬 {t("platform.scientificRigor", language)}</h4>
-                      <p style={{ fontSize: "clamp(0.9rem, 1.6vw, 1rem)", lineHeight: "1.6", margin: 0 }}>
-                        {t("platform.scientificRigorDesc", language)}
-                      </p>
-                    </div>
-                  </Card.Body>
-                </MotionCard>
-                <MotionCard initial="initial" animate={valuesVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.1 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
-                  <Card.Body>
-                    <div className="core-value-box">
-                      <h4 style={{ color: "var(--accent-orange)", marginBottom: "clamp(8px, 1.2vw, 10px)", fontSize: "clamp(1rem, 1.8vw, 1.2rem)" }}>🎯 {t("platform.patientFocus", language)}</h4>
-                      <p style={{ fontSize: "clamp(0.9rem, 1.6vw, 1rem)", lineHeight: "1.6", margin: 0 }}>
-                        {t("platform.patientFocusDesc", language)}
-                      </p>
-                    </div>
-                  </Card.Body>
-                </MotionCard>
-                <MotionCard initial="initial" animate={valuesVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.2 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
-                  <Card.Body>
-                    <div className="core-value-box">
-                      <h4 style={{ color: "var(--xactus-green)", marginBottom: "clamp(8px, 1.2vw, 10px)", fontSize: "clamp(1rem, 1.8vw, 1.2rem)" }}>💡 {t("platform.innovationValue", language)}</h4>
-                      <p style={{ fontSize: "clamp(0.9rem, 1.6vw, 1rem)", lineHeight: "1.6", margin: 0 }}>
-                        {t("platform.innovationValueDesc", language)}
-                      </p>
-                    </div>
-                  </Card.Body>
-                </MotionCard>
-                <MotionCard initial="initial" animate={valuesVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.3 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
-                  <Card.Body>
-                    <div className="core-value-box">
-                      <h4 style={{ color: "var(--accent-orange)", marginBottom: "clamp(8px, 1.2vw, 10px)", fontSize: "clamp(1rem, 1.8vw, 1.2rem)" }}>🤝 {t("platform.collaboration", language)}</h4>
-                      <p style={{ fontSize: "clamp(0.9rem, 1.6vw, 1rem)", lineHeight: "1.6", margin: 0 }}>
-                        {t("platform.collaborationDesc", language)}
-                      </p>
-                    </div>
-                  </Card.Body>
-                </MotionCard>
+          <motion.div
+            className="tech-overview-map"
+            style={{
+              maxWidth: "880px",
+              margin: "0 auto",
+              minHeight: "520px",
+              position: "relative",
+              display: "grid",
+              placeItems: "center",
+            }}
+            initial={{ opacity: 0, y: 24, scale: 0.985 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <motion.div
+              className="tech-overview-center"
+              style={{
+                width: "240px",
+                height: "240px",
+                borderRadius: "50%",
+                background: "rgba(255,255,255,0.78)",
+                display: "grid",
+                placeItems: "center",
+                color: "#ffffff",
+                textAlign: "center",
+                boxShadow: "0 20px 40px rgba(0,0,0,0.2)",
+              }}
+              initial={{ opacity: 0, scale: 0.82 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, amount: 0.45 }}
+              transition={{ duration: 0.52, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <div style={{ color: "#445d57", fontWeight: 700, fontSize: "clamp(1.4rem, 2.2vw, 2rem)", lineHeight: 1.3 }}>
+                {content.overview.centerLabel[0]}
+                <br />
+                {content.overview.centerLabel[1]}
               </div>
-            </Col>
-          </Row>
+            </motion.div>
+
+            {content.overview.map.map((item, index) => {
+              return (
+                <div key={item.label} className={`tech-overview-node-anchor tech-overview-node-anchor--${index}`}>
+                  <motion.div
+                    className="tech-overview-node"
+                    style={{
+                      color: "#ffffff",
+                      textShadow: "0 6px 16px rgba(5, 14, 30, 0.58)",
+                    }}
+                    initial={{ opacity: 0, y: index < 2 ? -18 : 18 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.5 }}
+                    transition={{ duration: 0.46, delay: 0.16 + index * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <div className="tech-overview-node__content">
+                      <div style={{ fontWeight: 700, fontSize: "clamp(1.3rem, 2vw, 1.7rem)" }}>{item.label}</div>
+                      <div style={{ fontSize: "clamp(1rem, 1.7vw, 1.35rem)", lineHeight: 1.35 }}>{item.sublabel}</div>
+                    </div>
+                  </motion.div>
+                </div>
+              );
+            })}
+
+            <div className="tech-overview-connector tech-overview-connector--top" />
+            <div className="tech-overview-connector tech-overview-connector--bottom" />
+            <div className="tech-overview-connector tech-overview-connector--left" />
+            <div className="tech-overview-connector tech-overview-connector--right" />
+          </motion.div>
         </div>
       </section>
+
+      {content.programs.map((program, index) => {
+        const compactCards = program.whyCards.length === 4;
+        const whyCardImages = whyCardImagesByProgramId[program.id] ?? [];
+        const whyCardImageFrames = whyCardImageFrameByProgramId[program.id] ?? [];
+        const detailGroups = [
+          { label: program.targetLabel, tone: "green", items: program.target },
+          ...(program.pathway ? [{ label: program.pathwayLabel ?? "", tone: "orange", items: program.pathway }] : []),
+          ...(program.payload ? [{ label: program.payloadLabel ?? "", tone: "orange", items: program.payload }] : []),
+          { label: program.therapeuticImpactLabel, tone: "green", items: program.therapeuticImpact },
+          { label: program.differentiationLabel, tone: "orange", items: program.differentiation },
+        ];
+
+        return (
+          <section
+            key={program.id}
+            id={`${program.id}-section`}
+            className={`section-wrapper ${index % 2 === 0 ? "with-bg" : ""}`}
+            style={programSectionStyle}
+          >
+            <div className="container">
+              <motion.div className="section-title" style={{ textAlign: "left", marginBottom: "16px" }} {...titleMotion}>
+                <h2 style={{ marginBottom: "10px" }}>{program.title}</h2>
+              </motion.div>
+
+              <motion.div variants={containerMotion} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.28 }}>
+              <Row className="g-4 tech-program-top-row" style={{ marginBottom: "18px", alignItems: "stretch" }}>
+                <Col lg={6} md={12} className="tech-program-diagram-col d-flex">
+                  <motion.div variants={itemMotion} style={{ width: "100%", height: "100%" }}>
+                  <Card className="card-hover-diagram tech-program-diagram-card" style={{ height: "100%" }}>
+                    <Card.Body style={{ padding: "18px" }}>
+                      <div
+                        className="tech-diagram-shell"
+                        style={{
+                          height: "360px",
+                          display: "grid",
+                          placeItems: "center",
+                          borderRadius: "14px",
+                          background: "rgba(255,255,255,0.05)",
+                        }}
+                      >
+                        <img
+                          src={diagramByProgramId[program.id]}
+                          alt={program.title}
+                          className="img-fluid rounded card-media"
+                          style={{ maxHeight: "324px", objectFit: "contain" }}
+                        />
+                      </div>
+                    </Card.Body>
+                  </Card>
+                  </motion.div>
+                </Col>
+
+                <Col lg={6} md={12} className="tech-program-detail-col d-flex">
+                  <motion.div variants={itemMotion} style={{ width: "100%", height: "100%" }}>
+                  <Card className="card-hover-detail tech-program-detail-card" style={{ height: "100%" }}>
+                    <Card.Body style={{ padding: "18px" }}>
+                      <div
+                        className="tech-detail-grid"
+                        style={{
+                          display: "grid",
+                          gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                          gap: "14px 18px",
+                        }}
+                      >
+                        {detailGroups.map((group) => (
+                          <div key={group.label} className="tech-detail-grid__item">
+                            <h5 style={{ color: group.tone === "green" ? "var(--xactus-green)" : "var(--accent-orange)", marginBottom: "8px" }}>
+                              {group.label}
+                            </h5>
+                            <ul style={{ margin: 0, paddingLeft: "18px", color: "rgba(210, 228, 248, 0.92)", fontSize: "0.96rem", lineHeight: 1.45 }}>
+                              {group.items.map((item) => (
+                                <li key={item} style={{ marginBottom: "4px" }}>
+                                  {item}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    </Card.Body>
+                  </Card>
+                  </motion.div>
+                </Col>
+              </Row>
+              </motion.div>
+
+              <motion.div
+                style={{ color: "#ffffff", fontWeight: 700, fontSize: "clamp(1.15rem, 1.8vw, 1.45rem)", marginBottom: "14px" }}
+                initial={{ opacity: 0, x: -18 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.64 }}
+                transition={{ duration: 0.46, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {program.whyTitle}
+              </motion.div>
+
+              <motion.div variants={containerMotion} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.28 }}>
+              <Row className="g-3 tech-program-why-row">
+                {program.whyCards.map((card, cardIndex) => (
+                  <Col key={card.title} lg={compactCards ? 3 : 4} md={compactCards ? 6 : 4} sm={12} className="d-flex">
+                    <motion.div variants={itemMotion} style={{ width: "100%", height: "100%" }}>
+                    <Card className="card-hover-number tech-program-why-card" style={{ height: "100%", textAlign: "center" }}>
+                      <Card.Body style={{ padding: compactCards ? "18px 18px 16px" : "20px 20px 18px" }}>
+                        <div
+                          className="tech-program-why-card__media"
+                          style={{
+                            width: "100%",
+                            height: compactCards ? "112px" : "124px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            marginBottom: "2px",
+                          }}
+                        >
+                          <img
+                            src={whyCardImages[cardIndex]}
+                            alt={card.title}
+                            className="tech-program-why-card__image"
+                            style={{
+                              width: whyCardImageFrames[cardIndex]?.width ?? "54%",
+                              maxWidth: "100%",
+                              height: whyCardImageFrames[cardIndex]?.height ?? "108px",
+                              objectFit: "contain",
+                            }}
+                          />
+                        </div>
+                        <h5 style={{ color: "#ffffff", marginBottom: "8px", fontSize: compactCards ? "1.02rem" : "1.08rem" }}>{card.title}</h5>
+                        <Card.Text style={{ margin: 0, fontSize: compactCards ? "0.9rem" : "0.94rem", lineHeight: 1.45 }}>{card.body}</Card.Text>
+                      </Card.Body>
+                    </Card>
+                    </motion.div>
+                  </Col>
+                ))}
+              </Row>
+              </motion.div>
+            </div>
+          </section>
+        );
+      })}
     </>
   );
 }

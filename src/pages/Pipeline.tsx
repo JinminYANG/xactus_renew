@@ -1,147 +1,223 @@
-import React, { useRef, useState, useEffect } from "react";
-import { Card, Col, Row } from "react-bootstrap";
 import { motion } from "framer-motion";
+import { Card } from "react-bootstrap";
 import { useAppStore } from "../store/useAppStore";
-import { t } from "../lib/i18n";import DotNavigation from "../components/DotNavigation";import TnikImg from "../assets/images/tnik_inhibitor.png";
-import AdcImg from "../assets/images/adc_(stat3_inhibtor).png";
-import Foxm1Img from "../assets/images/foxm1_inhibitor.png";
-import Irp2Img from "../assets/images/irp2_inhibitor.png";
-import PipelineChart from "../components/PipelineChart";
+import DotNavigation from "../components/DotNavigation";
+import { getSiteContent } from "../lib/i18n.original-en-clean";
+import PipelineHero from "../../docs/site_image_0616/usable_assets/hero_backgrounds/pipeline_hero_microscope.png";
+
+const heroStyle = {
+  backgroundImage: `linear-gradient(rgba(32, 109, 184, 0.08), rgba(12, 40, 72, 0.1)), url(${PipelineHero})`,
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+};
+
+const contentSectionStyle = {
+  width: "100%",
+  padding: "120px 0 72px",
+};
+
+const titleMotion = {
+  initial: { opacity: 0, y: 34, filter: "blur(8px)" },
+  whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
+  viewport: { once: true, amount: 0.55 },
+  transition: { duration: 0.64, ease: [0.22, 1, 0.36, 1] },
+} as const;
+
+const rowContainerMotion = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.06,
+      delayChildren: 0.08,
+    },
+  },
+} as const;
+
+const rowMotion = {
+  hidden: { opacity: 0, y: 18 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] },
+  },
+} as const;
+
+const progressFillTransition = {
+  duration: 0.88,
+  ease: [0.22, 1, 0.36, 1],
+} as const;
 
 export default function Pipeline() {
   const language = useAppStore((s) => s.language);
-  const programsRef = useRef<HTMLDivElement | null>(null);
-  const [programsVisible, setProgramsVisible] = useState(false);
-
-  useEffect(() => {
-    const el = programsRef.current;
-    if (!el) return;
-
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          setProgramsVisible(entry.isIntersecting);
-        });
-      },
-      { threshold: 0.12 }
-    );
-
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
+  const content = getSiteContent(language).pipeline;
 
   const sections = [
-    { id: 'hero-section', label: 'Our Pipeline', shortLabel: 'PIPELINE' },
-    { id: 'programs-section', label: 'Development Programs', shortLabel: 'PROG' },
-    { id: 'chart-section', label: 'Pipeline Progress', shortLabel: 'CHART' },
-    { id: 'footer-section', label: 'Footer', shortLabel: 'FIN' },
-  ]
-
-  const cardVariants = {
-    initial: { opacity: 0, y: 20, scale: 0.95, borderColor: "rgba(0,180,216,0.2)" },
-    animate: { opacity: 1, y: 0, scale: 1, borderColor: "rgba(0,180,216,0.2)" },
-    hover: { y: -6, scale: 1.02, boxShadow: "0 12px 36px rgba(0,180,216,0.12)", borderColor: "rgba(0,180,216,0.45)", transition: { duration: 0.06, borderColor: { duration: 0.03 } } },
-    tap: { scale: 0.98 }
-  }
-
-  const cardTransition = { duration: 0.32 }
-
-  const MotionCard = (motion as any).create ? (motion as any).create(Card) : motion<any>(Card);
+    { id: "pipeline-hero-section", label: "Pipeline Hero", shortLabel: "PIPE" },
+    { id: "pipeline-table-section", label: "Pipeline Table", shortLabel: "TABLE" },
+  ];
 
   return (
     <>
       <DotNavigation sections={sections} />
-      {/* Hero Section */}
-      <section id="hero-section" className="section-wrapper hero-section bg-sheen">
+      <section id="pipeline-hero-section" className="section-wrapper hero-section bg-sheen" style={heroStyle}>
         <div className="section-decoration" aria-hidden="true" />
-        <div className="container">
-          <div className="section-title hero-title">
-            <h1 className="text-white">{t("pipeline.title", "en")}</h1>
-            <p>{t("pipeline.subtitle", language)}</p>
-          </div>
+        <div className="container hero-content">
+          <motion.div
+            className="hero-text"
+            style={{ textAlign: "center", maxWidth: "760px", margin: "0 auto" }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.68, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <h1 className="hero-title">{content.hero.title}</h1>
+            <p className="hero-subtitle" style={{ marginLeft: "auto", marginRight: "auto" }}>
+              {content.hero.body}
+            </p>
+          </motion.div>
         </div>
       </section>
 
-      {/* Program Cards Section */}
-      <section id="programs-section" className="section-wrapper with-bg">
+      <section id="pipeline-table-section" className="section-wrapper with-bg" style={contentSectionStyle}>
         <div className="container">
-          <h2 style={{ marginBottom: "clamp(20px, 4vw, 32px)", textAlign: "center" }}>Development Programs</h2>
-          <Row className="g-2" style={{ rowGap: "clamp(10px, 1vh, 24px)" }} ref={programsRef}>
-            <Col lg={6} md={6} sm={12}>
-              <MotionCard initial="initial" animate={programsVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.1 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
-                <Card.Body style={{ display: "flex", flexDirection: "column" }}>
-                  <h5 style={{ marginBottom: "clamp(8px, 1.2vw, 10px)", color: "var(--xactus-green)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)", lineHeight: "1.4" }}>{t("pipeline.tnikTitle", language)}</h5>
-                  <Row>
-                    <Col md={12} xs={6} className="">
-                      <img src={TnikImg} alt="TNIK inhibitor" className="img-fluid mb-2 mx-auto" style={{ maxHeight: "clamp(80px, 20vw, 300px)", objectFit: "contain" }} />
-                    </Col>
-                    <Col md={12} xs={6} className="">
-                      <Card.Text style={{ marginTop: "auto", fontSize: "clamp(0.8rem, 1.2vw, 1rem)" }}>{t("pipeline.tnikDesc", language)}</Card.Text>
-                    </Col>
-                  </Row>
-                </Card.Body>
-              </MotionCard>
-            </Col>
-            <Col lg={6} md={6} sm={12}>
-              <MotionCard initial="initial" animate={programsVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.2 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
-                <Card.Body style={{ display: "flex", flexDirection: "column" }}>
-                  <h5 style={{ marginBottom: "clamp(8px, 1.2vw, 10px)", color: "var(--accent-orange)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)", lineHeight: "1.4" }}>{t("pipeline.adcTitle", language)}</h5>
-                  <Row>
-                    <Col md={12} xs={6} className="">
-                      <img src={AdcImg} alt="ADC (STAT3 inhibitor)" className="img-fluid mb-2 mx-auto" style={{ maxHeight: "clamp(80px, 20vw, 300px)", objectFit: "contain" }} />
-                    </Col>
-                    <Col md={12} xs={6} className="">
-                      <Card.Text style={{ marginTop: "auto", fontSize: "clamp(0.8rem, 1.2vw, 1rem)" }}>{t("pipeline.adcDesc", language)}</Card.Text>
-                    </Col>
-                  </Row>
-                </Card.Body>
-              </MotionCard>
-            </Col>
-            <Col lg={6} md={6} sm={12}>
-              <MotionCard initial="initial" animate={programsVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.3 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
-                <Card.Body style={{ display: "flex", flexDirection: "column" }}>
-                  <h5 style={{ marginBottom: "clamp(8px, 1.2vw, 10px)", color: "var(--xactus-green)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)", lineHeight: "1.4" }}>{t("pipeline.foxm1Title", language)}</h5>
-                  <Row>
-                    <Col md={12} xs={6} className="">
-                      <img src={Foxm1Img} alt="FOXM1 inhibitor" className="img-fluid mb-2 mx-auto" style={{ maxHeight: "clamp(80px, 20vw, 300px)", objectFit: "contain" }} />
-                    </Col>
-                    <Col md={12} xs={6} className=""> 
-                      <Card.Text style={{ marginTop: "auto", fontSize: "clamp(0.8rem, 1.2vw, 1rem)" }}>{t("pipeline.foxm1Desc", language)}</Card.Text>
-                    </Col>
-                  </Row>
-                </Card.Body>
-              </MotionCard>
-            </Col>
-            <Col lg={6} md={6} sm={12}>
-              <MotionCard initial="initial" animate={programsVisible ? "animate" : "initial"} variants={cardVariants} transition={{ ...cardTransition, delay: 0.4 }} whileHover="hover" whileTap="tap" layout style={{ height: "100%", position: 'relative' }}>
-                <Card.Body style={{ display: "flex", flexDirection: "column" }}>
-                  <h5 style={{ marginBottom: "clamp(8px, 1.2vw, 10px)", color: "var(--accent-orange)", fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)", lineHeight: "1.4" }}>{t("pipeline.irp2Title", language)}</h5>
-                  <Row>
-                    <Col md={12} xs={6} className="">
-                      <img src={Irp2Img} alt="IRP2 inhibitor" className="img-fluid mb-2 mx-auto" style={{ maxHeight: "clamp(80px, 20vw, 300px)", objectFit: "contain" }} />
-                    </Col>
-                    <Col md={12} xs={6} className="">
-                      <Card.Text style={{ marginTop: "auto", fontSize: "clamp(0.8rem, 1.2vw, 1rem)" }}>{t("pipeline.irp2Desc", language)}</Card.Text>
-                    </Col>
-                  </Row>
-                </Card.Body>
-              </MotionCard>
-            </Col>
-          </Row>
-        </div>
-      </section>
+          <motion.div className="section-title" style={{ textAlign: "left" }} {...titleMotion}>
+            <h2>{content.table.title}</h2>
+            <p style={{ maxWidth: "880px", margin: 0 }}>{content.hero.body}</p>
+          </motion.div>
 
-      {/* Pipeline Chart Section */}
-      <section id="chart-section" className="section-wrapper with-bg">
-        <div className="container">
-          <h2 style={{ marginBottom: "clamp(10px, 3vw, 28px)", textAlign: "center" }}>Pipeline Progress</h2>
-          <Row>
-            <Col lg={12} md={12} sm={12} className="mx-auto">
-              <PipelineChart />
-            </Col>
-          </Row>
+          <motion.div
+            className="pipeline-table-shell"
+            initial={{ opacity: 0, y: 24, scale: 0.99 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
+          >
+          <Card>
+            <Card.Body>
+              <div className="pipeline-table-scroll">
+              <table className="pipeline-table" style={{ width: "100%", borderCollapse: "collapse", tableLayout: "fixed" }}>
+                <colgroup>
+                  <col style={{ width: "14%" }} />
+                  <col style={{ width: "14%" }} />
+                  <col style={{ width: "26%" }} />
+                  <col style={{ width: "12%" }} />
+                  <col style={{ width: "24%" }} />
+                  <col style={{ width: "10%" }} />
+                </colgroup>
+                <thead>
+                  <tr>
+                    {content.table.headers.map((header) => (
+                      <th
+                        key={header}
+                        style={{
+                          textAlign: "left",
+                          padding: "14px 12px",
+                          color: "#ffffff",
+                          borderBottom: "1px solid rgba(255,255,255,0.14)",
+                          fontSize: "0.9rem",
+                        }}
+                      >
+                        {header}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <motion.tbody variants={rowContainerMotion} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }}>
+                  {content.table.programs.map((program, rowIndex) => {
+                    const totalProgress =
+                      program.progress.reduce((sum, value) => sum + value, 0) / (program.progress.length * 100) * 100;
+                    const currentStage =
+                      program.progress.reduce((lastIndex, value, index) => (value > 0 ? index : lastIndex), -1) + 1;
+
+                    return (
+                      <motion.tr key={program.program} variants={rowMotion}>
+                        <td style={cellStyle}>
+                          <div style={{ color: "var(--xactus-green)", fontWeight: 700 }}>{program.program}</div>
+                          <div style={{ color: "rgba(210,228,248,0.72)", fontSize: "0.84rem" }}>{program.sublabel}</div>
+                        </td>
+                        <td style={cellStyle}>{program.targetMoa}</td>
+                        <td style={cellStyle}>{program.indication}</td>
+                        <td style={cellStyle}>{program.modality}</td>
+                        <td style={cellStyle}>
+                          <div style={{ marginBottom: "12px", color: "#ffffff", fontWeight: 600 }}>{program.developmentStage}</div>
+                          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                            <div
+                              style={{
+                                position: "relative",
+                                flex: 1,
+                                minWidth: 0,
+                                height: "10px",
+                                borderRadius: "999px",
+                                background: "rgba(255,255,255,0.08)",
+                                overflow: "hidden",
+                              }}
+                            >
+                              <motion.div
+                                style={{
+                                  width: `${totalProgress}%`,
+                                  height: "100%",
+                                  background: "linear-gradient(90deg, var(--xactus-green), var(--accent-cyan))",
+                                  transformOrigin: "left center",
+                                }}
+                                initial={{ scaleX: 0, opacity: 0.7 }}
+                                whileInView={{ scaleX: 1, opacity: 1 }}
+                                viewport={{ once: true, amount: 0.9 }}
+                                transition={{ ...progressFillTransition, delay: 0.16 + rowIndex * 0.08 }}
+                              />
+                            </div>
+                            <div style={{ display: "flex", alignItems: "center", gap: "8px", whiteSpace: "nowrap", flexShrink: 0 }}>
+                              <span style={{ color: "var(--accent-cyan)", fontWeight: 700, fontSize: "0.86rem" }}>{Math.round(totalProgress)}%</span>
+                              <span
+                                style={{
+                                  padding: "4px 8px",
+                                  borderRadius: "999px",
+                                  border: "1px solid rgba(82, 217, 255, 0.24)",
+                                  color: "rgba(210,228,248,0.92)",
+                                  fontSize: "0.76rem",
+                                  fontWeight: 700,
+                                }}
+                              >
+                                {currentStage}/{program.progress.length}
+                              </span>
+                            </div>
+                          </div>
+                        </td>
+                        <td style={cellStyle}>{formatPartnership(program.partnership)}</td>
+                      </motion.tr>
+                    );
+                  })}
+                </motion.tbody>
+              </table>
+              </div>
+              <motion.div
+                style={{ marginTop: "18px", color: "rgba(210,228,248,0.7)", fontSize: "0.82rem" }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true, amount: 0.9 }}
+                transition={{ duration: 0.36, delay: 0.18 }}
+              >
+                {content.table.footnote}
+              </motion.div>
+            </Card.Body>
+          </Card>
+          </motion.div>
         </div>
       </section>
     </>
   );
 }
+
+const cellStyle = {
+  padding: "16px 12px",
+  borderBottom: "1px solid rgba(255,255,255,0.08)",
+  verticalAlign: "top" as const,
+  color: "rgba(210,228,248,0.9)",
+  lineHeight: 1.55,
+  fontSize: "0.88rem",
+  wordBreak: "keep-all" as const,
+};
+
+const formatPartnership = (value: string) =>
+  value
+    .replace("Korea University", "Korea Univ.")
+    .replace("Inha University", "Inha Univ.")
+    .replace("In Discussion", "Discussion");

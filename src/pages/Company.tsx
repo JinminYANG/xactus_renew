@@ -1,352 +1,382 @@
-import React, { useRef, useState, useEffect } from "react";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Card, Col, Row } from "react-bootstrap";
-import { motion } from "framer-motion";
 import { useAppStore } from "../store/useAppStore";
-import { t } from "../lib/i18n";
 import DotNavigation from "../components/DotNavigation";
-import ShinImg from "../assets/images/shin.png";
-import BossImg from "../assets/images/big_boss.png";
-import ShinMiniImg from "../assets/images/shin_mini.png";
-import LeeMiniImg from "../assets/images/lee.png";
+import { getSiteContent } from "../lib/i18n.original-en-clean";
+import AboutHero from "../../docs/site_image_0616/usable_assets/hero_backgrounds/about_hero_sunset.png";
+import LeaderPortrait from "../../docs/site_image_0616/usable_assets/team_portraits/leadership_sang_joon_shin.png";
+import AdvisorPortrait from "../../docs/site_image_0616/usable_assets/team_portraits/advisor_hyuk_lee.png";
+import KeywordOne from "../../output/pdf_extracted_icons_transparent/about_first_in_class.png";
+import KeywordTwo from "../../output/pdf_extracted_icons_transparent/about_clinical_intelligence.png";
+import KeywordThree from "../../output/pdf_extracted_icons_transparent/about_integrated_research_platform.png";
+import KeywordFour from "../../output/pdf_extracted_icons_transparent/about_patient_impact.png";
 
+const heroStyle = {
+  backgroundImage: `linear-gradient(rgba(32, 109, 184, 0.07), rgba(12, 40, 72, 0.1)), url(${AboutHero})`,
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+};
+
+const centeredSectionStyle = {
+  width: "100%",
+  minHeight: "100vh",
+  display: "flex",
+  alignItems: "center",
+  padding: "120px 0 72px",
+};
+
+const keywordIcons = [KeywordOne, KeywordTwo, KeywordThree, KeywordFour];
+
+const titleMotion = {
+  initial: { opacity: 0, y: 42, filter: "blur(10px)" },
+  whileInView: { opacity: 1, y: 0, filter: "blur(0px)" },
+  viewport: { once: true, amount: 0.55 },
+  transition: { duration: 0.72, ease: [0.22, 1, 0.36, 1] },
+} as const;
+
+const containerMotion = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.09,
+      delayChildren: 0.08,
+    },
+  },
+} as const;
+
+const itemMotion = {
+  hidden: { opacity: 0, y: 28, scale: 0.96 },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.52, ease: [0.22, 1, 0.36, 1] },
+  },
+} as const;
+
+type AdvisorGroup = "technical" | "development";
 
 export default function Company() {
   const language = useAppStore((s) => s.language);
-  const leadershipRef = useRef<HTMLDivElement | null>(null);
-  const [leadershipVisible, setLeadershipVisible] = useState(false);
-  const teamRef = useRef<HTMLDivElement | null>(null);
-  const [teamVisible, setTeamVisible] = useState(false);
-  const contactRef = useRef<HTMLDivElement | null>(null);
-  const [contactVisible, setContactVisible] = useState(false);
+  const content = getSiteContent(language).about;
+  const [advisorGroup, setAdvisorGroup] = useState<AdvisorGroup>("technical");
+
+  const activeAdvisors =
+    advisorGroup === "technical" ? content.leadership.technicalAdvisors : content.leadership.developmentAdvisors;
 
   const sections = [
-    { id: 'hero-section', label: 'XACTUS Company', shortLabel: 'COMPANY' },
-    { id: 'leadership-section', label: 'Leadership Profile', shortLabel: 'CEO' },
-    { id: 'team-section', label: 'Our Team', shortLabel: 'TEAM' },
-    { id: 'contact-section', label: 'Contact & Location', shortLabel: 'CONTACT' },
-    { id: 'footer-section', label: 'Footer', shortLabel: 'FIN' },
-  ]
-
-  useEffect(() => {
-    const leadershipEl = leadershipRef.current;
-    const teamEl = teamRef.current;
-    const contactEl = contactRef.current;
-
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.target === leadershipEl) {
-            setLeadershipVisible(entry.isIntersecting);
-          } else if (entry.target === teamEl) {
-            setTeamVisible(entry.isIntersecting);
-          } else if (entry.target === contactEl) {
-            setContactVisible(entry.isIntersecting);
-          }
-        });
-      },
-      { threshold: 0.12 }
-    );
-
-    if (leadershipEl) obs.observe(leadershipEl);
-    if (teamEl) obs.observe(teamEl);
-    if (contactEl) obs.observe(contactEl);
-
-    return () => obs.disconnect();
-  }, []);
-
-  const cardVariants = {
-    initial: { opacity: 0, y: 20, scale: 0.95, borderColor: "rgba(0,180,216,0.2)" },
-    animate: { opacity: 1, y: 0, scale: 1, borderColor: "rgba(0,180,216,0.2)" },
-    hover: {
-      y: -6,
-      scale: 1.02,
-      boxShadow: "0 20px 50px rgba(0,180,216,0.2), 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.2)",
-      borderColor: "rgba(0,180,216,0.6)",
-      transition: { duration: 0.06, borderColor: { duration: 0.03 } }
-    },
-    tap: { scale: 0.98 }
-  }
-
-  const cardTransition = { duration: 0.32 }
-
-  const overlayVariants = {
-    initial: { opacity: 0 },
-    hover: { opacity: 1 }
-  }
-
-  const imgVariants = {
-    initial: { scale: 1 },
-    hover: { scale: 1.05, transition: { duration: 0.06 } }
-  }
-
-  const MotionCard = (motion as any).create ? (motion as any).create(Card) : motion<any>(Card);
+    { id: "about-hero-section", label: "About Hero", shortLabel: "ABOUT" },
+    { id: "overview-section", label: "Overview", shortLabel: "OVERVIEW" },
+    { id: "history-section", label: "History", shortLabel: "HISTORY" },
+    { id: "leadership-section", label: "Leadership", shortLabel: "LEAD" },
+  ];
 
   return (
     <>
       <DotNavigation sections={sections} />
-      {/* Hero Section */}
-      <section id="hero-section" className="section-wrapper hero-section bg-sheen">
+
+      <section id="about-hero-section" className="section-wrapper hero-section bg-sheen" style={heroStyle}>
         <div className="section-decoration" aria-hidden="true" />
-        <div className="container">
-          <div className="section-title hero-title">
-            <h1 className="text-white">{t("company.title", "en")}</h1>
-            <p>{t("company.subtitle", language)}</p>
-          </div>
+        <div className="container hero-content">
+          <motion.div
+            className="hero-text"
+            style={{ textAlign: "center", maxWidth: "760px", margin: "0 auto" }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <h1 className="hero-title">{content.hero.title}</h1>
+            <p className="hero-subtitle" style={{ marginLeft: "auto", marginRight: "auto" }}>
+              {content.hero.body}
+            </p>
+          </motion.div>
         </div>
       </section>
 
-      {/* CEO Profile Section */}
-      <section id="leadership-section" className="section-wrapper with-bg" ref={leadershipRef}>
+      <section id="overview-section" className="section-wrapper with-bg" style={centeredSectionStyle}>
         <div className="container">
-          <h2 style={{ marginBottom: "clamp(20px, 3vw, 32px)", textAlign: "center" }}>Leadership Profile</h2>
-          <Row>
-            <Col lg={10} md={11} sm={12} className="mx-auto">
-              <MotionCard
-                initial="initial"
-                animate={leadershipVisible ? "animate" : "initial"}
-                variants={cardVariants}
-                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-                whileHover="hover"
-                whileTap="tap"
-                layout
-                style={{ position: 'relative' }}
-              >
-                <motion.div className="card-overlay" variants={overlayVariants} style={{ position: 'absolute', inset: 0, borderRadius: 16, pointerEvents: 'none' }} />
-                <Card.Body style={{ padding: "clamp(12px, 2vw, 24px)" }}>
-                  <Row className="align-items-flex-start g-2">
-                    <Col sm={12} md={4} className="text-center my-auto">
-                      <motion.img src={BossImg} alt="Shin" className="m-auto rounded" variants={imgVariants} style={{ maxWidth: "clamp(10px, 60vw, 180px)", height: "auto" }} />
+          <motion.div className="section-title" {...titleMotion} style={{ maxWidth: "860px", marginLeft: "auto", marginRight: "auto" }}>
+            <h2 className="text-readable-strong">{content.vision.title}</h2>
+            <p className="text-readable" style={{ maxWidth: "760px" }}>{content.vision.headline}</p>
+          </motion.div>
+
+          <motion.div variants={containerMotion} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.42 }}>
+            <Row className="g-4 about-overview-keywords" style={{ marginBottom: "28px" }}>
+              {content.vision.keywords.map((keyword, index) => (
+                <Col key={keyword} lg={3} md={6} sm={12} className="d-flex">
+                  <motion.div variants={itemMotion} style={{ width: "100%", height: "100%" }}>
+                    <Card className="card-hover-icon about-overview-keyword-card" style={{ height: "100%", textAlign: "center" }}>
+                      <Card.Body>
+                        <div className="about-overview-keyword-card__icon-wrap">
+                          <img
+                            src={keywordIcons[index]}
+                            alt={keyword}
+                            className="card-hover-icon-symbol about-overview-keyword-card__icon"
+                            style={{ width: "72px", height: "72px", objectFit: "contain", margin: "0 auto" }}
+                          />
+                        </div>
+                        <h5 className="card-hover-icon-copy" style={{ color: index % 2 === 0 ? "var(--xactus-green)" : "var(--accent-orange)", lineHeight: 1.25 }}>{keyword}</h5>
+                      </Card.Body>
+                    </Card>
+                  </motion.div>
+                </Col>
+              ))}
+            </Row>
+          </motion.div>
+
+          <motion.div
+            style={{ maxWidth: "920px", margin: "0 auto", textAlign: "center" }}
+            initial={{ opacity: 0, y: 22 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.55 }}
+            transition={{ duration: 0.58, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {content.vision.paragraphs.map((paragraph) => (
+              <p key={paragraph} className="text-readable">{paragraph}</p>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      <section id="history-section" className="section-wrapper with-bg" style={centeredSectionStyle}>
+        <div className="container">
+          <motion.div className="section-title" {...titleMotion}>
+            <h2>{content.history.title}</h2>
+          </motion.div>
+
+          <motion.div
+            className="about-history-timeline"
+            style={{ maxWidth: "780px", margin: "0 auto", position: "relative", paddingLeft: "28px" }}
+            variants={containerMotion}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.38 }}
+          >
+            <div
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                top: 0,
+                bottom: 0,
+                left: "10px",
+                width: "2px",
+                background: "rgba(255,255,255,0.45)",
+              }}
+            />
+            {content.history.items.map((item) => (
+              <motion.div key={item.year + item.text} variants={itemMotion} style={{ position: "relative", paddingBottom: "42px" }}>
+                <span
+                  aria-hidden="true"
+                  style={{
+                    position: "absolute",
+                    left: "-24px",
+                    top: "10px",
+                    width: "18px",
+                    height: "18px",
+                    borderRadius: "50%",
+                    background: "var(--off-white)",
+                    border: "4px solid var(--xactus-green)",
+                  }}
+                />
+                <Row className="g-3 align-items-start">
+                  <Col md={3}>
+                    <div style={{ fontSize: "clamp(1.8rem, 3vw, 2.4rem)", fontWeight: 700, color: "#ffffff" }}>{item.year}</div>
+                  </Col>
+                  <Col md={9}>
+                    <div style={{ fontSize: "clamp(1.05rem, 1.8vw, 1.3rem)", color: "#ffffff", fontWeight: 600 }}>
+                      {item.month ? `${item.month} ${item.text}` : item.text}
+                    </div>
+                  </Col>
+                </Row>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      <section id="leadership-section" className="section-wrapper with-bg" style={centeredSectionStyle}>
+        <div className="container">
+          <motion.div className="section-title" {...titleMotion}>
+            <h2 style={{ marginBottom: "6px" }}>{content.leadership.title}</h2>
+          </motion.div>
+
+          <div
+            className="about-leadership-layout"
+            style={{
+              display: "grid",
+              gridTemplateRows: "auto auto 1fr",
+              gap: "12px",
+            }}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.45 }}
+              transition={{ duration: 0.58, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <Card className="card-hover-profile card-hover-profile-lead">
+                <Card.Body style={{ padding: "20px 28px" }}>
+                  <Row className="g-3 align-items-center">
+                    <Col lg={3} md={4} sm={12}>
+                      <img
+                        src={LeaderPortrait}
+                        alt={content.leadership.leader.name}
+                        className="img-fluid rounded card-media"
+                        style={{ maxHeight: "196px", objectFit: "contain", margin: "0 auto" }}
+                      />
                     </Col>
-                    <Col sm={12} md={8} style={{ color: "rgba(210, 228, 248, 0.9)" }}>
-                      <h4 style={{ marginBottom: "2px", fontSize: "clamp(1rem, 1.6vw, 1.3rem)", color: "rgba(210, 228, 248, 0.9)", lineHeight: "1.2" }}>
-                        {language === "ko" ? "신 상 준 (Sang Joon Shin)" : "신 상 준 (Sang Joon Shin)"}
-                      </h4>
-                      <p style={{ color: "var(--xactus-green)", marginBottom: "clamp(6px, 1vw, 10px)", fontWeight: 600, fontSize: "clamp(0.75rem, 1.3vw, 0.9rem)" }}>
-                        {`M.D., Ph.D. | ${t("company.leadershipRole", language)}`}
+                    <Col lg={9} md={8} sm={12}>
+                      <h4 style={{ color: "#ffffff", marginBottom: "6px", fontSize: "1.9rem", lineHeight: 1.15 }}>{content.leadership.leader.name}</h4>
+                      <p style={{ color: "var(--xactus-green)", fontWeight: 700, marginBottom: "10px", fontSize: "1.08rem" }}>
+                        {content.leadership.leader.role}
                       </p>
-
-                      <h6 style={{ marginTop: "clamp(6px, 1vw, 10px)", marginBottom: "4px", fontSize: "clamp(0.8rem, 1.2vw, 0.95rem)", color: "rgba(210, 228, 248, 0.9)" }}>{t("company.professionalAchievements", language)}</h6>
-                      <ul style={{ fontSize: "clamp(0.7rem, 1.1vw, 0.9rem)", paddingLeft: "16px", marginBottom: "clamp(6px, 1vw, 10px)", lineHeight: "1.2", color: "rgba(210, 228, 248, 0.9)" }}>
-                        <li style={{ marginBottom: "3px" }}>{t("company.techTransfer", language)}</li>
-                        <li style={{ marginBottom: "3px" }}>{t("company.intlPatentApps", language)}</li>
-                        <li style={{ marginBottom: "3px" }}>{t("company.domesticPatentReg", language)}</li>
-                        <li style={{ marginBottom: "3px" }}>{t("company.bigDataPatent1", language)}</li>
-                        <li style={{ marginBottom: "3px" }}>{t("company.bigDataPatent2", language)}</li>
-                        <li style={{ marginBottom: "3px" }}>{t("company.tnikWnt", language)}</li>
-                        <li style={{ marginBottom: "3px" }}>{t("company.nrasTargeted", language)}</li>
-                        <li>{t("company.clinicalTrialLed", language)}</li>
+                      <ul style={{ margin: 0, paddingLeft: "20px", color: "rgba(210, 228, 248, 0.92)", fontSize: "1.02rem", lineHeight: 1.42 }}>
+                        {content.leadership.leader.bullets.map((bullet) => (
+                          <li key={bullet} style={{ marginBottom: "4px" }}>
+                            {bullet}
+                          </li>
+                        ))}
                       </ul>
-
-                      <Row style={{ marginTop: "clamp(8px, 1vw, 16px)", rowGap: "0.8rem" }}>
-                        <Col sm={6} md={6} >
-                          <h6 style={{ marginBottom: "2px", fontSize: "clamp(0.75rem, 1.1vw, 0.95rem)", color: "rgba(210, 228, 248, 0.9)" }}>{t("company.education", language)}</h6>
-                          <ul style={{ color: "rgba(210, 228, 248, 0.9)", fontSize: "clamp(0.7rem, 1vw, 0.85rem)", paddingLeft: "14px", lineHeight: "1.2", marginBottom: "0" }}>
-                            <li style={{ marginBottom: "2px" }}>{t("company.phd", language)}</li>
-                            <li style={{ marginBottom: "2px" }}>{t("company.profYonsei", language)}</li>
-                            <li>{t("company.residency", language)}</li>
-                          </ul>
-                        </Col>
-                        <Col sm={6} md={6} >
-                          <h6 style={{ marginBottom: "2px", fontSize: "clamp(0.75rem, 1.1vw, 0.95rem)", color: "rgba(210, 228, 248, 0.9)" }}>{t("company.leadershipRoles", language)}</h6>
-                          <ul style={{ color: "rgba(210, 228, 248, 0.9)", fontSize: "clamp(0.7rem, 1vw, 0.85rem)", paddingLeft: "14px", lineHeight: "1.2", marginBottom: "0" }}>
-                            <li style={{ marginBottom: "2px" }}>{t("company.innovationCenter", language)}</li>
-                            <li style={{ marginBottom: "2px" }}>{t("company.infoSecurityCenter", language)}</li>
-                            <li style={{ marginBottom: "2px" }}>{t("company.ksmoDirector", language)}</li>
-                            <li>{t("company.chairConference", language)}</li>
-                          </ul>
-                        </Col>
-                      </Row>
                     </Col>
                   </Row>
-                  </Card.Body>
-              </MotionCard>
-            </Col>
-          </Row>
-        </div>
-      </section>
-
-      {/* Team Section */}
-      <section id="team-section" className="section-wrapper with-bg" ref={teamRef}>
-        <div className="container">
-          <h2 style={{ marginBottom: "clamp(24px, 4vw, 40px)", textAlign: "center" }}>Our Team</h2>
-          <Row className="g-2" style={{ rowGap: "clamp(16px, 3vh, 24px)" }}>
-            <Col lg={3} md={6} sm={12}>
-              <MotionCard
-                initial="initial"
-                animate={teamVisible ? "animate" : "initial"}
-                variants={cardVariants}
-                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-                whileHover="hover"
-                whileTap="tap"
-                layout
-                style={{ height: "100%", overflow: "hidden", position: 'relative' }}
-              >
-                <motion.div className="card-overlay" variants={overlayVariants} style={{ position: 'absolute', inset: 0, borderRadius: 16, pointerEvents: 'none' }} />
-                <Card.Body style={{ padding: "clamp(12px, 1.5vw, 16px)" }}>
-                    <h5 style={{ color: "var(--xactus-green)", marginBottom: "2px", fontSize: "clamp(0.9rem, 1.6vw, 1.05rem)", lineHeight: "1.2" }}>
-                      {language === "ko" ? "신 상 준" : "S.J. Shin"}
-                    </h5>
-                    <p style={{ color: "var(--accent-orange)", fontSize: "clamp(0.75rem, 1.3vw, 0.85rem)", marginBottom: "clamp(8px, 1.2vw, 12px)", fontWeight: 600 }}>
-                      {t("company.founderCeo", language)}
-                    </p>
-                    <ul style={{ fontSize: "clamp(0.7rem, 1.1vw, 0.8rem)", paddingLeft: "16px", textAlign: "left", color: "rgba(210, 228, 248, 0.9)", marginBottom: "0", lineHeight: "1.3" }}>
-                      <li style={{ marginBottom: "3px" }}>{t("company.professor", language)}</li>
-                      <li style={{ marginBottom: "3px" }}>{t("company.shinExperience1", language)}</li>
-                      <li style={{ marginBottom: "3px" }}>{t("company.shinExperience2", language)}</li>
-                      <li style={{ marginBottom: "0" }}>{t("company.shinExperience3", language)}</li>
-                    </ul>
-                  </Card.Body>
-              </MotionCard>
-            </Col>
-            <Col lg={3} md={6} sm={12}>
-              <MotionCard
-                initial="initial"
-                animate={teamVisible ? "animate" : "initial"}
-                variants={cardVariants}
-                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-                whileHover="hover"
-                whileTap="tap"
-                layout
-                style={{ height: "100%", overflow: "hidden", position: 'relative' }}
-              >
-                <motion.div className="card-overlay" variants={overlayVariants} style={{ position: 'absolute', inset: 0, borderRadius: 16, pointerEvents: 'none' }} />
-                <Card.Body style={{ padding: "clamp(12px, 1.5vw, 16px)" }}>
-                    <h5 style={{ color: "var(--xactus-green)", marginBottom: "2px", fontSize: "clamp(0.9rem, 1.6vw, 1.05rem)", lineHeight: "1.2" }}>
-                      {language === "ko" ? "이 혁" : "Lee"}
-                    </h5>
-                    <p style={{ color: "var(--accent-orange)", fontSize: "clamp(0.75rem, 1.3vw, 0.85rem)", marginBottom: "clamp(8px, 1.2vw, 12px)", fontWeight: 600 }}>
-                      {t("company.technologyAdvisor", language)}
-                    </p>
-                    <ul style={{ fontSize: "clamp(0.7rem, 1.1vw, 0.8rem)", paddingLeft: "16px", textAlign: "left", color: "rgba(210, 228, 248, 0.9)", marginBottom: "0", lineHeight: "1.3" }}>
-                      <li style={{ marginBottom: "3px" }}>{t("company.leePhd", language)}</li>
-                      <li style={{ marginBottom: "3px" }}>{t("company.leeResearcher", language)}</li>
-                      <li style={{ marginBottom: "3px" }}>{t("company.leeExperience1", language)}</li>
-                      <li style={{ marginBottom: "0" }}>{t("company.leeMedChem", language)}</li>
-                    </ul>
-                  </Card.Body>
-              </MotionCard>
-            </Col>
-            <Col lg={3} md={6} sm={12}>
-              <MotionCard
-                initial="initial"
-                animate={teamVisible ? "animate" : "initial"}
-                variants={cardVariants}
-                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-                whileHover="hover"
-                whileTap="tap"
-                layout
-                style={{ height: "100%", position: 'relative' }}
-              >
-                <motion.div className="card-overlay" variants={overlayVariants} style={{ position: 'absolute', inset: 0, borderRadius: 16, pointerEvents: 'none' }} />
-                <Card.Body style={{ padding: "clamp(12px, 1.5vw, 16px)" }}>
-                    <h5 style={{ color: "var(--xactus-green)", marginBottom: "2px", fontSize: "clamp(0.9rem, 1.6vw, 1.05rem)", lineHeight: "1.2" }}>
-                      {language === "ko" ? "고 종 성" : "Ko"}
-                    </h5>
-                    <p style={{ color: "var(--accent-orange)", fontSize: "clamp(0.75rem, 1.3vw, 0.85rem)", marginBottom: "clamp(8px, 1.2vw, 12px)", fontWeight: 600 }}>
-                      {t("company.developmentAdvisor", language)}
-                    </p>
-                    <ul style={{ fontSize: "clamp(0.7rem, 1.1vw, 0.8rem)", paddingLeft: "16px", textAlign: "left", color: "rgba(210, 228, 248, 0.9)", marginBottom: "0", lineHeight: "1.3" }}>
-                      <li style={{ marginBottom: "3px" }}>{t("company.caltechPhd", language)}</li>
-                      <li style={{ marginBottom: "3px" }}>{t("company.lgChemPlatform", language)}</li>
-                      <li style={{ marginBottom: "0" }}>{t("company.genoCeo", language)}</li>
-                    </ul>
-                  </Card.Body>
-              </MotionCard>
-            </Col>
-            <Col lg={3} md={6} sm={12}>
-              <MotionCard
-                initial="initial"
-                animate={teamVisible ? "animate" : "initial"}
-                variants={cardVariants}
-                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
-                whileHover="hover"
-                whileTap="tap"
-                layout
-                style={{ height: "100%", position: 'relative' }}
-              >
-                <motion.div className="card-overlay" variants={overlayVariants} style={{ position: 'absolute', inset: 0, borderRadius: 16, pointerEvents: 'none' }} />
-                <Card.Body style={{ padding: "clamp(12px, 1.5vw, 16px)" }}>
-                    <h5 style={{ color: "var(--xactus-green)", marginBottom: "2px", fontSize: "clamp(0.9rem, 1.6vw, 1.05rem)", lineHeight: "1.2" }}>
-                      {language === "ko" ? "문 영 춘" : "Moon"}
-                    </h5>
-                    <p style={{ color: "var(--accent-orange)", fontSize: "clamp(0.75rem, 1.3vw, 0.85rem)", marginBottom: "clamp(8px, 1.2vw, 12px)", fontWeight: 600 }}>
-                      {t("company.developmentAdvisor", language)}
-                    </p>
-                    <ul style={{ fontSize: "clamp(0.7rem, 1.1vw, 0.8rem)", paddingLeft: "16px", textAlign: "left", color: "rgba(210, 228, 248, 0.9)", marginBottom: "0", lineHeight: "1.3" }}>
-                      <li style={{ marginBottom: "3px" }}>{t("company.orgChemPhd", language)}</li>
-                      <li style={{ marginBottom: "3px" }}>{t("company.ptcTherapeutics", language)}</li>
-                      <li style={{ marginBottom: "0" }}>{t("company.daimeBio", language)}</li>
-                    </ul>
-                  </Card.Body>
-              </MotionCard>
-            </Col>
-          </Row>
-        </div>
-      </section>
-
-      {/* Location Section */}
-      <section id="contact-section" className="section-wrapper" style={{ background: "var(--gradient-card)" }} ref={contactRef}>
-        <div className="container">
-          <h2 style={{ marginBottom: "clamp(20px, 4vw, 40px)", textAlign: "center" }}>Contact & Location</h2>
-          <Row className="g-2" style={{ rowGap: "clamp(16px, 3vh, 24px)" }}>
-            <Col lg={6} md={12} className="d-flex">
-              <MotionCard
-                initial="initial"
-                animate={contactVisible ? "animate" : "initial"}
-                variants={cardVariants}
-                transition={{ ...cardTransition, delay: 0.1 }}
-                whileHover={{ y: -6, scale: 1.02, boxShadow: "0 8px 28px rgba(0,180,216,0.12)" }}
-                whileTap={{ scale: 0.98 }}
-                layout
-                style={{ width: "100%", display: "flex" }}
-              >
-                <Card.Body style={{ padding: "clamp(12px, 2vw, 18px)" }}>
-                  <h5 style={{ marginBottom: "clamp(8px, 1.2vw, 12px)", color: "var(--xactus-green)", fontSize: "clamp(0.9rem, 1.6vw, 1.05rem)" }}>{t("company.headquarters", language)}</h5>
-                  <p style={{ marginBottom: "clamp(10px, 1.5vw, 12px)", fontSize: "clamp(0.85rem, 1.5vw, 0.95rem)", color: "rgba(210, 228, 248, 0.9)" }}>
-                    <strong>{t("company.address", language)}:</strong>
-                    <br />
-                    {language === "ko" ? "서울특별시 서대문구 이화여대1안길 8-3 702호" : "Room 702, Building 8-3, Ewha-yeodae 1-an-gil, Seodaemun-gu, Seoul"}
-                  </p>
-                  <p style={{ marginBottom: "clamp(10px, 1.5vw, 12px)", fontSize: "clamp(0.85rem, 1.5vw, 0.95rem)", color: "rgba(210, 228, 248, 0.9)" }}>
-                    <strong>{t("company.email", language)}:</strong>
-                    <br />
-                    <a href="mailto:ssj338@yuhs.ac" style={{ color: "rgba(210, 228, 248, 0.9)", wordBreak: "break-all" }}>ssj338@yuhs.ac</a>
-                  </p>
-                  <p style={{ marginBottom: "0", fontSize: "clamp(0.85rem, 1.5vw, 0.95rem)", color: "rgba(210, 228, 248, 0.9)" }}>
-                    <strong>{t("company.phone", language)}:</strong>
-                    <br />
-                    <a href="tel:+82-10-2611-2634" style={{ color: "rgba(210, 228, 248, 0.9)", wordBreak: "break-all" }}>+82-10-2611-2634</a>
-                  </p>
                 </Card.Body>
-              </MotionCard>
-            </Col>
-            <Col lg={6} md={12} className="d-flex">
-              <MotionCard
-                initial="initial"
-                animate={contactVisible ? "animate" : "initial"}
-                variants={cardVariants}
-                transition={{ ...cardTransition, delay: 0.2 }}
-                whileHover={{ y: -6, scale: 1.02, boxShadow: "0 8px 28px rgba(0,180,216,0.12)" }}
-                whileTap={{ scale: 0.98 }}
-                layout
-                style={{ width: "100%", display: "flex" }}
+              </Card>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.45 }}
+              transition={{ duration: 0.48, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+              style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", flexWrap: "wrap" }}
+            >
+              <div style={{ color: "#ffffff", fontSize: "1.22rem", fontWeight: 700 }}>
+                {advisorGroup === "technical"
+                  ? content.leadership.technicalAdvisorsTitle
+                  : content.leadership.developmentAdvisorsTitle}
+              </div>
+
+              <div
+                className="about-advisor-toggle-bar"
+                style={{
+                  display: "inline-flex",
+                  gap: "8px",
+                  padding: "6px",
+                  borderRadius: "999px",
+                  background: "rgba(255,255,255,0.06)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                }}
               >
-                <Card.Body style={{ padding: "0" }}>
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    style={{ border: "0", minHeight: "clamp(300px, 50vh, 500px)", display: "block" }}
-                    loading="lazy"
-                    allowFullScreen={true}
-                    referrerPolicy="no-referrer-when-downgrade"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3163.836123854838!2d126.9403!3d37.5551!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca3cb6b0b0001%3A0x1234567890!2sEwha%20Womans%20University!5e0!3m2!1sen!2skr!4v1626784923456"
-                  ></iframe>
-                </Card.Body>
-              </MotionCard>
-            </Col>
-          </Row>
+                <button
+                  type="button"
+                  onClick={() => setAdvisorGroup("technical")}
+                  style={advisorToggleStyle(advisorGroup === "technical")}
+                >
+                  {content.leadership.technicalAdvisorsTitle}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setAdvisorGroup("development")}
+                  style={advisorToggleStyle(advisorGroup === "development")}
+                >
+                  {content.leadership.developmentAdvisorsTitle}
+                </button>
+              </div>
+            </motion.div>
+
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={advisorGroup}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+                style={{ minHeight: 0 }}
+              >
+                <Row className="g-3 h-100 about-advisor-row" style={{ margin: 0 }}>
+                  {activeAdvisors.map((advisor, index) => (
+                    <Col key={advisor.name + index} lg={3} md={6} sm={12}>
+                      <Card className="card-hover-profile" style={{ height: "100%" }}>
+                        <Card.Body style={{ padding: "12px 14px", minHeight: "194px" }}>
+                          {!advisor.placeholder && advisorGroup === "technical" && index === 0 ? (
+                            <img
+                              src={AdvisorPortrait}
+                              alt={advisor.name}
+                              className="img-fluid rounded card-media"
+                              style={{ width: "100%", height: "72px", objectFit: "cover", marginBottom: "8px" }}
+                            />
+                          ) : null}
+
+                          <h5
+                            style={{
+                              color: advisor.placeholder ? "rgba(255,255,255,0.7)" : "var(--xactus-green)",
+                              fontSize: "1rem",
+                              marginBottom: "4px",
+                            }}
+                          >
+                            {advisor.name}
+                          </h5>
+
+                          {advisor.role ? (
+                            <p style={{ fontWeight: 700, color: "var(--accent-orange)", marginBottom: "8px", fontSize: "0.9rem" }}>
+                              {advisor.role}
+                            </p>
+                          ) : null}
+
+                          {advisor.bullets.length > 0 ? (
+                            <ul
+                              style={{
+                                margin: 0,
+                                paddingLeft: "16px",
+                                color: "rgba(210, 228, 248, 0.92)",
+                                fontSize: "0.76rem",
+                                lineHeight: 1.28,
+                              }}
+                            >
+                              {advisor.bullets.map((bullet) => (
+                                <li key={bullet} style={{ marginBottom: "4px" }}>
+                                  {bullet}
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <div
+                              style={{
+                                height: "100%",
+                                display: "grid",
+                                placeItems: "center",
+                                color: "rgba(255,255,255,0.55)",
+                                fontSize: "1rem",
+                                fontWeight: 600,
+                              }}
+                            >
+                              {advisor.name}
+                            </div>
+                          )}
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  ))}
+                </Row>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
       </section>
     </>
   );
+}
+
+function advisorToggleStyle(active: boolean) {
+  return {
+    border: 0,
+    borderRadius: "999px",
+    padding: "10px 18px",
+    fontSize: "0.88rem",
+    fontWeight: 700,
+    color: active ? "#ffffff" : "rgba(255,255,255,0.72)",
+    background: active ? "rgba(39, 169, 75, 0.82)" : "transparent",
+    boxShadow: active ? "0 10px 24px rgba(39, 169, 75, 0.24)" : "none",
+  } as const;
 }
