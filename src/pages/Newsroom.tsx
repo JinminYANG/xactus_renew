@@ -12,7 +12,7 @@ import NoticeCard02 from "../../docs/site_image_0616/extracted_backgrounds/notic
 import NoticeCard03 from "../../docs/site_image_0616/extracted_backgrounds/notice_bg_03_privacy_policy_revision_clean.png";
 
 const heroStyle = {
-  backgroundImage: `linear-gradient(rgba(32, 109, 184, 0.1), rgba(12, 40, 72, 0.12)), url(${NewsroomHero})`,
+  backgroundImage: `url(${NewsroomHero})`,
   backgroundSize: "cover",
   backgroundPosition: "center",
 };
@@ -74,7 +74,7 @@ export default function Newsroom() {
     <>
       <DotNavigation sections={sections} />
 
-      <section id="newsroom-hero-section" className="section-wrapper hero-section bg-sheen" style={heroStyle}>
+      <section id="newsroom-hero-section" className="section-wrapper hero-section bg-sheen newsroom-hero-section" style={heroStyle}>
         <div className="section-decoration" aria-hidden="true" />
         <div className="container hero-content">
           <motion.div
@@ -92,7 +92,7 @@ export default function Newsroom() {
         </div>
       </section>
 
-      <section id="news-section" className="section-wrapper with-bg" style={contentSectionStyle}>
+      <section id="news-section" className="section-wrapper with-bg newsroom-section" style={contentSectionStyle}>
         <div className="container">
           <motion.div className="section-title" {...titleMotion}>
             <h2>{content.news.title}</h2>
@@ -117,7 +117,7 @@ export default function Newsroom() {
           </motion.div>
 
           <motion.div
-            style={{ marginTop: "22px", textAlign: "right", color: "rgba(255,255,255,0.82)", fontWeight: 600 }}
+            style={{ marginTop: "22px", textAlign: "right", color: "#35516d", fontWeight: 600 }}
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.65 }}
@@ -128,7 +128,7 @@ export default function Newsroom() {
         </div>
       </section>
 
-      <section id="notice-section" className="section-wrapper with-bg" style={contentSectionStyle}>
+      <section id="notice-section" className="section-wrapper with-bg newsroom-section" style={contentSectionStyle}>
         <div className="container">
           <motion.div className="section-title" {...titleMotion}>
             <h2>{content.notice.title}</h2>
@@ -153,7 +153,7 @@ export default function Newsroom() {
           </motion.div>
 
           <motion.div
-            style={{ marginTop: "22px", textAlign: "right", color: "rgba(255,255,255,0.82)", fontWeight: 600 }}
+            style={{ marginTop: "22px", textAlign: "right", color: "#35516d", fontWeight: 600 }}
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.65 }}

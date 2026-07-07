@@ -511,6 +511,12 @@ html:not(.dark) .card-text {
 .home-what-we-do-card {
   display: flex;
   flex-direction: column;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(248, 251, 254, 0.98));
+  border: 1px solid rgba(192, 212, 230, 0.82);
+  backdrop-filter: none;
+  box-shadow:
+    0 18px 38px rgba(17, 39, 66, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
 }
 
 .home-what-we-do-card__media {
@@ -625,10 +631,25 @@ html:not(.dark) .card-text {
 .core-tech-flip-card__face--front {
   transform: rotateY(0deg);
   padding: 28px 24px;
+  background:
+    radial-gradient(circle at top right, rgba(176, 219, 255, 0.18), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(244, 249, 254, 0.98)) !important;
+  border: 1px solid rgba(191, 211, 229, 0.86) !important;
+  box-shadow:
+    0 18px 36px rgba(17, 39, 66, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.98) !important;
 }
 
 .core-tech-flip-card__front-content {
   width: 100%;
+}
+
+.home-section--tech .card-hover-icon-symbol {
+  color: #14314d !important;
+}
+
+.home-section--tech .card-hover-icon-copy {
+  color: #5c6e81 !important;
 }
 
 .core-tech-flip-card__face--back {
@@ -711,6 +732,30 @@ html:not(.dark) .card-text {
   box-shadow:
     0 18px 32px rgba(12, 34, 57, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.home-partner-shell {
+  backdrop-filter: blur(3px);
+}
+
+.home-section--partners .partner-card-slice {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(247, 250, 253, 0.98));
+  border: 1px solid rgba(201, 217, 232, 0.94);
+  box-shadow: 0 12px 26px rgba(18, 40, 67, 0.06);
+}
+
+.home-contact-summary-surface {
+  border: 1px solid rgba(194, 214, 231, 0.86) !important;
+  backdrop-filter: none !important;
+  box-shadow:
+    0 18px 40px rgba(17, 39, 66, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.98) !important;
+}
+
+.home-contact-summary-surface .card-text,
+.home-contact-summary-surface .card-body,
+.home-contact-summary-surface p {
+  color: #5c6e81 !important;
 }
 
 .card-hover-diagram:hover .card-media,
@@ -835,7 +880,7 @@ html.dark .bg-hero {
 /* Dark mode section background */
 :root.dark .section-wrapper.with-bg,
 html.dark .section-wrapper.with-bg {
-  background: linear-gradient(180deg, rgba(52, 103, 162, 0.12), rgba(16, 46, 78, 0.18));
+  background: transparent;
 }
 
 .section-wrapper.with-bg::after {
@@ -848,11 +893,145 @@ html.dark .section-wrapper.with-bg {
 
 :root.dark .section-wrapper.with-bg::after,
 html.dark .section-wrapper.with-bg::after {
-  background:
-    radial-gradient(circle at 50% 46%, rgba(8, 24, 46, 0.36) 0%, rgba(8, 24, 46, 0.26) 22%, rgba(8, 24, 46, 0.14) 46%, rgba(8, 24, 46, 0.04) 72%, rgba(8, 24, 46, 0) 100%);
-  backdrop-filter: blur(1px) ;
-  -webkit-backdrop-filter: blur(1px);
+  background: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
+
+.home-section {
+  position: relative;
+}
+
+.home-section .container {
+  z-index: 2;
+}
+
+.home-section--what,
+.home-section--tech,
+.home-section--pipeline,
+.home-section--partners,
+.home-section--contact {
+  background: transparent;
+}
+
+.home-section--what::before,
+.home-section--tech::before,
+.home-section--pipeline::after,
+.home-section--partners::after,
+.home-section--contact::after {
+  content: revert !important;
+}
+
+.home-section--what,
+.home-section--tech {
+  background: transparent !important;
+}
+
+.home-section--pipeline,
+.home-section--partners,
+.home-section--contact {
+  background: transparent !important;
+}
+
+.home-section .section-title h2,
+.home-section .text-readable-strong {
+  color: #10253d !important;
+  text-shadow: none !important;
+}
+
+.home-section .section-title p,
+.home-section .text-readable {
+  color: #5a6d80 !important;
+  text-shadow: none !important;
+}
+
+.home-outline-button {
+  color: #163552 !important;
+  border-color: rgba(22, 53, 82, 0.42) !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+  backdrop-filter: blur(2px);
+}
+
+.home-outline-button:hover,
+.home-outline-button:focus {
+  background: #163552 !important;
+  border-color: #163552 !important;
+  color: #ffffff !important;
+}
+
+.about-hero-section .hero-title {
+  /* color: #10253d !important; */
+  text-shadow: none !important;
+}
+
+.about-hero-section .hero-subtitle {
+  /* color: #425a72 !important; */
+  text-shadow: none !important;
+}
+
+.about-section .section-title h2,
+.about-section .text-readable-strong {
+  color: #10253d !important;
+  text-shadow: none !important;
+}
+
+.about-section .section-title p,
+.about-section .text-readable {
+  color: #56697d !important;
+  text-shadow: none !important;
+}
+
+.newsroom-hero-section .hero-title,
+.contact-hero-section .hero-title {
+  color: #10253d !important;
+  text-shadow: none !important;
+}
+
+.newsroom-hero-section .hero-subtitle,
+.contact-hero-section .hero-subtitle {
+  color: #425a72 !important;
+  text-shadow: none !important;
+}
+
+.technology-hero-section .hero-title {
+  color: #ffffff !important;
+  text-shadow: 0 10px 22px rgba(5, 14, 30, 0.52) !important;
+}
+
+.technology-hero-section .hero-subtitle {
+  color: rgba(247, 251, 255, 0.9) !important;
+  text-shadow: 0 4px 12px rgba(5, 14, 30, 0.38) !important;
+}
+
+.pipeline-hero-section .hero-title {
+  color: #ffffff !important;
+  text-shadow: 0 10px 22px rgba(5, 14, 30, 0.52) !important;
+}
+
+.pipeline-hero-section .hero-subtitle {
+  color: rgba(247, 251, 255, 0.9) !important;
+  text-shadow: 0 4px 12px rgba(5, 14, 30, 0.38) !important;
+}
+
+.technology-section .section-title h2,
+.technology-section .text-readable-strong,
+.pipeline-section .section-title h2,
+.pipeline-section .text-readable-strong,
+.newsroom-section .section-title h2,
+.contact-section .section-title h2 {
+  color: #10253d !important;
+  text-shadow: none !important;
+}
+
+.technology-section .section-title p,
+.technology-section .text-readable,
+.pipeline-section .section-title p,
+.newsroom-section .section-title p,
+.contact-section .section-title p {
+  color: #56697d !important;
+  text-shadow: none !important;
+}
+
 
 .content-spotlight {
   position: relative;
@@ -1569,28 +1748,54 @@ img {
   }
 
   .tech-program-why-row .card-body {
-    gap: 10px;
+    display: grid !important;
+    grid-template-columns: 120px minmax(0, 1fr);
+    align-items: center;
+    column-gap: 12px;
+    row-gap: 4px;
     padding: 10px 10px 9px !important;
+    text-align: left !important;
+    align-content: center;
+  }
+
+  .tech-program-why-card__copy {
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: center;
   }
 
   .tech-program-why-row h5 {
-    font-size: 0.78rem !important;
-    margin-bottom: 4px !important;
+    font-size: 0.76rem !important;
+    margin-bottom: 2px !important;
+    text-align: left !important;
   }
 
   .tech-program-why-row .card-text {
-    font-size: 0.68rem !important;
-    line-height: 1.24 !important;
+    font-size: 0.64rem !important;
+    line-height: 1.2 !important;
+    text-align: left !important;
   }
 
-  .technology-program-section .tech-program-why-card__media {
-    min-height: 96px;
-    padding: 10px;
-    border-radius: 14px;
+  .tech-program-why-card__media {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    width: 120px;
+    height: 120px !important;
+    min-height: 120px !important;
+    margin-bottom: 0 !important;
+    padding: 8px !important;
+    border-radius: 12px;
+    justify-self: center;
+    align-self: center;
   }
 
-  .technology-program-section .tech-program-why-card__image {
-    max-height: 92px;
+  .tech-program-why-card__image {
+    width: auto !important;
+    height: auto !important;
+    max-width: 104px !important;
+    max-height: 104px !important;
   }
 
   .about-overview-keywords {

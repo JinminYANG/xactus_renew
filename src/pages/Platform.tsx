@@ -3,27 +3,27 @@ import { Card, Col, Row } from "react-bootstrap";
 import { useAppStore } from "../store/useAppStore";
 import DotNavigation from "../components/DotNavigation";
 import { getSiteContent } from "../lib/i18n.original-en-clean";
-import TechnologyHero from "../../docs/site_image_0616/usable_assets/hero_backgrounds/technology_hero_lab.png";
+import TechnologyHero from "../../docs/site_image_0616/usable_assets/hero_backgrounds/technology_hero_generated_microscope_dashboard.png";
 import DiagramXO001 from "../../docs/site_image_0616/usable_assets/diagrams/technology_xo001_tnik_inhibitor.png";
 import DiagramXO003 from "../../docs/site_image_0616/usable_assets/diagrams/technology_xo003_foxm1_inhibitor.png";
 import DiagramXO004 from "../../docs/site_image_0616/usable_assets/diagrams/technology_xo004_irp2_inhibitor.png";
 import DiagramXOA001 from "../../docs/site_image_0616/usable_assets/diagrams/technology_xoa001_adc_platform.png";
-import WhyXO001Card01 from "../../output/pdf_extracted_icons_transparent/technology_xo001_terminal_wnt_control.png";
-import WhyXO001Card02 from "../../output/pdf_extracted_icons_transparent/technology_xo001_enhanced_selectivity.png";
-import WhyXO001Card03 from "../../output/pdf_extracted_icons_transparent/technology_xo001_durable_disease_control.png";
-import WhyXO003Card01 from "../../output/pdf_extracted_icons_transparent/technology_xo003_master_regulator_targeting.png";
-import WhyXO003Card02 from "../../output/pdf_extracted_icons_transparent/technology_xo003_multi_pathway_suppression.png";
-import WhyXO003Card03 from "../../output/pdf_extracted_icons_transparent/technology_xo003_combination_therapy_potential.png";
-import WhyXO004Card01 from "../../output/pdf_extracted_icons_transparent/technology_xo004_iron_dependency.png";
-import WhyXO004Card02 from "../../output/pdf_extracted_icons_transparent/technology_xo004_cancer_selectivity.png";
-import WhyXO004Card03 from "../../output/pdf_extracted_icons_transparent/technology_xo004_drug_resistant_tumors.png";
-import WhyXOA001Card01 from "../../output/pdf_extracted_icons_transparent/technology_xoa001_enhanced_internalization.png";
-import WhyXOA001Card02 from "../../output/pdf_extracted_icons_transparent/technology_xoa001_stable_linker_design.png";
-import WhyXOA001Card03 from "../../output/pdf_extracted_icons_transparent/technology_xoa001_potent_payload.png";
-import WhyXOA001Card04 from "../../output/pdf_extracted_icons_transparent/technology_xoa001_bystander_effect.png";
+import WhyXO001Card01 from "../assets/icons/terminal_wnt_control_icon.png";
+import WhyXO001Card02 from "../assets/icons/enhanced_selectivity_icon.png";
+import WhyXO001Card03 from "../assets/icons/durable_disease_control_icon.png";
+import WhyXO003Card01 from "../assets/icons/master_regulator_targeting_icon.png";
+import WhyXO003Card02 from "../assets/icons/multi_pathway_suppression_icon.png";
+import WhyXO003Card03 from "../assets/icons/combination_therapy_potential_icon.png";
+import WhyXO004Card01 from "../assets/icons/iron_dependency_icon.png";
+import WhyXO004Card02 from "../assets/icons/cancer_selectivity_icon.png";
+import WhyXO004Card03 from "../assets/icons/drug_resistant_tumors_icon.png";
+import WhyXOA001Card01 from "../../output/pdf_extracted_icons_transparent/technology_xoa001_enhanced_internalization_refined.png";
+import WhyXOA001Card02 from "../../output/pdf_extracted_icons_transparent/technology_xoa001_stable_linker_design_refined.png";
+import WhyXOA001Card03 from "../../output/pdf_extracted_icons_transparent/technology_xoa001_potent_payload_refined.png";
+import WhyXOA001Card04 from "../../output/pdf_extracted_icons_transparent/technology_xoa001_bystander_effect_refined.png";
 
 const heroStyle = {
-  backgroundImage: `linear-gradient(rgba(32, 109, 184, 0.06), rgba(12, 40, 72, 0.08)), url(${TechnologyHero})`,
+  backgroundImage: `url(${TechnologyHero})`,
   backgroundSize: "cover",
   backgroundPosition: "center",
 };
@@ -125,7 +125,7 @@ export default function Platform() {
   return (
     <>
       <DotNavigation sections={sections} />
-      <section id="technology-hero-section" className="section-wrapper hero-section bg-sheen" style={heroStyle}>
+      <section id="technology-hero-section" className="section-wrapper hero-section bg-sheen technology-hero-section" style={heroStyle}>
         <div className="section-decoration" aria-hidden="true" />
         <div className="container hero-content">
           <motion.div
@@ -143,7 +143,7 @@ export default function Platform() {
         </div>
       </section>
 
-      <section id="overview-section" className="section-wrapper with-bg" style={centeredSectionStyle}>
+      <section id="overview-section" className="section-wrapper with-bg technology-section" style={centeredSectionStyle}>
         <div className="container">
           <motion.div className="section-title" style={{ maxWidth: "860px", marginLeft: "auto", marginRight: "auto" }} {...titleMotion}>
             <h2 className="text-readable-strong">{content.overview.title}</h2>
@@ -196,8 +196,8 @@ export default function Platform() {
                   <motion.div
                     className="tech-overview-node"
                     style={{
-                      color: "#ffffff",
-                      textShadow: "0 6px 16px rgba(5, 14, 30, 0.58)",
+                      color: "#173452",
+                      textShadow: "none",
                     }}
                     initial={{ opacity: 0, y: index < 2 ? -18 : 18 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -237,7 +237,7 @@ export default function Platform() {
           <section
             key={program.id}
             id={`${program.id}-section`}
-            className={`section-wrapper with-bg `}
+            className={`section-wrapper with-bg technology-section`}
             style={programSectionStyle}
           >
             <div className="container">
@@ -254,18 +254,21 @@ export default function Platform() {
                       <div
                         className="tech-diagram-shell"
                         style={{
-                          height: "360px",
+                          // height: "360px",
                           display: "grid",
                           placeItems: "center",
                           borderRadius: "14px",
-                          background: "rgba(255,255,255,0.05)",
+                          // background: "rgba(255,255,255,0.05)",
                         }}
                       >
                         <img
                           src={diagramByProgramId[program.id]}
                           alt={program.title}
                           className="img-fluid rounded card-media"
-                          style={{ maxHeight: "324px", objectFit: "contain" }}
+                          style={{ 
+                            // maxHeight: "324px",
+                             objectFit: "contain" 
+                            }}
                         />
                       </div>
                     </Card.Body>
@@ -287,7 +290,7 @@ export default function Platform() {
                       >
                         {detailGroups.map((group) => (
                           <div key={group.label} className="tech-detail-grid__item">
-                            <h5 style={{ color: group.tone === "green" ? "var(--xactus-green)" : "var(--accent-orange)", marginBottom: "8px" }}>
+                            <h5 style={{ color: group.tone === "green" ? "#38d96b" : "#ff9a3d", marginBottom: "8px" }}>
                               {group.label}
                             </h5>
                             <ul style={{ margin: 0, paddingLeft: "18px", color: "rgba(210, 228, 248, 0.92)", fontSize: "0.96rem", lineHeight: 1.45 }}>
@@ -308,7 +311,7 @@ export default function Platform() {
               </motion.div>
 
               <motion.div
-                style={{ color: "#ffffff", fontWeight: 700, fontSize: "clamp(1.15rem, 1.8vw, 1.45rem)", marginBottom: "14px" }}
+                style={{ color: "#10253d", fontWeight: 700, fontSize: "clamp(1.15rem, 1.8vw, 1.45rem)", marginBottom: "14px" }}
                 initial={{ opacity: 0, x: -18 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.64 }}
@@ -347,8 +350,10 @@ export default function Platform() {
                             }}
                           />
                         </div>
-                        <h5 style={{ color: "#ffffff", marginBottom: "8px", fontSize: compactCards ? "1.02rem" : "1.08rem" }}>{card.title}</h5>
-                        <Card.Text style={{ margin: 0, fontSize: compactCards ? "0.9rem" : "0.94rem", lineHeight: 1.45 }}>{card.body}</Card.Text>
+                        <div className="tech-program-why-card__copy">
+                          <h5 style={{ color: "#ffffff", marginBottom: "8px", fontSize: compactCards ? "1.02rem" : "1.08rem" }}>{card.title}</h5>
+                          <Card.Text style={{ margin: 0, fontSize: compactCards ? "0.9rem" : "0.94rem", lineHeight: 1.45 }}>{card.body}</Card.Text>
+                        </div>
                       </Card.Body>
                     </Card>
                     </motion.div>

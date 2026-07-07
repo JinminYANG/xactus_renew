@@ -3,10 +3,10 @@ import { Card } from "react-bootstrap";
 import { useAppStore } from "../store/useAppStore";
 import DotNavigation from "../components/DotNavigation";
 import { getSiteContent } from "../lib/i18n.original-en-clean";
-import PipelineHero from "../../docs/site_image_0616/usable_assets/hero_backgrounds/pipeline_hero_microscope.png";
+import PipelineHero from "../../docs/site_image_0616/usable_assets/hero_backgrounds/pipeline_hero_generated_lab_tubes.png";
 
 const heroStyle = {
-  backgroundImage: `linear-gradient(rgba(32, 109, 184, 0.08), rgba(12, 40, 72, 0.1)), url(${PipelineHero})`,
+  backgroundImage: `url(${PipelineHero})`,
   backgroundSize: "cover",
   backgroundPosition: "center",
 };
@@ -59,7 +59,7 @@ export default function Pipeline() {
   return (
     <>
       <DotNavigation sections={sections} />
-      <section id="pipeline-hero-section" className="section-wrapper hero-section bg-sheen" style={heroStyle}>
+      <section id="pipeline-hero-section" className="section-wrapper hero-section bg-sheen pipeline-hero-section" style={heroStyle}>
         <div className="section-decoration" aria-hidden="true" />
         <div className="container hero-content">
           <motion.div
@@ -77,7 +77,7 @@ export default function Pipeline() {
         </div>
       </section>
 
-      <section id="pipeline-table-section" className="section-wrapper with-bg" style={contentSectionStyle}>
+      <section id="pipeline-table-section" className="section-wrapper with-bg pipeline-section" style={contentSectionStyle}>
         <div className="container">
           <motion.div className="section-title" style={{ textAlign: "left" }} {...titleMotion}>
             <h2>{content.table.title}</h2>
@@ -131,7 +131,7 @@ export default function Pipeline() {
                     return (
                       <motion.tr key={program.program} variants={rowMotion}>
                         <td style={cellStyle}>
-                          <div style={{ color: "var(--xactus-green)", fontWeight: 700 }}>{program.program}</div>
+                          <div style={{ color: "#38d96b", fontWeight: 700 }}>{program.program}</div>
                           <div style={{ color: "rgba(210,228,248,0.72)", fontSize: "0.84rem" }}>{program.sublabel}</div>
                         </td>
                         <td style={cellStyle}>{program.targetMoa}</td>

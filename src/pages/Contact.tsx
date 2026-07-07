@@ -9,7 +9,7 @@ import ContactHero from "../../docs/site_image_0616/usable_assets/hero_backgroun
 import "./Contact.css";
 
 const heroStyle = {
-  backgroundImage: `linear-gradient(rgba(32, 109, 184, 0.08), rgba(12, 40, 72, 0.1)), url(${ContactHero})`,
+  backgroundImage: `url(${ContactHero})`,
   backgroundSize: "cover",
   backgroundPosition: "center",
 };
@@ -61,7 +61,7 @@ export default function Contact() {
   return (
     <>
       <DotNavigation sections={sections} />
-      <section id="contact-hero-section" className="section-wrapper hero-section bg-sheen" style={heroStyle}>
+      <section id="contact-hero-section" className="section-wrapper hero-section bg-sheen contact-hero-section" style={heroStyle}>
         <div className="section-decoration" aria-hidden="true" />
         <div className="container hero-content">
           <motion.div
@@ -79,7 +79,7 @@ export default function Contact() {
         </div>
       </section>
 
-      <section id="inquiry-section" className="section-wrapper with-bg" style={contentSectionStyle}>
+      <section id="inquiry-section" className="section-wrapper with-bg contact-section" style={contentSectionStyle}>
         <div className="container">
           <motion.div className="section-title" style={{ textAlign: "left" }} {...titleMotion}>
             <h2>{content.inquiryForm.title}</h2>
@@ -95,7 +95,7 @@ export default function Contact() {
               >
               <Card className="card-hover-contact" style={{ height: "100%" }}>
                 <Card.Body style={{ padding: "26px 24px" }}>
-                  <div style={{ color: "var(--xactus-green)", fontSize: "0.86rem", fontWeight: 700, letterSpacing: "0.14em", marginBottom: "16px" }}>
+                  <div style={{ color: "#38d96b", fontSize: "0.86rem", fontWeight: 700, letterSpacing: "0.14em", marginBottom: "16px" }}>
                     {content.inquiryForm.eyebrow}
                   </div>
                   <h5 style={{ color: "#ffffff", fontSize: "1.55rem", lineHeight: 1.3, marginBottom: "14px" }}>
@@ -123,7 +123,7 @@ export default function Contact() {
                           borderRadius: "999px",
                           background: index % 2 === 0 ? "rgba(39,169,75,0.14)" : "rgba(235,94,40,0.14)",
                           border: `1px solid ${index % 2 === 0 ? "rgba(39,169,75,0.28)" : "rgba(235,94,40,0.22)"}`,
-                          color: index % 2 === 0 ? "var(--xactus-green)" : "var(--accent-orange)",
+                          color: index % 2 === 0 ? "#38d96b" : "#ff9a3d",
                           fontSize: "0.84rem",
                           fontWeight: 700,
                         }}
@@ -218,7 +218,7 @@ export default function Contact() {
         </div>
       </section>
 
-      <section id="contacts-section" className="section-wrapper with-bg" style={contentSectionStyle}>
+      <section id="contacts-section" className="section-wrapper with-bg contact-section" style={contentSectionStyle}>
         <div className="container">
           <motion.div className="section-title" style={{ textAlign: "left", marginBottom: "20px", maxWidth: "720px" }} {...titleMotion}>
             <h2>{content.contacts.title}</h2>
@@ -243,7 +243,7 @@ export default function Contact() {
                       borderRadius: "999px",
                       background: "rgba(39,169,75,0.12)",
                       border: "1px solid rgba(39,169,75,0.22)",
-                      color: "var(--xactus-green)",
+                      color: "#38d96b",
                       fontSize: "0.78rem",
                       fontWeight: 800,
                       letterSpacing: "0.12em",

@@ -22,7 +22,7 @@ import PartnerSMC from "../../docs/site_image_0616/usable_assets/partner_assets/
 import PartnerSNU from "../../docs/site_image_0616/usable_assets/partner_assets/crops8/snu.png";
 
 const heroSectionStyle = {
-  backgroundImage: `linear-gradient(rgba(32, 109, 184, 0.08), rgba(12, 40, 72, 0.1)), url(${HomeHero})`,
+  backgroundImage: `url(${HomeHero})`,
   backgroundSize: "cover",
   backgroundPosition: "center",
   width: "100%",
@@ -221,7 +221,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="what-we-do-section" className="section-wrapper mission-section" style={contentSectionStyle}>
+      <section id="what-we-do-section" className="section-wrapper mission-section home-section home-section--what" style={contentSectionStyle}>
         <div className="container">
           <motion.div className="section-title" style={{ textAlign: "left" }} {...titleMotion}>
             <h2>{content.whatWeDo.title}</h2>
@@ -245,7 +245,7 @@ export default function Home() {
                     />
                   </div>
                   <Card.Body>
-                    <h5 style={{ color: index === 1 ? "var(--accent-orange)" : "var(--xactus-green)" }}>{item.title}</h5>
+                    <h5 style={{ color: index === 1 ? "#ff9a3d" : "#38d96b" }}>{item.title}</h5>
                     <Card.Text>{item.body}</Card.Text>
                   </Card.Body>
                 </Card>
@@ -257,7 +257,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="core-technology-section" className="section-wrapper core-tech-section" style={contentSectionStyle}>
+      <section id="core-technology-section" className="section-wrapper core-tech-section home-section home-section--tech" style={contentSectionStyle}>
         <div className="container">
           <motion.div className="section-title" style={{ textAlign: "left" }} {...titleMotion}>
             <h2>{content.coreTechnology.title}</h2>
@@ -306,7 +306,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="pipeline-review-section" className="section-wrapper with-bg" style={contentSectionStyle}>
+      <section id="pipeline-review-section" className="section-wrapper with-bg home-section home-section--pipeline" style={contentSectionStyle}>
         <div className="container">
           <motion.div className="section-title" style={{ textAlign: "left" }} {...titleMotion}>
             <h2>{content.pipelineReview.title}</h2>
@@ -422,23 +422,24 @@ export default function Home() {
             viewport={{ once: true, amount: 0.6 }}
             transition={{ duration: 0.48, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Link to={content.pipelineReview.action.href} className="btn btn-outline-light">
+            <Link to={content.pipelineReview.action.href} className="btn btn-outline-light home-outline-button">
               {content.pipelineReview.action.label}
             </Link>
           </motion.div>
         </div>
       </section>
 
-      <section id="collaborators-section" className="section-wrapper with-bg" style={contentSectionStyle}>
+      <section id="collaborators-section" className="section-wrapper with-bg home-section home-section--partners" style={contentSectionStyle}>
         <div className="container">
           <motion.div
+            className="home-partner-shell"
             style={{
               borderRadius: "28px",
-              background: "linear-gradient(180deg, rgba(226, 242, 255, 0.14), rgba(201, 229, 250, 0.1))",
-              border: "1px solid rgba(214, 240, 255, 0.2)",
-              backdropFilter: "blur(8px)",
+              // background: "linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(244, 249, 255, 0.92))",
+              // border: "1px solid rgba(182, 208, 231, 0.75)",
+              backdropFilter: "blur(3px)",
               padding: "34px 0 26px",
-              boxShadow: "0 14px 32px rgba(26, 62, 105, 0.12)",
+              boxShadow: "0 18px 42px rgba(21, 46, 77, 0.1)",
             }}
             initial={{ opacity: 0, y: 24, scale: 0.99 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -450,7 +451,7 @@ export default function Home() {
                 <span style={{ color: "#e85f4b", marginRight: "10px" }}>+</span>
                 {currentCollaboratorCopy.title}
               </h2>
-              <p style={{ color: "rgba(255,255,255,0.88)", margin: 0 }}>{currentCollaboratorCopy.description}</p>
+              <p style={{ color: "#5c6f82", margin: 0 }}>{currentCollaboratorCopy.description}</p>
             </motion.div>
 
             <div style={{ display: "grid", gap: "18px" }}>
@@ -470,7 +471,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="contact-summary-section" className="section-wrapper with-bg" style={contentSectionStyle}>
+      <section id="contact-summary-section" className="section-wrapper with-bg home-section home-section--contact" style={contentSectionStyle}>
         <div className="container">
           <Row className="g-4 align-items-center">
             <Col lg={6}>
@@ -486,7 +487,7 @@ export default function Home() {
                 <p className="text-readable" style={{ maxWidth: "620px", marginBottom: "20px" }}>
                   {content.contact.body}
                 </p>
-                <Link to={content.contact.action.href} className="btn btn-outline-light">
+                <Link to={content.contact.action.href} className="btn btn-outline-light home-outline-button">
                   {content.contact.action.label}
                 </Link>
               </motion.div>
@@ -498,7 +499,10 @@ export default function Home() {
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 0.58, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
               >
-              <Card className="card-hover-contact" style={{ background: "linear-gradient(180deg, rgba(18, 51, 84, 0.76), rgba(13, 38, 66, 0.58))" }}>
+              <Card
+                className="card-hover-contact home-contact-summary-surface"
+                style={{ background: "linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(243, 248, 254, 0.94))" }}
+              >
                 <Card.Body className="home-contact-summary-card" style={{ padding: "28px 28px 24px" }}>
                   {content.contact.details.map((detail, index) => (
                     <div
@@ -512,13 +516,13 @@ export default function Home() {
                       <div
                         style={{
                           fontWeight: 700,
-                          color: index === 1 ? "var(--accent-orange)" : "var(--xactus-green)",
+                          color: index === 1 ? "#ff9a3d" : "#38d96b",
                           marginBottom: "6px",
                         }}
                       >
                         {detail.label}
                       </div>
-                      <div style={{ color: "#f6fbff", marginTop: "4px", lineHeight: 1.7, fontSize: "1rem" }}>{detail.value}</div>
+                      <div style={{ color: "#19324a", marginTop: "4px", lineHeight: 1.7, fontSize: "1rem" }}>{detail.value}</div>
                     </div>
                   ))}
                 </Card.Body>

@@ -4,7 +4,7 @@ import { Card, Col, Row } from "react-bootstrap";
 import { useAppStore } from "../store/useAppStore";
 import DotNavigation from "../components/DotNavigation";
 import { getSiteContent } from "../lib/i18n.original-en-clean";
-import AboutHero from "../../docs/site_image_0616/usable_assets/hero_backgrounds/about_hero_sunset.png";
+import AboutHero from "../../docs/site_image_0616/usable_assets/hero_backgrounds/about_hero_generated_sunset_scientist.png";
 import LeaderPortrait from "../../docs/site_image_0616/usable_assets/team_portraits/leadership_sang_joon_shin.png";
 import AdvisorPortrait from "../../docs/site_image_0616/usable_assets/team_portraits/advisor_hyuk_lee.png";
 import KeywordOne from "../../output/pdf_extracted_icons_transparent/about_first_in_class.png";
@@ -13,7 +13,7 @@ import KeywordThree from "../../output/pdf_extracted_icons_transparent/about_int
 import KeywordFour from "../../output/pdf_extracted_icons_transparent/about_patient_impact.png";
 
 const heroStyle = {
-  backgroundImage: `linear-gradient(rgba(32, 109, 184, 0.07), rgba(12, 40, 72, 0.1)), url(${AboutHero})`,
+  backgroundImage: `url(${AboutHero})`,
   backgroundSize: "cover",
   backgroundPosition: "center",
 };
@@ -76,7 +76,7 @@ export default function Company() {
     <>
       <DotNavigation sections={sections} />
 
-      <section id="about-hero-section" className="section-wrapper hero-section bg-sheen" style={heroStyle}>
+      <section id="about-hero-section" className="section-wrapper hero-section bg-sheen about-hero-section" style={heroStyle}>
         <div className="section-decoration" aria-hidden="true" />
         <div className="container hero-content">
           <motion.div
@@ -94,7 +94,7 @@ export default function Company() {
         </div>
       </section>
 
-      <section id="overview-section" className="section-wrapper with-bg" style={centeredSectionStyle}>
+      <section id="overview-section" className="section-wrapper with-bg about-section" style={centeredSectionStyle}>
         <div className="container">
           <motion.div className="section-title" {...titleMotion} style={{ maxWidth: "860px", marginLeft: "auto", marginRight: "auto" }}>
             <h2 className="text-readable-strong">{content.vision.title}</h2>
@@ -116,7 +116,12 @@ export default function Company() {
                             style={{ width: "72px", height: "72px", objectFit: "contain", margin: "0 auto" }}
                           />
                         </div>
-                        <h5 className="card-hover-icon-copy" style={{ color: index % 2 === 0 ? "var(--xactus-green)" : "var(--accent-orange)", lineHeight: 1.25 }}>{keyword}</h5>
+                        <h5
+                          className="card-hover-icon-copy"
+                          style={{ color: index % 2 === 0 ? "#38d96b" : "#ff9a3d", lineHeight: 1.25 }}
+                        >
+                          {keyword}
+                        </h5>
                       </Card.Body>
                     </Card>
                   </motion.div>
@@ -139,7 +144,7 @@ export default function Company() {
         </div>
       </section>
 
-      <section id="history-section" className="section-wrapper with-bg" style={centeredSectionStyle}>
+      <section id="history-section" className="section-wrapper with-bg about-section" style={centeredSectionStyle}>
         <div className="container">
           <motion.div className="section-title" {...titleMotion}>
             <h2>{content.history.title}</h2>
@@ -181,10 +186,10 @@ export default function Company() {
                 />
                 <Row className="g-3 align-items-start">
                   <Col md={3}>
-                    <div style={{ fontSize: "clamp(1.8rem, 3vw, 2.4rem)", fontWeight: 700, color: "#ffffff" }}>{item.year}</div>
+                    <div style={{ fontSize: "clamp(1.8rem, 3vw, 2.4rem)", fontWeight: 700, color: "#10253d" }}>{item.year}</div>
                   </Col>
                   <Col md={9}>
-                    <div style={{ fontSize: "clamp(1.05rem, 1.8vw, 1.3rem)", color: "#ffffff", fontWeight: 600 }}>
+                    <div style={{ fontSize: "clamp(1.05rem, 1.8vw, 1.3rem)", color: "#31485f", fontWeight: 600 }}>
                       {item.month ? `${item.month} ${item.text}` : item.text}
                     </div>
                   </Col>
@@ -195,7 +200,7 @@ export default function Company() {
         </div>
       </section>
 
-      <section id="leadership-section" className="section-wrapper with-bg" style={centeredSectionStyle}>
+      <section id="leadership-section" className="section-wrapper with-bg about-section" style={centeredSectionStyle}>
         <div className="container">
           <motion.div className="section-title" {...titleMotion}>
             <h2 style={{ marginBottom: "6px" }}>{content.leadership.title}</h2>
@@ -251,7 +256,7 @@ export default function Company() {
               transition={{ duration: 0.48, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
               style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", flexWrap: "wrap" }}
             >
-              <div style={{ color: "#ffffff", fontSize: "1.22rem", fontWeight: 700 }}>
+              <div style={{ color: "#10253d", fontSize: "1.22rem", fontWeight: 700 }}>
                 {advisorGroup === "technical"
                   ? content.leadership.technicalAdvisorsTitle
                   : content.leadership.developmentAdvisorsTitle}
@@ -375,7 +380,7 @@ function advisorToggleStyle(active: boolean) {
     padding: "10px 18px",
     fontSize: "0.88rem",
     fontWeight: 700,
-    color: active ? "#ffffff" : "rgba(255,255,255,0.72)",
+    color: active ? "#ffffff" : "#35516d",
     background: active ? "rgba(39, 169, 75, 0.82)" : "transparent",
     boxShadow: active ? "0 10px 24px rgba(39, 169, 75, 0.24)" : "none",
   } as const;
